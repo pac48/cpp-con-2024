@@ -31,7 +31,7 @@ def render():
 
     j2_template = env.from_string(template)
     html = j2_template.render(data, trim_blocks=True, zip=zip, env=env)
-    with open(os.path.join(current_dir, 'dist', 'index.html'), 'w') as f:
+    with open(os.path.join(current_dir, 'index.html'), 'w') as f:
         f.write(html)
 
 
@@ -40,7 +40,7 @@ class MyHTTPRequestHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
         # if asking for index, re-redner the file and write to the dist directory
         if self.path == '/' or self.path == '/?print-pdf':
-            self.path = '/dist/index.html'
+            self.path = '/index.html'
             render()
         http.server.SimpleHTTPRequestHandler.do_GET(self)
 

@@ -9,7 +9,9 @@
   "module": "dist/reveal.esm.js",
   "license": "MIT",
   "scripts": {
-    "start": "python3 my_server.py"
+    "start": "python3 my_server.py",
+    "build": "gulp build",
+    "start_gulp": "gulp serve"
   },
   "author": {
     "name": "Hakim El Hattab",
@@ -56,7 +58,6 @@
     "sass": "^1.69.5",
     "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4",
-    "yargs": "^17.7.2",
     "highlight.js": "github:pac48/highlight.js#add-more-cmake-syntax"
   },
   "overrides": {

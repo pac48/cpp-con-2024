@@ -214,11 +214,11 @@
         })).map((e => `(${e})`)).join(t)
     }
 
-    const T = "[a-zA-Z]\\w*", C = "[a-zA-Z_]\\w*", f = "\\b\\d+(\\.\\d+)?",
+    const T = "[a-zA-Z]\\w*", f = "[a-zA-Z_]\\w*", C = "\\b\\d+(\\.\\d+)?",
         R = "(-?)(\\b0[xX][a-fA-F0-9]+|(\\b\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)", N = "\\b(0b[01]+)",
-        O = {begin: "\\\\[\\s\\S]", relevance: 0},
-        h = {scope: "string", begin: "'", end: "'", illegal: "\\n", contains: [O]},
-        v = {scope: "string", begin: '"', end: '"', illegal: "\\n", contains: [O]}, I = function (e, t, a = {}) {
+        h = {begin: "\\\\[\\s\\S]", relevance: 0},
+        O = {scope: "string", begin: "'", end: "'", illegal: "\\n", contains: [h]},
+        v = {scope: "string", begin: '"', end: '"', illegal: "\\n", contains: [h]}, y = function (e, t, a = {}) {
             const n = i({scope: "comment", begin: e, end: t, contains: []}, a);
             n.contains.push({
                 scope: "doctag",
@@ -229,24 +229,24 @@
             });
             const r = g("I", "a", "is", "so", "us", "to", "at", "if", "in", "it", "on", /[A-Za-z]+['](d|ve|re|ll|t|s|n)/, /[A-Za-z]+[-][a-z]+/, /[A-Za-z][a-z]{2,}/);
             return n.contains.push({begin: u(/[ ]+/, "(", r, /[.]?[:]?([.][ ]|[ ])/, "){3}")}), n
-        }, A = I("//", "$"), y = I("/\\*", "\\*/"), D = I("#", "$"), M = {scope: "number", begin: f, relevance: 0},
-        L = {scope: "number", begin: R, relevance: 0}, x = {scope: "number", begin: N, relevance: 0}, w = {
+        }, I = y("//", "$"), A = y("/\\*", "\\*/"), D = y("#", "$"), x = {scope: "number", begin: C, relevance: 0},
+        M = {scope: "number", begin: R, relevance: 0}, L = {scope: "number", begin: N, relevance: 0}, w = {
             scope: "regexp",
             begin: /\/(?=[^/\n]*\/)/,
             end: /\/[gimuy]*/,
-            contains: [O, {begin: /\[/, end: /\]/, relevance: 0, contains: [O]}]
-        }, P = {scope: "title", begin: T, relevance: 0}, k = {scope: "title", begin: C, relevance: 0},
-        U = {begin: "\\.\\s*" + C, relevance: 0};
-    var F = Object.freeze({
+            contains: [h, {begin: /\[/, end: /\]/, relevance: 0, contains: [h]}]
+        }, P = {scope: "title", begin: T, relevance: 0}, k = {scope: "title", begin: f, relevance: 0},
+        F = {begin: "\\.\\s*" + f, relevance: 0};
+    var U = Object.freeze({
         __proto__: null,
-        APOS_STRING_MODE: h,
-        BACKSLASH_ESCAPE: O,
-        BINARY_NUMBER_MODE: x,
+        APOS_STRING_MODE: O,
+        BACKSLASH_ESCAPE: h,
+        BINARY_NUMBER_MODE: L,
         BINARY_NUMBER_RE: N,
-        COMMENT: I,
-        C_BLOCK_COMMENT_MODE: y,
-        C_LINE_COMMENT_MODE: A,
-        C_NUMBER_MODE: L,
+        COMMENT: y,
+        C_BLOCK_COMMENT_MODE: A,
+        C_LINE_COMMENT_MODE: I,
+        C_NUMBER_MODE: M,
         C_NUMBER_RE: R,
         END_SAME_AS_BEGIN: function (e) {
             return Object.assign(e, {
@@ -260,9 +260,9 @@
         HASH_COMMENT_MODE: D,
         IDENT_RE: T,
         MATCH_NOTHING_RE: /\b\B/,
-        METHOD_GUARD: U,
-        NUMBER_MODE: M,
-        NUMBER_RE: f,
+        METHOD_GUARD: F,
+        NUMBER_MODE: x,
+        NUMBER_RE: C,
         PHRASAL_WORDS_MODE: {begin: /\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/},
         QUOTE_STRING_MODE: v,
         REGEXP_MODE: w,
@@ -280,7 +280,7 @@
             }, e)
         },
         TITLE_MODE: P,
-        UNDERSCORE_IDENT_RE: C,
+        UNDERSCORE_IDENT_RE: f,
         UNDERSCORE_TITLE_MODE: k
     });
 
@@ -511,40 +511,40 @@
             const l = Object.create(null);
 
             function c() {
-                if (!v.keywords) return void A.addText(y);
+                if (!v.keywords) return void I.addText(A);
                 let e = 0;
                 v.keywordPatternRe.lastIndex = 0;
-                let t = v.keywordPatternRe.exec(y), a = "";
+                let t = v.keywordPatternRe.exec(A), a = "";
                 for (; t;) {
-                    a += y.substring(e, t.index);
+                    a += A.substring(e, t.index);
                     const i = R.case_insensitive ? t[0].toLowerCase() : t[0], r = (n = i, v.keywords[n]);
                     if (r) {
                         const [e, n] = r;
-                        if (A.addText(a), a = "", l[i] = (l[i] || 0) + 1, l[i] <= 7 && (D += n), e.startsWith("_")) a += t[0]; else {
+                        if (I.addText(a), a = "", l[i] = (l[i] || 0) + 1, l[i] <= 7 && (D += n), e.startsWith("_")) a += t[0]; else {
                             const a = R.classNameAliases[e] || e;
                             m(t[0], a)
                         }
                     } else a += t[0];
-                    e = v.keywordPatternRe.lastIndex, t = v.keywordPatternRe.exec(y)
+                    e = v.keywordPatternRe.lastIndex, t = v.keywordPatternRe.exec(A)
                 }
                 var n;
-                a += y.substring(e), A.addText(a)
+                a += A.substring(e), I.addText(a)
             }
 
             function d() {
                 null != v.subLanguage ? function () {
-                    if ("" === y) return;
+                    if ("" === A) return;
                     let e = null;
                     if ("string" == typeof v.subLanguage) {
-                        if (!n[v.subLanguage]) return void A.addText(y);
-                        e = b(v.subLanguage, y, !0, I[v.subLanguage]), I[v.subLanguage] = e._top
-                    } else e = T(y, v.subLanguage.length ? v.subLanguage : null);
-                    v.relevance > 0 && (D += e.relevance), A.__addSublanguage(e._emitter, e.language)
-                }() : c(), y = ""
+                        if (!n[v.subLanguage]) return void I.addText(A);
+                        e = b(v.subLanguage, A, !0, y[v.subLanguage]), y[v.subLanguage] = e._top
+                    } else e = T(A, v.subLanguage.length ? v.subLanguage : null);
+                    v.relevance > 0 && (D += e.relevance), I.__addSublanguage(e._emitter, e.language)
+                }() : c(), A = ""
             }
 
             function m(e, t) {
-                "" !== e && (A.startScope(t), A.addText(e), A.endScope())
+                "" !== e && (I.startScope(t), I.addText(e), I.endScope())
             }
 
             function p(e, t) {
@@ -556,12 +556,12 @@
                         continue
                     }
                     const n = R.classNameAliases[e[a]] || e[a], i = t[a];
-                    n ? m(i, n) : (y = i, c(), y = ""), a++
+                    n ? m(i, n) : (A = i, c(), A = ""), a++
                 }
             }
 
             function u(e, t) {
-                return e.scope && "string" == typeof e.scope && A.openNode(R.classNameAliases[e.scope] || e.scope), e.beginScope && (e.beginScope._wrap ? (m(y, R.classNameAliases[e.beginScope._wrap] || e.beginScope._wrap), y = "") : e.beginScope._multi && (p(e.beginScope, t), y = "")), v = Object.create(e, {parent: {value: v}}), v
+                return e.scope && "string" == typeof e.scope && I.openNode(R.classNameAliases[e.scope] || e.scope), e.beginScope && (e.beginScope._wrap ? (m(A, R.classNameAliases[e.beginScope._wrap] || e.beginScope._wrap), A = "") : e.beginScope._multi && (p(e.beginScope, t), A = "")), v = Object.create(e, {parent: {value: v}}), v
             }
 
             function g(e, t, n) {
@@ -583,36 +583,36 @@
             }
 
             function E(e) {
-                return 0 === v.matcher.regexIndex ? (y += e[0], 1) : (x = !0, 0)
+                return 0 === v.matcher.regexIndex ? (A += e[0], 1) : (L = !0, 0)
             }
 
             function S(e) {
                 const a = e[0], n = t.substring(e.index), i = g(v, e, n);
                 if (!i) return le;
                 const r = v;
-                v.endScope && v.endScope._wrap ? (d(), m(a, v.endScope._wrap)) : v.endScope && v.endScope._multi ? (d(), p(v.endScope, e)) : r.skip ? y += a : (r.returnEnd || r.excludeEnd || (y += a), d(), r.excludeEnd && (y = a));
+                v.endScope && v.endScope._wrap ? (d(), m(a, v.endScope._wrap)) : v.endScope && v.endScope._multi ? (d(), p(v.endScope, e)) : r.skip ? A += a : (r.returnEnd || r.excludeEnd || (A += a), d(), r.excludeEnd && (A = a));
                 do {
-                    v.scope && A.closeNode(), v.skip || v.subLanguage || (D += v.relevance), v = v.parent
+                    v.scope && I.closeNode(), v.skip || v.subLanguage || (D += v.relevance), v = v.parent
                 } while (v !== i.parent);
                 return i.starts && u(i.starts, e), r.returnEnd ? 0 : a.length
             }
 
-            let C = {};
+            let f = {};
 
-            function f(n, r) {
+            function C(n, r) {
                 const s = r && r[0];
-                if (y += n, null == s) return d(), 0;
-                if ("begin" === C.type && "end" === r.type && C.index === r.index && "" === s) {
-                    if (y += t.slice(r.index, r.index + 1), !o) {
+                if (A += n, null == s) return d(), 0;
+                if ("begin" === f.type && "end" === r.type && f.index === r.index && "" === s) {
+                    if (A += t.slice(r.index, r.index + 1), !o) {
                         const t = new Error(`0 width match regex (${e})`);
-                        throw t.languageName = e, t.badRule = C.rule, t
+                        throw t.languageName = e, t.badRule = f.rule, t
                     }
                     return 1
                 }
-                if (C = r, "begin" === r.type) return function (e) {
+                if (f = r, "begin" === r.type) return function (e) {
                     const t = e[0], n = e.rule, i = new a(n), r = [n.__beforeBegin, n["on:begin"]];
                     for (const a of r) if (a && (a(e, i), i.isMatchIgnored)) return E(t);
-                    return n.skip ? y += t : (n.excludeBegin && (y += t), d(), n.returnBegin || n.excludeBegin || (y = t)), u(n, e), n.returnBegin ? 0 : t.length
+                    return n.skip ? A += t : (n.excludeBegin && (A += t), d(), n.returnBegin || n.excludeBegin || (A = t)), u(n, e), n.returnBegin ? 0 : t.length
                 }(r);
                 if ("illegal" === r.type && !i) {
                     const e = new Error('Illegal lexeme "' + s + '" for mode "' + (v.scope || "<unnamed>") + '"');
@@ -623,40 +623,40 @@
                     if (e !== le) return e
                 }
                 if ("illegal" === r.type && "" === s) return 1;
-                if (L > 1e5 && L > 3 * r.index) {
+                if (M > 1e5 && M > 3 * r.index) {
                     throw new Error("potential infinite loop, way more iterations than matches")
                 }
-                return y += s, s.length
+                return A += s, s.length
             }
 
             const R = N(e);
             if (!R) throw X(s.replace("{}", e)), new Error('Unknown language: "' + e + '"');
-            const O = ne(R);
-            let h = "", v = r || O;
-            const I = {}, A = new _.__emitter(_);
+            const h = ne(R);
+            let O = "", v = r || h;
+            const y = {}, I = new _.__emitter(_);
             !function () {
                 const e = [];
                 for (let t = v; t !== R; t = t.parent) t.scope && e.unshift(t.scope);
-                e.forEach((e => A.openNode(e)))
+                e.forEach((e => I.openNode(e)))
             }();
-            let y = "", D = 0, M = 0, L = 0, x = !1;
+            let A = "", D = 0, x = 0, M = 0, L = !1;
             try {
-                if (R.__emitTokens) R.__emitTokens(t, A); else {
+                if (R.__emitTokens) R.__emitTokens(t, I); else {
                     for (v.matcher.considerAll(); ;) {
-                        L++, x ? x = !1 : v.matcher.considerAll(), v.matcher.lastIndex = M;
+                        M++, L ? L = !1 : v.matcher.considerAll(), v.matcher.lastIndex = x;
                         const e = v.matcher.exec(t);
                         if (!e) break;
-                        const a = f(t.substring(M, e.index), e);
-                        M = e.index + a
+                        const a = C(t.substring(x, e.index), e);
+                        x = e.index + a
                     }
-                    f(t.substring(M))
+                    C(t.substring(x))
                 }
-                return A.finalize(), h = A.toHTML(), {
+                return I.finalize(), O = I.toHTML(), {
                     language: e,
-                    value: h,
+                    value: O,
                     relevance: D,
                     illegal: !1,
-                    _emitter: A,
+                    _emitter: I,
                     _top: v
                 }
             } catch (a) {
@@ -667,12 +667,12 @@
                     relevance: 0,
                     _illegalBy: {
                         message: a.message,
-                        index: M,
-                        context: t.slice(M - 100, M + 100),
+                        index: x,
+                        context: t.slice(x - 100, x + 100),
                         mode: a.mode,
-                        resultSoFar: h
+                        resultSoFar: O
                     },
-                    _emitter: A
+                    _emitter: I
                 };
                 if (o) return {
                     language: e,
@@ -680,7 +680,7 @@
                     illegal: !1,
                     relevance: 0,
                     errorRaised: a,
-                    _emitter: A,
+                    _emitter: I,
                     _top: v
                 };
                 throw a
@@ -692,7 +692,7 @@
             const a = function (e) {
                 const t = {value: oe(e), illegal: !1, relevance: 0, _top: l, _emitter: new _.__emitter(_)};
                 return t._emitter.addText(e), t
-            }(e), i = t.filter(N).filter(h).map((t => b(t, e, !1)));
+            }(e), i = t.filter(N).filter(O).map((t => b(t, e, !1)));
             i.unshift(a);
             const r = i.sort(((e, t) => {
                 if (e.relevance !== t.relevance) return t.relevance - e.relevance;
@@ -705,7 +705,7 @@
             return c.secondBest = s, c
         }
 
-        function C(e) {
+        function f(e) {
             let t = null;
             const a = function (e) {
                 let t = e.className + " ";
@@ -740,24 +740,24 @@
             }), v("after:highlightElement", {el: e, result: r, text: n})
         }
 
-        let f = !1;
+        let C = !1;
 
         function R() {
-            if ("loading" === document.readyState) return void (f = !0);
-            document.querySelectorAll(_.cssSelector).forEach(C)
+            if ("loading" === document.readyState) return void (C = !0);
+            document.querySelectorAll(_.cssSelector).forEach(f)
         }
 
         function N(e) {
             return e = (e || "").toLowerCase(), n[e] || n[i[e]]
         }
 
-        function O(e, {languageName: t}) {
+        function h(e, {languageName: t}) {
             "string" == typeof e && (e = [e]), e.forEach((e => {
                 i[e.toLowerCase()] = t
             }))
         }
 
-        function h(e) {
+        function O(e) {
             const t = N(e);
             return t && !t.disableAutodetect
         }
@@ -770,10 +770,10 @@
         }
 
         "undefined" != typeof window && window.addEventListener && window.addEventListener("DOMContentLoaded", (function () {
-            f && R()
+            C && R()
         }), !1), Object.assign(e, {
-            highlight: S, highlightAuto: T, highlightAll: R, highlightElement: C, highlightBlock: function (e) {
-                return J("10.7.0", "highlightBlock will be removed entirely in v12.0"), J("10.7.0", "Please use highlightElement now."), C(e)
+            highlight: S, highlightAuto: T, highlightAll: R, highlightElement: f, highlightBlock: function (e) {
+                return J("10.7.0", "highlightBlock will be removed entirely in v12.0"), J("10.7.0", "Please use highlightElement now."), f(e)
             }, configure: function (e) {
                 _ = se(_, e)
             }, initHighlighting: () => {
@@ -788,13 +788,13 @@
                     if (X("Language definition for '{}' could not be registered.".replace("{}", t)), !o) throw e;
                     X(e), i = l
                 }
-                i.name || (i.name = t), n[t] = i, i.rawDefinition = a.bind(null, e), i.aliases && O(i.aliases, {languageName: t})
+                i.name || (i.name = t), n[t] = i, i.rawDefinition = a.bind(null, e), i.aliases && h(i.aliases, {languageName: t})
             }, unregisterLanguage: function (e) {
                 delete n[e];
                 for (const t of Object.keys(i)) i[t] === e && delete i[t]
             }, listLanguages: function () {
                 return Object.keys(n)
-            }, getLanguage: N, registerAliases: O, autoDetection: h, inherit: se, addPlugin: function (e) {
+            }, getLanguage: N, registerAliases: h, autoDetection: O, inherit: se, addPlugin: function (e) {
                 !function (e) {
                     e["before:highlightBlock"] && !e["before:highlightElement"] && (e["before:highlightElement"] = t => {
                         e["before:highlightBlock"](Object.assign({block: t.el}, t))
@@ -810,28 +810,34 @@
             o = !1
         }, e.safeMode = function () {
             o = !0
-        }, e.versionString = "11.9.0", e.regex = {concat: u, lookahead: d, either: g, optional: p, anyNumberOfTimes: m};
-        for (const e in F) "object" == typeof F[e] && t(F[e]);
-        return Object.assign(e, F), e
+        }, e.versionString = "11.10.0", e.regex = {
+            concat: u,
+            lookahead: d,
+            either: g,
+            optional: p,
+            anyNumberOfTimes: m
+        };
+        for (const e in U) "object" == typeof U[e] && t(U[e]);
+        return Object.assign(e, U), e
     }, _e = ce({});
     _e.newInstance = () => ce({});
-    var de, me, pe, ue, ge, Ee, Se, be, Te, Ce, fe, Re, Ne, Oe, he, ve, Ie, Ae, ye, De, Me, Le, xe, we, Pe, ke, Ue, Fe,
+    var de, me, pe, ue, ge, Ee, Se, be, Te, fe, Ce, Re, Ne, he, Oe, ve, ye, Ie, Ae, De, xe, Me, Le, we, Pe, ke, Fe, Ue,
         Be, Ge, Ye, He, Ve, qe, ze, $e, We, Qe, Ke, je, Xe, Ze, Je, et, tt, at, nt, it, rt, ot, st, lt, ct, _t, dt, mt,
-        pt, ut, gt, Et, St, bt, Tt, Ct, ft, Rt, Nt, Ot, ht, vt, It, At, yt, Dt, Mt, Lt, xt, wt, Pt, kt, Ut, Ft, Bt, Gt,
+        pt, ut, gt, Et, St, bt, Tt, ft, Ct, Rt, Nt, ht, Ot, vt, yt, It, At, Dt, xt, Mt, Lt, wt, Pt, kt, Ft, Ut, Bt, Gt,
         Yt, Ht, Vt, qt, zt, $t, Wt, Qt, Kt, jt, Xt, Zt, Jt, ea, ta, aa, na, ia, ra, oa, sa, la, ca, _a, da, ma, pa, ua,
-        ga, Ea, Sa, ba, Ta, Ca, fa, Ra, Na, Oa, ha, va, Ia, Aa, ya, Da, Ma, La, xa, wa, Pa, ka, Ua, Fa, Ba, Ga, Ya, Ha,
+        ga, Ea, Sa, ba, Ta, fa, Ca, Ra, Na, ha, Oa, va, ya, Ia, Aa, Da, xa, Ma, La, wa, Pa, ka, Fa, Ua, Ba, Ga, Ya, Ha,
         Va, qa, za, $a, Wa, Qa, Ka, ja, Xa, Za, Ja, en, tn, an, nn, rn, on, sn, ln, cn, _n, dn, mn, pn, un, gn, En, Sn,
-        bn, Tn, Cn, fn, Rn, Nn, On, hn, vn, In, An, yn, Dn, Mn, Ln, xn, wn, Pn, kn, Un, Fn, Bn, Gn, Yn, Hn, Vn, qn, zn,
+        bn, Tn, fn, Cn, Rn, Nn, hn, On, vn, yn, In, An, Dn, xn, Mn, Ln, wn, Pn, kn, Fn, Un, Bn, Gn, Yn, Hn, Vn, qn, zn,
         $n, Wn, Qn, Kn, jn, Xn, Zn, Jn, ei, ti, ai, ni, ii, ri, oi, si, li, ci, _i, di, mi, pi, ui, gi, Ei, Si, bi, Ti,
-        Ci, fi, Ri, Ni, Oi, hi, vi, Ii, Ai, yi, Di, Mi, Li, xi, wi, Pi, ki, Ui, Fi, Bi, Gi, Yi, Hi, Vi, qi, zi, $i, Wi,
-        Qi, Ki, ji, Xi, Zi, Ji, er, tr, ar, nr, ir, rr, or, sr, lr, cr, _r, dr, mr, pr, ur, gr, Er, Sr, br, Tr, Cr, fr,
-        Rr, Nr, Or, hr, vr, Ir, Ar, yr, Dr, Mr, Lr, xr, wr, Pr, kr, Ur, Fr, Br, Gr, Yr, Hr, Vr, qr, zr, $r, Wr, Qr, Kr,
-        jr, Xr, Zr, Jr, eo, to, ao, no, io, ro, oo, so, lo, co, _o, mo, po, uo, go, Eo, So, bo, To, Co, fo, Ro, No, Oo,
-        ho, vo, Io, Ao, yo, Do, Mo, Lo, xo, wo, Po, ko, Uo, Fo, Bo, Go, Yo, Ho, Vo, qo, zo, $o, Wo, Qo, Ko, jo, Xo, Zo,
+        fi, Ci, Ri, Ni, hi, Oi, vi, yi, Ii, Ai, Di, xi, Mi, Li, wi, Pi, ki, Fi, Ui, Bi, Gi, Yi, Hi, Vi, qi, zi, $i, Wi,
+        Qi, Ki, ji, Xi, Zi, Ji, er, tr, ar, nr, ir, rr, or, sr, lr, cr, _r, dr, mr, pr, ur, gr, Er, Sr, br, Tr, fr, Cr,
+        Rr, Nr, hr, Or, vr, yr, Ir, Ar, Dr, xr, Mr, Lr, wr, Pr, kr, Fr, Ur, Br, Gr, Yr, Hr, Vr, qr, zr, $r, Wr, Qr, Kr,
+        jr, Xr, Zr, Jr, eo, to, ao, no, io, ro, oo, so, lo, co, _o, mo, po, uo, go, Eo, So, bo, To, fo, Co, Ro, No, ho,
+        Oo, vo, yo, Io, Ao, Do, xo, Mo, Lo, wo, Po, ko, Fo, Uo, Bo, Go, Yo, Ho, Vo, qo, zo, $o, Wo, Qo, Ko, jo, Xo, Zo,
         Jo, es, ts, as, ns, is, rs, os, ss, ls, cs, _s, ds, ms, ps, us, gs, Es, Ss, bs, Ts = _e;
     _e.HighlightJS = _e, _e.default = _e;
-    var Cs = Ts;
-    Cs.registerLanguage("1c", (me || (me = 1, de = function (e) {
+    var fs = Ts;
+    fs.registerLanguage("1c", (me || (me = 1, de = function (e) {
         const t = "[A-Za-zА-Яа-яёЁ_][A-Za-zА-Яа-яёЁ_0-9]+",
             a = "далее возврат вызватьисключение выполнить для если и из или иначе иначеесли исключение каждого конецесли конецпопытки конеццикла не новый перейти перем по пока попытка прервать продолжить тогда цикл экспорт ",
             n = "null истина ложь неопределено", i = e.inherit(e.NUMBER_MODE),
@@ -883,9 +889,13 @@
                         contains: [i, r, o]
                     }, s]
                 }, e.inherit(e.TITLE_MODE, {begin: t})]
-            }, s, {className: "symbol", begin: "~", end: ";|:", excludeEnd: !0}, i, r, o]
+            }, s, {className: "symbol", begin: "~", end: ";|:", excludeEnd: !0}, i, r, o, {
+                match: /[;()+\-:=,]/,
+                className: "punctuation",
+                relevance: 0
+            }]
         }
-    }), de)), Cs.registerLanguage("abnf", (ue || (ue = 1, pe = function (e) {
+    }), de)), fs.registerLanguage("abnf", (ue || (ue = 1, pe = function (e) {
         const t = e.regex, a = e.COMMENT(/;/, /$/);
         return {
             name: "Augmented Backus-Naur Form",
@@ -902,7 +912,7 @@
                 match: /%[si](?=".*")/
             }, e.QUOTE_STRING_MODE, e.NUMBER_MODE]
         }
-    }), pe)), Cs.registerLanguage("accesslog", (Ee || (Ee = 1, ge = function (e) {
+    }), pe)), fs.registerLanguage("accesslog", (Ee || (Ee = 1, ge = function (e) {
         const t = e.regex, a = ["GET", "POST", "HEAD", "PUT", "DELETE", "CONNECT", "OPTIONS", "PATCH", "TRACE"];
         return {
             name: "Apache Access Log",
@@ -932,7 +942,7 @@
                 relevance: 3
             }, {className: "string", begin: /"/, end: /"/, illegal: /\n/, relevance: 0}]
         }
-    }), ge)), Cs.registerLanguage("actionscript", (be || (be = 1, Se = function (e) {
+    }), ge)), fs.registerLanguage("actionscript", (be || (be = 1, Se = function (e) {
         const t = e.regex, a = /[a-zA-Z_$][a-zA-Z0-9_$]*/, n = t.concat(a, t.concat("(\\.", a, ")*")),
             i = {className: "rest_arg", begin: /[.]{3}/, end: a, relevance: 10};
         return {
@@ -967,7 +977,7 @@
             }, e.METHOD_GUARD],
             illegal: /#/
         }
-    }), Se)), Cs.registerLanguage("ada", (Ce || (Ce = 1, Te = function (e) {
+    }), Se)), fs.registerLanguage("ada", (fe || (fe = 1, Te = function (e) {
         const t = "\\d(_|\\d)*", a = "[eE][-+]?" + t,
             n = "\\b(" + t + "#\\w+(\\.\\w+)?#(" + a + ")?|" + t + "(\\." + t + ")?(" + a + ")?)",
             i = "[A-Za-z](_?[A-Za-z0-9.])*", r = "[]\\{\\}%#'\"", o = e.COMMENT("--", "$"), s = {
@@ -1033,7 +1043,7 @@
                 illegal: r
             }, s]
         }
-    }), Te)), Cs.registerLanguage("angelscript", (Re || (Re = 1, fe = function (e) {
+    }), Te)), fs.registerLanguage("angelscript", (Re || (Re = 1, Ce = function (e) {
         const t = {
                 className: "built_in",
                 begin: "\\b(void|bool|int8|int16|int32|int64|int|uint8|uint16|uint32|uint64|uint|string|ref|array|double|float|auto|dictionary)"
@@ -1082,7 +1092,7 @@
                 begin: "(-?)(\\b0[xXbBoOdD][a-fA-F0-9]+|(\\b\\d+(\\.\\d*)?f?|\\.\\d+f?)([eE][-+]?\\d+f?)?)"
             }]
         }
-    }), fe)), Cs.registerLanguage("apache", (Oe || (Oe = 1, Ne = function (e) {
+    }), Ce)), fs.registerLanguage("apache", (he || (he = 1, Ne = function (e) {
         const t = {className: "number", begin: /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d{1,5})?/};
         return {
             name: "Apache config",
@@ -1112,7 +1122,7 @@
             }],
             illegal: /\S/
         }
-    }), Ne)), Cs.registerLanguage("applescript", (ve || (ve = 1, he = function (e) {
+    }), Ne)), fs.registerLanguage("applescript", (ve || (ve = 1, Oe = function (e) {
         const t = e.regex, a = e.inherit(e.QUOTE_STRING_MODE, {illegal: null}),
             n = {className: "params", begin: /\(/, end: /\)/, contains: ["self", e.C_NUMBER_MODE, a]},
             i = e.COMMENT(/--/, /$/), r = [i, e.COMMENT(/\(\*/, /\*\)/, {contains: ["self", i]}), e.HASH_COMMENT_MODE];
@@ -1136,27 +1146,27 @@
             }, {beginKeywords: "on", illegal: /[${=;\n]/, contains: [e.UNDERSCORE_TITLE_MODE, n]}, ...r],
             illegal: /\/\/|->|=>|\[\[/
         }
-    }), he)), Cs.registerLanguage("arcade", (Ae || (Ae = 1, Ie = function (e) {
+    }), Oe)), fs.registerLanguage("arcade", (Ie || (Ie = 1, ye = function (e) {
         const t = "[A-Za-z_][0-9A-Za-z_]*", a = {
-                keyword: ["if", "for", "while", "var", "new", "function", "do", "return", "void", "else", "break"],
-                literal: ["BackSlash", "DoubleQuote", "false", "ForwardSlash", "Infinity", "NaN", "NewLine", "null", "PI", "SingleQuote", "Tab", "TextFormatting", "true", "undefined"],
-                built_in: ["Abs", "Acos", "All", "Angle", "Any", "Area", "AreaGeodetic", "Array", "Asin", "Atan", "Atan2", "Attachments", "Average", "Back", "Bearing", "Boolean", "Buffer", "BufferGeodetic", "Ceil", "Centroid", "Clip", "Concatenate", "Console", "Constrain", "Contains", "ConvertDirection", "Cos", "Count", "Crosses", "Cut", "Date", "DateAdd", "DateDiff", "Day", "Decode", "DefaultValue", "Densify", "DensifyGeodetic", "Dictionary", "Difference", "Disjoint", "Distance", "DistanceGeodetic", "Distinct", "Domain", "DomainCode", "DomainName", "EnvelopeIntersects", "Equals", "Erase", "Exp", "Expects", "Extent", "Feature", "FeatureSet", "FeatureSetByAssociation", "FeatureSetById", "FeatureSetByName", "FeatureSetByPortalItem", "FeatureSetByRelationshipName", "Filter", "Find", "First", "Floor", "FromCharCode", "FromCodePoint", "FromJSON", "GdbVersion", "Generalize", "Geometry", "GetFeatureSet", "GetUser", "GroupBy", "Guid", "Hash", "HasKey", "Hour", "IIf", "Includes", "IndexOf", "Insert", "Intersection", "Intersects", "IsEmpty", "IsNan", "ISOMonth", "ISOWeek", "ISOWeekday", "ISOYear", "IsSelfIntersecting", "IsSimple", "Left|0", "Length", "Length3D", "LengthGeodetic", "Log", "Lower", "Map", "Max", "Mean", "Mid", "Millisecond", "Min", "Minute", "Month", "MultiPartToSinglePart", "Multipoint", "NextSequenceValue", "None", "Now", "Number", "Offset|0", "OrderBy", "Overlaps", "Point", "Polygon", "Polyline", "Pop", "Portal", "Pow", "Proper", "Push", "Random", "Reduce", "Relate", "Replace", "Resize", "Reverse", "Right|0", "RingIsClockwise", "Rotate", "Round", "Schema", "Second", "SetGeometry", "Simplify", "Sin", "Slice", "Sort", "Splice", "Split", "Sqrt", "Stdev", "SubtypeCode", "SubtypeName", "Subtypes", "Sum", "SymmetricDifference", "Tan", "Text", "Timestamp", "ToCharCode", "ToCodePoint", "Today", "ToHex", "ToLocal", "Top|0", "Touches", "ToUTC", "TrackAccelerationAt", "TrackAccelerationWindow", "TrackCurrentAcceleration", "TrackCurrentDistance", "TrackCurrentSpeed", "TrackCurrentTime", "TrackDistanceAt", "TrackDistanceWindow", "TrackDuration", "TrackFieldWindow", "TrackGeometryWindow", "TrackIndex", "TrackSpeedAt", "TrackSpeedWindow", "TrackStartTime", "TrackWindow", "Trim", "TypeOf", "Union", "Upper", "UrlEncode", "Variance", "Week", "Weekday", "When", "Within", "Year"]
+                keyword: ["break", "case", "catch", "continue", "debugger", "do", "else", "export", "for", "function", "if", "import", "in", "new", "return", "switch", "try", "var", "void", "while"],
+                literal: ["BackSlash", "DoubleQuote", "ForwardSlash", "Infinity", "NaN", "NewLine", "PI", "SingleQuote", "Tab", "TextFormatting", "false", "null", "true", "undefined"],
+                built_in: ["Abs", "Acos", "All", "Angle", "Any", "Area", "AreaGeodetic", "Array", "Asin", "Atan", "Atan2", "Attachments", "Average", "Back", "Bearing", "Boolean", "Buffer", "BufferGeodetic", "Ceil", "Centroid", "ChangeTimeZone", "Clip", "Concatenate", "Console", "Constrain", "Contains", "ConvertDirection", "ConvexHull", "Cos", "Count", "Crosses", "Cut", "Date|0", "DateAdd", "DateDiff", "DateOnly", "Day", "Decode", "DefaultValue", "Densify", "DensifyGeodetic", "Dictionary", "Difference", "Disjoint", "Distance", "DistanceGeodetic", "Distinct", "Domain", "DomainCode", "DomainName", "EnvelopeIntersects", "Equals", "Erase", "Exp", "Expects", "Extent", "Feature", "FeatureSet", "FeatureSetByAssociation", "FeatureSetById", "FeatureSetByName", "FeatureSetByPortalItem", "FeatureSetByRelationshipClass", "FeatureSetByRelationshipName", "Filter", "Find", "First|0", "Floor", "FromCharCode", "FromCodePoint", "FromJSON", "Front", "GdbVersion", "Generalize", "Geometry", "GetEnvironment", "GetFeatureSet", "GetFeatureSetInfo", "GetUser", "GroupBy", "Guid", "HasKey", "HasValue", "Hash", "Hour", "IIf", "ISOMonth", "ISOWeek", "ISOWeekday", "ISOYear", "Includes", "IndexOf", "Insert", "Intersection", "Intersects", "IsEmpty", "IsNan", "IsSelfIntersecting", "IsSimple", "Left|0", "Length", "Length3D", "LengthGeodetic", "Log", "Lower", "Map", "Max", "Mean", "Mid", "Millisecond", "Min", "Minute", "Month", "MultiPartToSinglePart", "Multipoint", "NearestCoordinate", "NearestVertex", "NextSequenceValue", "None", "Now", "Number", "Offset", "OrderBy", "Overlaps", "Point", "Polygon", "Polyline", "Pop", "Portal", "Pow", "Proper", "Push", "Random", "Reduce", "Relate", "Replace", "Resize", "Reverse", "Right|0", "RingIsClockwise", "Rotate", "Round", "Schema", "Second", "SetGeometry", "Simplify", "Sin", "Slice", "Sort", "Splice", "Split", "Sqrt", "StandardizeGuid", "Stdev", "SubtypeCode", "SubtypeName", "Subtypes", "Sum", "SymmetricDifference", "Tan", "Text", "Time", "TimeZone", "TimeZoneOffset", "Timestamp", "ToCharCode", "ToCodePoint", "ToHex", "ToLocal", "ToUTC", "Today", "Top|0", "Touches", "TrackAccelerationAt", "TrackAccelerationWindow", "TrackCurrentAcceleration", "TrackCurrentDistance", "TrackCurrentSpeed", "TrackCurrentTime", "TrackDistanceAt", "TrackDistanceWindow", "TrackDuration", "TrackFieldWindow", "TrackGeometryWindow", "TrackIndex", "TrackSpeedAt", "TrackSpeedWindow", "TrackStartTime", "TrackWindow", "Trim", "TypeOf", "Union", "Upper", "UrlEncode", "Variance", "Week", "Weekday", "When|0", "Within", "Year|0"]
             }, n = {
+                className: "symbol",
+                begin: "\\$" + e.regex.either("aggregatedFeatures", "analytic", "config", "datapoint", "datastore", "editcontext", "feature", "featureSet", "feedfeature", "fencefeature", "fencenotificationtype", "join", "layer", "locationupdate", "map", "measure", "measure", "originalFeature", "record", "reference", "rowindex", "sourcedatastore", "sourcefeature", "sourcelayer", "target", "targetdatastore", "targetfeature", "targetlayer", "value", "view")
+            }, i = {
                 className: "number",
                 variants: [{begin: "\\b(0[bB][01]+)"}, {begin: "\\b(0[oO][0-7]+)"}, {begin: e.C_NUMBER_RE}],
                 relevance: 0
-            }, i = {className: "subst", begin: "\\$\\{", end: "\\}", keywords: a, contains: []},
-            r = {className: "string", begin: "`", end: "`", contains: [e.BACKSLASH_ESCAPE, i]};
-        i.contains = [e.APOS_STRING_MODE, e.QUOTE_STRING_MODE, r, n, e.REGEXP_MODE];
-        const o = i.contains.concat([e.C_BLOCK_COMMENT_MODE, e.C_LINE_COMMENT_MODE]);
+            }, r = {className: "subst", begin: "\\$\\{", end: "\\}", keywords: a, contains: []},
+            o = {className: "string", begin: "`", end: "`", contains: [e.BACKSLASH_ESCAPE, r]};
+        r.contains = [e.APOS_STRING_MODE, e.QUOTE_STRING_MODE, o, i, e.REGEXP_MODE];
+        const s = r.contains.concat([e.C_BLOCK_COMMENT_MODE, e.C_LINE_COMMENT_MODE]);
         return {
             name: "ArcGIS Arcade",
             case_insensitive: !0,
             keywords: a,
-            contains: [e.APOS_STRING_MODE, e.QUOTE_STRING_MODE, r, e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE, {
-                className: "symbol",
-                begin: "\\$[datastore|feature|layer|map|measure|sourcefeature|sourcelayer|targetfeature|targetlayer|value|view]+"
-            }, n, {
+            contains: [e.APOS_STRING_MODE, e.QUOTE_STRING_MODE, o, e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE, n, i, {
                 begin: /[{,]\s*/,
                 relevance: 0,
                 contains: [{
@@ -1181,7 +1191,7 @@
                             excludeBegin: !0,
                             excludeEnd: !0,
                             keywords: a,
-                            contains: o
+                            contains: s
                         }]
                     }]
                 }],
@@ -1196,13 +1206,13 @@
                     end: /\)/,
                     excludeBegin: !0,
                     excludeEnd: !0,
-                    contains: o
+                    contains: s
                 }],
                 illegal: /\[|%/
             }, {begin: /\$[(.]/}],
             illegal: /#(?!!)/
         }
-    }), Ie)), Cs.registerLanguage("arduino", (De || (De = 1, ye = function (e) {
+    }), ye)), fs.registerLanguage("arduino", (De || (De = 1, Ae = function (e) {
         const t = {
             type: ["boolean", "byte", "word", "String"],
             built_in: ["KeyboardController", "MouseController", "SoftwareSerial", "EthernetServer", "EthernetClient", "LiquidCrystal", "RobotControl", "GSMVoiceCall", "EthernetUDP", "EsploraTFT", "HttpClient", "RobotMotor", "WiFiClient", "GSMScanner", "FileSystem", "Scheduler", "GSMServer", "YunClient", "YunServer", "IPAddress", "GSMClient", "GSMModem", "Keyboard", "Ethernet", "Console", "GSMBand", "Esplora", "Stepper", "Process", "WiFiUDP", "GSM_SMS", "Mailbox", "USBHost", "Firmata", "PImage", "Client", "Server", "GSMPIN", "FileIO", "Bridge", "Serial", "EEPROM", "Stream", "Mouse", "Audio", "Servo", "File", "Task", "GPRS", "WiFi", "Wire", "TFT", "GSM", "SPI", "SD"],
@@ -1226,7 +1236,7 @@
                     }, e.END_SAME_AS_BEGIN({begin: /(?:u8?|U|L)?R"([^()\\ ]{0,16})\(/, end: /\)([^()\\ ]{0,16})"/})]
                 }, l = {
                     className: "number",
-                    variants: [{begin: "\\b(0b[01']+)"}, {begin: "(-?)\\b([\\d']+(\\.[\\d']*)?|\\.[\\d']+)((ll|LL|l|L)(u|U)?|(u|U)(ll|LL|l|L)?|f|F|b|B)"}, {begin: "(-?)(\\b0[xX][a-fA-F0-9']+|(\\b[\\d']+(\\.[\\d']*)?|\\.[\\d']+)([eE][-+]?[\\d']+)?)"}],
+                    variants: [{begin: "[+-]?(?:(?:[0-9](?:'?[0-9])*\\.(?:[0-9](?:'?[0-9])*)?|\\.[0-9](?:'?[0-9])*)(?:[Ee][+-]?[0-9](?:'?[0-9])*)?|[0-9](?:'?[0-9])*[Ee][+-]?[0-9](?:'?[0-9])*|0[Xx](?:[0-9A-Fa-f](?:'?[0-9A-Fa-f])*(?:\\.(?:[0-9A-Fa-f](?:'?[0-9A-Fa-f])*)?)?|\\.[0-9A-Fa-f](?:'?[0-9A-Fa-f])*)[Pp][+-]?[0-9](?:'?[0-9])*)(?:[Ff](?:16|32|64|128)?|(BF|bf)16|[Ll]|)"}, {begin: "[+-]?\\b(?:0[Bb][01](?:'?[01])*|0[Xx][0-9A-Fa-f](?:'?[0-9A-Fa-f])*|0(?:'?[0-7])*|[1-9](?:'?[0-9])*)(?:[Uu](?:LL?|ll?)|[Uu][Zz]?|(?:LL?|ll?)[Uu]?|[Zz][Uu]|)"}],
                     relevance: 0
                 }, c = {
                     className: "meta",
@@ -1309,7 +1319,7 @@
             }
         }(e), n = a.keywords;
         return n.type = [...n.type, ...t.type], n.literal = [...n.literal, ...t.literal], n.built_in = [...n.built_in, ...t.built_in], n._hints = t._hints, a.name = "Arduino", a.aliases = ["ino"], a.supersetOf = "cpp", a
-    }), ye)), Cs.registerLanguage("armasm", (Le || (Le = 1, Me = function (e) {
+    }), Ae)), fs.registerLanguage("armasm", (Me || (Me = 1, xe = function (e) {
         const t = {
             variants: [e.COMMENT("^[ \\t]*(?=#)", "$", {
                 relevance: 0,
@@ -1343,7 +1353,7 @@
                 relevance: 0
             }]
         }
-    }), Me)), Cs.registerLanguage("xml", (we || (we = 1, xe = function (e) {
+    }), xe)), fs.registerLanguage("xml", (we || (we = 1, Le = function (e) {
         const t = e.regex, a = t.concat(/[\p{L}_]/u, t.optional(/[\p{L}0-9_.-]*:/u), /[\p{L}0-9_.-]*/u),
             n = {className: "symbol", begin: /&[a-z]+;|&#[0-9]+;|&#x[a-f0-9]+;/},
             i = {begin: /\s/, contains: [{className: "keyword", begin: /#?[a-z_][a-z1-9_-]+/, illegal: /\n/}]},
@@ -1414,7 +1424,7 @@
                 contains: [{className: "name", begin: a, relevance: 0}, {begin: />/, relevance: 0, endsParent: !0}]
             }]
         }
-    }), xe)), Cs.registerLanguage("asciidoc", (ke || (ke = 1, Pe = function (e) {
+    }), Le)), fs.registerLanguage("asciidoc", (ke || (ke = 1, Pe = function (e) {
         const t = e.regex, a = [{className: "strong", begin: /\*{2}([^\n]+?)\*{2}/}, {
             className: "strong",
             begin: t.concat(/\*\*/, /((\*(?!\*)|\\[^\n]|[^*\n\\])+\n)+/, /(\*(?!\*)|\\[^\n]|[^*\n\\])*/, /\*\*/),
@@ -1486,7 +1496,7 @@
                 relevance: 10
             }]
         }
-    }), Pe)), Cs.registerLanguage("aspectj", (Fe || (Fe = 1, Ue = function (e) {
+    }), Pe)), fs.registerLanguage("aspectj", (Ue || (Ue = 1, Fe = function (e) {
         const t = e.regex,
             a = ["false", "synchronized", "int", "abstract", "float", "private", "char", "boolean", "static", "null", "if", "const", "for", "true", "while", "long", "throw", "strictfp", "finally", "protected", "import", "native", "final", "return", "void", "enum", "else", "extends", "implements", "break", "transient", "new", "catch", "instanceof", "byte", "super", "volatile", "case", "assert", "short", "package", "default", "double", "public", "try", "this", "switch", "continue", "throws", "privileged", "aspectOf", "adviceexecution", "proceed", "cflowbelow", "cflow", "initialization", "preinitialization", "staticinitialization", "withincode", "target", "within", "execution", "getWithinTypeName", "handler", "thisJoinPoint", "thisJoinPointStaticPart", "thisEnclosingJoinPointStaticPart", "declare", "parents", "warning", "error", "soft", "precedence", "thisAspectInstance"],
             n = ["get", "set", "args", "call"];
@@ -1563,7 +1573,7 @@
                 }, e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE]
             }, e.C_NUMBER_MODE, {className: "meta", begin: /@[A-Za-z]+/}]
         }
-    }), Ue)), Cs.registerLanguage("autohotkey", (Ge || (Ge = 1, Be = function (e) {
+    }), Fe)), fs.registerLanguage("autohotkey", (Ge || (Ge = 1, Be = function (e) {
         const t = {begin: "`[\\s\\S]"};
         return {
             name: "AutoHotkey",
@@ -1589,7 +1599,7 @@
                 begin: "A_[a-zA-Z0-9]+"
             }, {begin: ",\\s*,"}]
         }
-    }), Be)), Cs.registerLanguage("autoit", (He || (He = 1, Ye = function (e) {
+    }), Be)), fs.registerLanguage("autoit", (He || (He = 1, Ye = function (e) {
         const t = {variants: [e.COMMENT(";", "$", {relevance: 0}), e.COMMENT("#cs", "#ce"), e.COMMENT("#comments-start", "#comments-end")]},
             a = {begin: "\\$[A-z0-9_]+"}, n = {
                 className: "string",
@@ -1638,7 +1648,7 @@
                 }]
             }]
         }
-    }), Ye)), Cs.registerLanguage("avrasm", (qe || (qe = 1, Ve = function (e) {
+    }), Ye)), fs.registerLanguage("avrasm", (qe || (qe = 1, Ve = function (e) {
         return {
             name: "AVR Assembly",
             case_insensitive: !0,
@@ -1662,7 +1672,7 @@
                 end: "$"
             }, {className: "subst", begin: "@[0-9]+"}]
         }
-    }), Ve)), Cs.registerLanguage("awk", ($e || ($e = 1, ze = function (e) {
+    }), Ve)), fs.registerLanguage("awk", ($e || ($e = 1, ze = function (e) {
         return {
             name: "Awk",
             keywords: {keyword: "BEGIN END if else while do for in break continue delete next nextfile function func exit|10"},
@@ -1683,7 +1693,7 @@
                 }, {begin: /(b|br)'/, end: /'/}, {begin: /(b|br)"/, end: /"/}, e.APOS_STRING_MODE, e.QUOTE_STRING_MODE]
             }, e.REGEXP_MODE, e.HASH_COMMENT_MODE, e.NUMBER_MODE]
         }
-    }), ze)), Cs.registerLanguage("axapta", (Qe || (Qe = 1, We = function (e) {
+    }), ze)), fs.registerLanguage("axapta", (Qe || (Qe = 1, We = function (e) {
         const t = e.UNDERSCORE_IDENT_RE, a = {
             keyword: ["abstract", "as", "asc", "avg", "break", "breakpoint", "by", "byref", "case", "catch", "changecompany", "class", "client", "client", "common", "const", "continue", "count", "crosscompany", "delegate", "delete_from", "desc", "display", "div", "do", "edit", "else", "eventhandler", "exists", "extends", "final", "finally", "firstfast", "firstonly", "firstonly1", "firstonly10", "firstonly100", "firstonly1000", "flush", "for", "forceliterals", "forcenestedloop", "forceplaceholders", "forceselectorder", "forupdate", "from", "generateonly", "group", "hint", "if", "implements", "in", "index", "insert_recordset", "interface", "internal", "is", "join", "like", "maxof", "minof", "mod", "namespace", "new", "next", "nofetch", "notexists", "optimisticlock", "order", "outer", "pessimisticlock", "print", "private", "protected", "public", "readonly", "repeatableread", "retry", "return", "reverse", "select", "server", "setting", "static", "sum", "super", "switch", "this", "throw", "try", "ttsabort", "ttsbegin", "ttscommit", "unchecked", "update_recordset", "using", "validtimestate", "void", "where", "while"],
             built_in: ["anytype", "boolean", "byte", "char", "container", "date", "double", "enum", "guid", "int", "int64", "long", "real", "short", "str", "utcdatetime", "var"],
@@ -1703,25 +1713,26 @@
                 end: "$"
             }, n]
         }
-    }), We)), Cs.registerLanguage("bash", (je || (je = 1, Ke = function (e) {
+    }), We)), fs.registerLanguage("bash", (je || (je = 1, Ke = function (e) {
         const t = e.regex, a = {}, n = {begin: /\$\{/, end: /\}/, contains: ["self", {begin: /:-/, contains: [a]}]};
         Object.assign(a, {
             className: "variable",
             variants: [{begin: t.concat(/\$[\w\d#@][\w\d_]*/, "(?![\\w\\d])(?![$])")}, n]
         });
-        const i = {className: "subst", begin: /\$\(/, end: /\)/, contains: [e.BACKSLASH_ESCAPE]}, r = {
-            begin: /<<-?\s*(?=\w+)/,
-            starts: {contains: [e.END_SAME_AS_BEGIN({begin: /(\w+)/, end: /(\w+)/, className: "string"})]}
-        }, o = {className: "string", begin: /"/, end: /"/, contains: [e.BACKSLASH_ESCAPE, a, i]};
-        i.contains.push(o);
-        const s = {
+        const i = {className: "subst", begin: /\$\(/, end: /\)/, contains: [e.BACKSLASH_ESCAPE]},
+            r = e.inherit(e.COMMENT(), {match: [/(^|\s)/, /#.*$/], scope: {2: "comment"}}), o = {
+                begin: /<<-?\s*(?=\w+)/,
+                starts: {contains: [e.END_SAME_AS_BEGIN({begin: /(\w+)/, end: /(\w+)/, className: "string"})]}
+            }, s = {className: "string", begin: /"/, end: /"/, contains: [e.BACKSLASH_ESCAPE, a, i]};
+        i.contains.push(s);
+        const l = {
             begin: /\$?\(\(/,
             end: /\)\)/,
             contains: [{begin: /\d+#[0-9a-f]+/, className: "number"}, e.NUMBER_MODE, a]
-        }, l = e.SHEBANG({
+        }, c = e.SHEBANG({
             binary: `(${["fish", "bash", "zsh", "sh", "csh", "ksh", "tcsh", "dash", "scsh"].join("|")})`,
             relevance: 10
-        }), c = {
+        }), _ = {
             className: "function",
             begin: /\w[\w\d_]*\s*\(\s*\)\s*\{/,
             returnBegin: !0,
@@ -1730,20 +1741,20 @@
         };
         return {
             name: "Bash",
-            aliases: ["sh"],
+            aliases: ["sh", "zsh"],
             keywords: {
                 $pattern: /\b[a-z][a-z0-9._-]+\b/,
                 keyword: ["if", "then", "else", "elif", "fi", "for", "while", "until", "in", "do", "done", "case", "esac", "function", "select"],
                 literal: ["true", "false"],
-                built_in: ["break", "cd", "continue", "eval", "exec", "exit", "export", "getopts", "hash", "pwd", "readonly", "return", "shift", "test", "times", "trap", "umask", "unset", "alias", "bind", "builtin", "caller", "command", "declare", "echo", "enable", "help", "let", "local", "logout", "mapfile", "printf", "read", "readarray", "source", "type", "typeset", "ulimit", "unalias", "set", "shopt", "autoload", "bg", "bindkey", "bye", "cap", "chdir", "clone", "comparguments", "compcall", "compctl", "compdescribe", "compfiles", "compgroups", "compquote", "comptags", "comptry", "compvalues", "dirs", "disable", "disown", "echotc", "echoti", "emulate", "fc", "fg", "float", "functions", "getcap", "getln", "history", "integer", "jobs", "kill", "limit", "log", "noglob", "popd", "print", "pushd", "pushln", "rehash", "sched", "setcap", "setopt", "stat", "suspend", "ttyctl", "unfunction", "unhash", "unlimit", "unsetopt", "vared", "wait", "whence", "where", "which", "zcompile", "zformat", "zftp", "zle", "zmodload", "zparseopts", "zprof", "zpty", "zregexparse", "zsocket", "zstyle", "ztcp", "chcon", "chgrp", "chown", "chmod", "cp", "dd", "df", "dir", "dircolors", "ln", "ls", "mkdir", "mkfifo", "mknod", "mktemp", "mv", "realpath", "rm", "rmdir", "shred", "sync", "touch", "truncate", "vdir", "b2sum", "base32", "base64", "cat", "cksum", "comm", "csplit", "cut", "expand", "fmt", "fold", "head", "join", "md5sum", "nl", "numfmt", "od", "paste", "ptx", "pr", "sha1sum", "sha224sum", "sha256sum", "sha384sum", "sha512sum", "shuf", "sort", "split", "sum", "tac", "tail", "tr", "tsort", "unexpand", "uniq", "wc", "arch", "basename", "chroot", "date", "dirname", "du", "echo", "env", "expr", "factor", "groups", "hostid", "id", "link", "logname", "nice", "nohup", "nproc", "pathchk", "pinky", "printenv", "printf", "pwd", "readlink", "runcon", "seq", "sleep", "stat", "stdbuf", "stty", "tee", "test", "timeout", "tty", "uname", "unlink", "uptime", "users", "who", "whoami", "yes"]
+                built_in: ["break", "cd", "continue", "eval", "exec", "exit", "export", "getopts", "hash", "pwd", "readonly", "return", "shift", "test", "times", "trap", "umask", "unset", "alias", "bind", "builtin", "caller", "command", "declare", "echo", "enable", "help", "let", "local", "logout", "mapfile", "printf", "read", "readarray", "source", "sudo", "type", "typeset", "ulimit", "unalias", "set", "shopt", "autoload", "bg", "bindkey", "bye", "cap", "chdir", "clone", "comparguments", "compcall", "compctl", "compdescribe", "compfiles", "compgroups", "compquote", "comptags", "comptry", "compvalues", "dirs", "disable", "disown", "echotc", "echoti", "emulate", "fc", "fg", "float", "functions", "getcap", "getln", "history", "integer", "jobs", "kill", "limit", "log", "noglob", "popd", "print", "pushd", "pushln", "rehash", "sched", "setcap", "setopt", "stat", "suspend", "ttyctl", "unfunction", "unhash", "unlimit", "unsetopt", "vared", "wait", "whence", "where", "which", "zcompile", "zformat", "zftp", "zle", "zmodload", "zparseopts", "zprof", "zpty", "zregexparse", "zsocket", "zstyle", "ztcp", "chcon", "chgrp", "chown", "chmod", "cp", "dd", "df", "dir", "dircolors", "ln", "ls", "mkdir", "mkfifo", "mknod", "mktemp", "mv", "realpath", "rm", "rmdir", "shred", "sync", "touch", "truncate", "vdir", "b2sum", "base32", "base64", "cat", "cksum", "comm", "csplit", "cut", "expand", "fmt", "fold", "head", "join", "md5sum", "nl", "numfmt", "od", "paste", "ptx", "pr", "sha1sum", "sha224sum", "sha256sum", "sha384sum", "sha512sum", "shuf", "sort", "split", "sum", "tac", "tail", "tr", "tsort", "unexpand", "uniq", "wc", "arch", "basename", "chroot", "date", "dirname", "du", "echo", "env", "expr", "factor", "groups", "hostid", "id", "link", "logname", "nice", "nohup", "nproc", "pathchk", "pinky", "printenv", "printf", "pwd", "readlink", "runcon", "seq", "sleep", "stat", "stdbuf", "stty", "tee", "test", "timeout", "tty", "uname", "unlink", "uptime", "users", "who", "whoami", "yes"]
             },
-            contains: [l, e.SHEBANG(), c, s, e.HASH_COMMENT_MODE, r, {match: /(\/[a-z._-]+)+/}, o, {match: /\\"/}, {
+            contains: [c, e.SHEBANG(), _, l, r, o, {match: /(\/[a-z._-]+)+/}, s, {match: /\\"/}, {
                 className: "string",
                 begin: /'/,
                 end: /'/
             }, {match: /\\'/}, a]
         }
-    }), Ke)), Cs.registerLanguage("basic", (Ze || (Ze = 1, Xe = function (e) {
+    }), Ke)), fs.registerLanguage("basic", (Ze || (Ze = 1, Xe = function (e) {
         return {
             name: "BASIC",
             case_insensitive: !0,
@@ -1761,7 +1772,7 @@
                 begin: "(&[hH][0-9a-fA-F]{1,4})"
             }, {className: "number", begin: "(&[oO][0-7]{1,6})"}]
         }
-    }), Xe)), Cs.registerLanguage("bnf", (et || (et = 1, Je = function (e) {
+    }), Xe)), fs.registerLanguage("bnf", (et || (et = 1, Je = function (e) {
         return {
             name: "Backus–Naur Form",
             contains: [{className: "attribute", begin: /</, end: />/}, {
@@ -1773,7 +1784,7 @@
                 }, e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE, e.APOS_STRING_MODE, e.QUOTE_STRING_MODE]
             }]
         }
-    }), Je)), Cs.registerLanguage("brainfuck", (at || (at = 1, tt = function (e) {
+    }), Je)), fs.registerLanguage("brainfuck", (at || (at = 1, tt = function (e) {
         const t = {className: "literal", begin: /[+-]+/, relevance: 0};
         return {
             name: "Brainfuck",
@@ -1789,7 +1800,7 @@
                 relevance: 0
             }, {begin: /(?=\+\+|--)/, contains: [t]}, t]
         }
-    }), tt)), Cs.registerLanguage("c", (it || (it = 1, nt = function (e) {
+    }), tt)), fs.registerLanguage("c", (it || (it = 1, nt = function (e) {
         const t = e.regex, a = e.COMMENT("//", "$", {contains: [{begin: /\\\n/}]}), n = "decltype\\(auto\\)",
             i = "[a-zA-Z_]\\w*::", r = "(" + n + "|" + t.optional(i) + "[a-zA-Z_]\\w*" + t.optional("<[^<>]+>") + ")",
             o = {className: "type", variants: [{begin: "\\b[a-z\\d_]*_t\\b"}, {match: /\batomic_[a-z]{3,6}\b/}]}, s = {
@@ -1812,15 +1823,15 @@
                 className: "meta",
                 begin: /#\s*[a-z]+\b/,
                 end: /$/,
-                keywords: {keyword: "if else elif endif define undef warning error line pragma _Pragma ifdef ifndef include"},
+                keywords: {keyword: "if else elif endif define undef warning error line pragma _Pragma ifdef ifndef elifdef elifndef include"},
                 contains: [{begin: /\\\n/, relevance: 0}, e.inherit(s, {className: "string"}), {
                     className: "string",
                     begin: /<.*?>/
                 }, a, e.C_BLOCK_COMMENT_MODE]
             }, _ = {className: "title", begin: t.optional(i) + e.IDENT_RE, relevance: 0},
             d = t.optional(i) + e.IDENT_RE + "\\s*\\(", m = {
-                keyword: ["asm", "auto", "break", "case", "continue", "default", "do", "else", "enum", "extern", "for", "fortran", "goto", "if", "inline", "register", "restrict", "return", "sizeof", "struct", "switch", "typedef", "union", "volatile", "while", "_Alignas", "_Alignof", "_Atomic", "_Generic", "_Noreturn", "_Static_assert", "_Thread_local", "alignas", "alignof", "noreturn", "static_assert", "thread_local", "_Pragma"],
-                type: ["float", "double", "signed", "unsigned", "int", "short", "long", "char", "void", "_Bool", "_Complex", "_Imaginary", "_Decimal32", "_Decimal64", "_Decimal128", "const", "static", "complex", "bool", "imaginary"],
+                keyword: ["asm", "auto", "break", "case", "continue", "default", "do", "else", "enum", "extern", "for", "fortran", "goto", "if", "inline", "register", "restrict", "return", "sizeof", "typeof", "typeof_unqual", "struct", "switch", "typedef", "union", "volatile", "while", "_Alignas", "_Alignof", "_Atomic", "_Generic", "_Noreturn", "_Static_assert", "_Thread_local", "alignas", "alignof", "noreturn", "static_assert", "thread_local", "_Pragma"],
+                type: ["float", "double", "signed", "unsigned", "int", "short", "long", "char", "void", "_Bool", "_BitInt", "_Complex", "_Imaginary", "_Decimal32", "_Decimal64", "_Decimal96", "_Decimal128", "_Decimal64x", "_Decimal128x", "_Float16", "_Float32", "_Float64", "_Float128", "_Float32x", "_Float64x", "_Float128x", "const", "static", "constexpr", "complex", "bool", "imaginary"],
                 literal: "true false NULL",
                 built_in: "std string wstring cin cout cerr clog stdin stdout stderr stringstream istringstream ostringstream auto_ptr deque list queue stack vector map set pair bitset multiset multimap unordered_set unordered_map unordered_multiset unordered_multimap priority_queue make_pair array shared_ptr abort terminate abs acos asin atan2 atan calloc ceil cosh cos exit exp fabs floor fmod fprintf fputs free frexp fscanf future isalnum isalpha iscntrl isdigit isgraph islower isprint ispunct isspace isupper isxdigit tolower toupper labs ldexp log10 log malloc realloc memchr memcmp memcpy memset modf pow printf putchar puts scanf sinh sin snprintf sprintf sqrt sscanf strcat strchr strcmp strcpy strcspn strlen strncat strncmp strncpy strpbrk strrchr strspn strstr tanh tan vfprintf vprintf vsprintf endl initializer_list unique_ptr"
             }, p = [c, o, a, e.C_BLOCK_COMMENT_MODE, l, s], u = {
@@ -1872,7 +1883,7 @@
             }]),
             exports: {preprocessor: c, strings: s, keywords: m}
         }
-    }), nt)), Cs.registerLanguage("cal", (ot || (ot = 1, rt = function (e) {
+    }), nt)), fs.registerLanguage("cal", (ot || (ot = 1, rt = function (e) {
         const t = e.regex,
             a = ["div", "mod", "in", "and", "or", "not", "xor", "asserterror", "begin", "case", "do", "downto", "else", "end", "exit", "for", "local", "if", "of", "repeat", "then", "to", "until", "while", "with", "var"],
             n = [e.C_LINE_COMMENT_MODE, e.COMMENT(/\{/, /\}/, {relevance: 0}), e.COMMENT(/\(\*/, /\*\)/, {relevance: 10})],
@@ -1903,7 +1914,7 @@
                 relevance: 0
             }, {className: "string", begin: '"', end: '"'}, e.NUMBER_MODE, s, o]
         }
-    }), rt)), Cs.registerLanguage("capnproto", (lt || (lt = 1, st = function (e) {
+    }), rt)), fs.registerLanguage("capnproto", (lt || (lt = 1, st = function (e) {
         const t = {
             variants: [{match: [/(struct|enum|interface)/, /\s+/, e.IDENT_RE]}, {match: [/extends/, /\s*\(/, e.IDENT_RE, /\s*\)/]}],
             scope: {1: "keyword", 3: "title.class"}
@@ -1922,7 +1933,7 @@
                 illegal: /\n/
             }, {className: "symbol", begin: /@\d+\b/}, t]
         }
-    }), st)), Cs.registerLanguage("ceylon", (_t || (_t = 1, ct = function (e) {
+    }), st)), fs.registerLanguage("ceylon", (_t || (_t = 1, ct = function (e) {
         const t = ["assembly", "module", "package", "import", "alias", "class", "interface", "object", "given", "value", "assign", "void", "function", "new", "of", "extends", "satisfies", "abstracts", "in", "out", "return", "break", "continue", "throw", "assert", "dynamic", "if", "else", "switch", "case", "for", "while", "try", "catch", "finally", "then", "let", "this", "outer", "super", "is", "exists", "nonempty"],
             a = {
                 className: "subst",
@@ -1954,7 +1965,7 @@
                 begin: '@[a-z]\\w*(?::"[^"]*")?'
             }].concat(n)
         }
-    }), ct)), Cs.registerLanguage("clean", (mt || (mt = 1, dt = function (e) {
+    }), ct)), fs.registerLanguage("clean", (mt || (mt = 1, dt = function (e) {
         return {
             name: "Clean",
             aliases: ["icl", "dcl"],
@@ -1965,7 +1976,7 @@
             },
             contains: [e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE, e.APOS_STRING_MODE, e.QUOTE_STRING_MODE, e.C_NUMBER_MODE, {begin: "->|<-[|:]?|#!?|>>=|\\{\\||\\|\\}|:==|=:|<>"}]
         }
-    }), dt)), Cs.registerLanguage("clojure", (ut || (ut = 1, pt = function (e) {
+    }), dt)), fs.registerLanguage("clojure", (ut || (ut = 1, pt = function (e) {
         const t = "a-zA-Z_\\-!.?+*=<>&'", a = "[#]?[" + t + "][" + t + "0-9/;:$#]*",
             n = "def defonce defprotocol defstruct defmulti defmethod defn- defn defmacro deftype defrecord", i = {
                 $pattern: a,
@@ -1999,7 +2010,7 @@
             illegal: /\S/,
             contains: [_, g, s, l, c, d, u, p, o, m]
         }
-    }), pt)), Cs.registerLanguage("clojure-repl", Et ? gt : (Et = 1, gt = function (e) {
+    }), pt)), fs.registerLanguage("clojure-repl", Et ? gt : (Et = 1, gt = function (e) {
         return {
             name: "Clojure REPL",
             contains: [{
@@ -2008,33 +2019,23 @@
                 starts: {end: /$/, subLanguage: "clojure"}
             }]
         }
-    })), Cs.registerLanguage("cmake", (bt || (bt = 1, St = function (e) {
-        const RESERVED = {
-            className: 'reserved',
-            begin: "TARGETS|LIBRARY|DIRECTORY|PUBLIC|PRIVATE|VERSION"
-        };
-        const NUMBER = {
-            className: 'number',
-            begin: "[0-9\.][0-9]",
-        };
+    })), fs.registerLanguage("cmake", (bt || (bt = 1, St = function (e) {
         return {
             name: "CMake",
             aliases: ["cmake.in"],
-            case_insensitive: false,
-            keywords: {keyword: "break cmake_host_system_information cmake_minimum_required cmake_parse_arguments cmake_policy configure_file continue elseif else endforeach endfunction endif endmacro endwhile execute_process file find_file find_library find_package find_path find_program foreach function get_cmake_property get_directory_property get_filename_component get_property if include_guard list macro mark_as_advanced math message option return separate_arguments set_directory_properties set_property set site_name string unset variable_watch while add_compile_definitions add_compile_options add_custom_command add_custom_target add_definitions add_dependencies add_executable add_library add_link_options add_subdirectory add_test aux_source_directory build_command create_test_sourcelist define_property enable_language enable_testing export fltk_wrap_ui get_source_file_property get_target_property get_test_property include_directories include_external_msproject include_regular_expression install link_directories link_libraries load_cache project qt_wrap_cpp qt_wrap_ui remove_definitions set_source_files_properties set_target_properties set_tests_properties source_group target_compile_definitions target_compile_features target_compile_options target_include_directories target_link_directories target_link_libraries target_link_options target_sources try_compile try_run ctest_build ctest_configure ctest_coverage ctest_empty_binary_directory ctest_memcheck ctest_read_custom_files ctest_run_script ctest_sleep ctest_start ctest_submit ctest_test ctest_update ctest_upload build_name exec_program export_library_dependencies install_files install_programs install_targets load_command make_directory output_required_files remove subdir_depends subdirs use_mangled_mesa utility_source variable_requires write_file qt5_use_modules qt5_use_package qt5_wrap_cpp on off true false and or not command policy target exists is_newer_than is_directory is_symlink is_absolute matches less greater equal less_equal greater_equal strless strgreater strequal strless_equal strgreater_equal version_less version_greater version_equal version_less_equal version_greater_equal in_list defined generate_fast_forward_kinematics_library"},
-            contains: [
-                {
-                className: "variable",
-                begin: /\$\{/,
-                end: /\}/
-            },
-                NUMBER,
-                RESERVED,
-                e.COMMENT(/#\[\[/, /]]/), e.HASH_COMMENT_MODE, e.QUOTE_STRING_MODE, e.NUMBER_MODE]
+            case_insensitive: !0,
+            keywords: {keyword: "break cmake_host_system_information cmake_minimum_required cmake_parse_arguments cmake_policy configure_file continue elseif else endforeach endfunction endif endmacro endwhile execute_process file find_file find_library find_package find_path find_program foreach function get_cmake_property get_directory_property get_filename_component get_property if include include_guard list macro mark_as_advanced math message option return separate_arguments set_directory_properties set_property set site_name string unset variable_watch while add_compile_definitions add_compile_options add_custom_command add_custom_target add_definitions add_dependencies add_executable add_library add_link_options add_subdirectory add_test aux_source_directory build_command create_test_sourcelist define_property enable_language enable_testing export fltk_wrap_ui get_source_file_property get_target_property get_test_property include_directories include_external_msproject include_regular_expression install link_directories link_libraries load_cache project qt_wrap_cpp qt_wrap_ui remove_definitions set_source_files_properties set_target_properties set_tests_properties source_group target_compile_definitions target_compile_features target_compile_options target_include_directories target_link_directories target_link_libraries target_link_options target_sources try_compile try_run ctest_build ctest_configure ctest_coverage ctest_empty_binary_directory ctest_memcheck ctest_read_custom_files ctest_run_script ctest_sleep ctest_start ctest_submit ctest_test ctest_update ctest_upload build_name exec_program export_library_dependencies install_files install_programs install_targets load_command make_directory output_required_files remove subdir_depends subdirs use_mangled_mesa utility_source variable_requires write_file qt5_use_modules qt5_use_package qt5_wrap_cpp on off true false and or not command policy target test exists is_newer_than is_directory is_symlink is_absolute matches less greater equal less_equal greater_equal strless strgreater strequal strless_equal strgreater_equal version_less version_greater version_equal version_less_equal version_greater_equal in_list defined"},
+            contains: [{className: "variable", begin: /\$\{/, end: /\}/}, {
+                className: "number",
+                begin: "[0-9.][0-9]"
+            }, {
+                className: "reserved",
+                begin: "TARGETS|LIBRARY|DIRECTORY|PUBLIC|PRIVATE|VERSION"
+            }, e.COMMENT(/#\[\[/, /]]/), e.HASH_COMMENT_MODE, e.QUOTE_STRING_MODE, e.NUMBER_MODE]
         }
-    }), St)), Cs.registerLanguage("coffeescript", function () {
-        if (Ct) return Tt;
-        Ct = 1;
+    }), St)), fs.registerLanguage("coffeescript", function () {
+        if (ft) return Tt;
+        ft = 1;
         const e = ["as", "in", "of", "if", "for", "while", "finally", "var", "new", "function", "do", "return", "void", "else", "break", "catch", "instanceof", "with", "throw", "case", "default", "try", "switch", "continue", "typeof", "delete", "let", "yield", "const", "class", "debugger", "async", "await", "static", "import", "from", "export", "extends"],
             t = ["true", "false", "null", "undefined", "NaN", "Infinity"],
             a = [].concat(["setInterval", "setTimeout", "clearInterval", "clearTimeout", "require", "exports", "eval", "isFinite", "isNaN", "parseFloat", "parseInt", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "escape", "unescape"], ["Object", "Function", "Boolean", "Symbol", "Math", "Date", "Number", "BigInt", "String", "RegExp", "Array", "Float32Array", "Float64Array", "Int8Array", "Uint8Array", "Uint8ClampedArray", "Int16Array", "Int32Array", "Uint16Array", "Uint32Array", "BigInt64Array", "BigUint64Array", "Set", "Map", "WeakSet", "WeakMap", "ArrayBuffer", "SharedArrayBuffer", "Atomics", "DataView", "JSON", "Promise", "Generator", "GeneratorFunction", "AsyncFunction", "Reflect", "Proxy", "Intl", "WebAssembly"], ["Error", "EvalError", "InternalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError"]);
@@ -2107,7 +2108,7 @@
                 }, m, {begin: o + ":", end: ":", returnBegin: !0, returnEnd: !0, relevance: 0}]
             }
         }, Tt
-    }()), Cs.registerLanguage("coq", (Rt || (Rt = 1, ft = function (e) {
+    }()), fs.registerLanguage("coq", (Rt || (Rt = 1, Ct = function (e) {
         return {
             name: "Coq",
             keywords: {
@@ -2121,7 +2122,7 @@
                 end: "\\w+"
             }, {begin: /[-=]>/}]
         }
-    }), ft)), Cs.registerLanguage("cos", (Ot || (Ot = 1, Nt = function (e) {
+    }), Ct)), fs.registerLanguage("cos", (ht || (ht = 1, Nt = function (e) {
         return {
             name: "Caché Object Script",
             case_insensitive: !0,
@@ -2155,7 +2156,7 @@
                 subLanguage: "javascript"
             }, {begin: /&html<\s*</, end: />\s*>/, subLanguage: "xml"}]
         }
-    }), Nt)), Cs.registerLanguage("cpp", (vt || (vt = 1, ht = function (e) {
+    }), Nt)), fs.registerLanguage("cpp", (vt || (vt = 1, Ot = function (e) {
         const t = e.regex, a = e.COMMENT("//", "$", {contains: [{begin: /\\\n/}]}), n = "decltype\\(auto\\)",
             i = "[a-zA-Z_]\\w*::",
             r = "(?!struct)(" + n + "|" + t.optional(i) + "[a-zA-Z_]\\w*" + t.optional("<[^<>]+>") + ")",
@@ -2173,7 +2174,7 @@
                 }, e.END_SAME_AS_BEGIN({begin: /(?:u8?|U|L)?R"([^()\\ ]{0,16})\(/, end: /\)([^()\\ ]{0,16})"/})]
             }, l = {
                 className: "number",
-                variants: [{begin: "\\b(0b[01']+)"}, {begin: "(-?)\\b([\\d']+(\\.[\\d']*)?|\\.[\\d']+)((ll|LL|l|L)(u|U)?|(u|U)(ll|LL|l|L)?|f|F|b|B)"}, {begin: "(-?)(\\b0[xX][a-fA-F0-9']+|(\\b[\\d']+(\\.[\\d']*)?|\\.[\\d']+)([eE][-+]?[\\d']+)?)"}],
+                variants: [{begin: "[+-]?(?:(?:[0-9](?:'?[0-9])*\\.(?:[0-9](?:'?[0-9])*)?|\\.[0-9](?:'?[0-9])*)(?:[Ee][+-]?[0-9](?:'?[0-9])*)?|[0-9](?:'?[0-9])*[Ee][+-]?[0-9](?:'?[0-9])*|0[Xx](?:[0-9A-Fa-f](?:'?[0-9A-Fa-f])*(?:\\.(?:[0-9A-Fa-f](?:'?[0-9A-Fa-f])*)?)?|\\.[0-9A-Fa-f](?:'?[0-9A-Fa-f])*)[Pp][+-]?[0-9](?:'?[0-9])*)(?:[Ff](?:16|32|64|128)?|(BF|bf)16|[Ll]|)"}, {begin: "[+-]?\\b(?:0[Bb][01](?:'?[01])*|0[Xx][0-9A-Fa-f](?:'?[0-9A-Fa-f])*|0(?:'?[0-7])*|[1-9](?:'?[0-9])*)(?:[Uu](?:LL?|ll?)|[Uu][Zz]?|(?:LL?|ll?)[Uu]?|[Zz][Uu]|)"}],
                 relevance: 0
             }, c = {
                 className: "meta",
@@ -2242,7 +2243,7 @@
             illegal: "</",
             classNameAliases: {"function.dispatch": "built_in"},
             contains: [].concat(g, E, p, u, [c, {
-                begin: "\\b(deque|list|queue|priority_queue|pair|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|tuple|optional|variant|function)\\s*<(?!<)",
+                begin: "\\b(deque|list|queue|priority_queue|pair|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array|tuple|optional|variant|function)\\s*<(?!<)",
                 end: ">",
                 keywords: m,
                 contains: ["self", o]
@@ -2254,7 +2255,7 @@
                 className: {1: "keyword", 3: "title.class"}
             }])
         }
-    }), ht)), Cs.registerLanguage("crmsh", (At || (At = 1, It = function (e) {
+    }), Ot)), fs.registerLanguage("crmsh", (It || (It = 1, yt = function (e) {
         const t = "group clone ms master location colocation order fencing_topology rsc_ticket acl_target acl_group user role tag xml";
         return {
             name: "crmsh",
@@ -2292,7 +2293,7 @@
                 relevance: 0
             }]
         }
-    }), It)), Cs.registerLanguage("crystal", (Dt || (Dt = 1, yt = function (e) {
+    }), yt)), fs.registerLanguage("crystal", (Dt || (Dt = 1, At = function (e) {
         const t = "(_?[ui](8|16|32|64|128))?",
             a = "[a-zA-Z_]\\w*[!?=]?|[-+~]@|<<|>>|[=!]~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~|]|//|//=|&[-+*]=?|&\\*\\*|\\[\\][=?]?",
             n = "[A-Za-z_]\\w*(::\\w+)*(\\?|!)?", i = {
@@ -2406,9 +2407,9 @@
             relevance: 0
         }];
         return r.contains = m, s.contains = m.slice(1), {name: "Crystal", aliases: ["cr"], keywords: i, contains: m}
-    }), yt)), Cs.registerLanguage("csharp", (Lt || (Lt = 1, Mt = function (e) {
+    }), At)), fs.registerLanguage("csharp", (Mt || (Mt = 1, xt = function (e) {
         const t = {
-                keyword: ["abstract", "as", "base", "break", "case", "catch", "class", "const", "continue", "do", "else", "event", "explicit", "extern", "finally", "fixed", "for", "foreach", "goto", "if", "implicit", "in", "interface", "internal", "is", "lock", "namespace", "new", "operator", "out", "override", "params", "private", "protected", "public", "readonly", "record", "ref", "return", "scoped", "sealed", "sizeof", "stackalloc", "static", "struct", "switch", "this", "throw", "try", "typeof", "unchecked", "unsafe", "using", "virtual", "void", "volatile", "while"].concat(["add", "alias", "and", "ascending", "async", "await", "by", "descending", "equals", "from", "get", "global", "group", "init", "into", "join", "let", "nameof", "not", "notnull", "on", "or", "orderby", "partial", "remove", "select", "set", "unmanaged", "value|0", "var", "when", "where", "with", "yield"]),
+                keyword: ["abstract", "as", "base", "break", "case", "catch", "class", "const", "continue", "do", "else", "event", "explicit", "extern", "finally", "fixed", "for", "foreach", "goto", "if", "implicit", "in", "interface", "internal", "is", "lock", "namespace", "new", "operator", "out", "override", "params", "private", "protected", "public", "readonly", "record", "ref", "return", "scoped", "sealed", "sizeof", "stackalloc", "static", "struct", "switch", "this", "throw", "try", "typeof", "unchecked", "unsafe", "using", "virtual", "void", "volatile", "while"].concat(["add", "alias", "and", "ascending", "args", "async", "await", "by", "descending", "dynamic", "equals", "file", "from", "get", "global", "group", "init", "into", "join", "let", "nameof", "not", "notnull", "on", "or", "orderby", "partial", "record", "remove", "required", "scoped", "select", "set", "unmanaged", "value|0", "var", "when", "where", "with", "yield"]),
                 built_in: ["bool", "byte", "char", "decimal", "delegate", "double", "dynamic", "enum", "float", "int", "long", "nint", "nuint", "object", "sbyte", "short", "string", "ulong", "uint", "ushort"],
                 literal: ["default", "false", "null", "true"]
             }, a = e.inherit(e.TITLE_MODE, {begin: "[a-zA-Z](\\.?\\w)*"}), n = {
@@ -2430,8 +2431,13 @@
                 contains: [{begin: /\{\{/}, {begin: /\}\}/}, {begin: '""'}, o]
             }, _ = e.inherit(c, {illegal: /\n/, contains: [{begin: /\{\{/}, {begin: /\}\}/}, {begin: '""'}, s]});
         o.contains = [c, l, i, e.APOS_STRING_MODE, e.QUOTE_STRING_MODE, n, e.C_BLOCK_COMMENT_MODE], s.contains = [_, l, r, e.APOS_STRING_MODE, e.QUOTE_STRING_MODE, n, e.inherit(e.C_BLOCK_COMMENT_MODE, {illegal: /\n/})];
-        const d = {variants: [c, l, i, e.APOS_STRING_MODE, e.QUOTE_STRING_MODE]},
-            m = {begin: "<", end: ">", contains: [{beginKeywords: "in out"}, a]},
+        const d = {
+                variants: [{
+                    className: "string",
+                    begin: /"""("*)(?!")(.|\n)*?"""\1/,
+                    relevance: 1
+                }, c, l, i, e.APOS_STRING_MODE, e.QUOTE_STRING_MODE]
+            }, m = {begin: "<", end: ">", contains: [{beginKeywords: "in out"}, a]},
             p = e.IDENT_RE + "(<" + e.IDENT_RE + "(\\s*,\\s*" + e.IDENT_RE + ")*>)?(\\[\\])?",
             u = {begin: "@" + e.IDENT_RE, relevance: 0};
         return {
@@ -2502,7 +2508,7 @@
                 }, e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE]
             }, u]
         }
-    }), Mt)), Cs.registerLanguage("csp", wt ? xt : (wt = 1, xt = function (e) {
+    }), xt)), fs.registerLanguage("csp", wt ? Lt : (wt = 1, Lt = function (e) {
         return {
             name: "CSP",
             case_insensitive: !1,
@@ -2517,14 +2523,14 @@
                 excludeEnd: !0
             }]
         }
-    })), Cs.registerLanguage("css", function () {
+    })), fs.registerLanguage("css", function () {
         if (kt) return Pt;
         kt = 1;
-        const e = ["a", "abbr", "address", "article", "aside", "audio", "b", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "p", "q", "quote", "samp", "section", "span", "strong", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "ul", "var", "video"],
-            t = ["any-hover", "any-pointer", "aspect-ratio", "color", "color-gamut", "color-index", "device-aspect-ratio", "device-height", "device-width", "display-mode", "forced-colors", "grid", "height", "hover", "inverted-colors", "monochrome", "orientation", "overflow-block", "overflow-inline", "pointer", "prefers-color-scheme", "prefers-contrast", "prefers-reduced-motion", "prefers-reduced-transparency", "resolution", "scan", "scripting", "update", "width", "min-width", "max-width", "min-height", "max-height"],
-            a = ["active", "any-link", "blank", "checked", "current", "default", "defined", "dir", "disabled", "drop", "empty", "enabled", "first", "first-child", "first-of-type", "fullscreen", "future", "focus", "focus-visible", "focus-within", "has", "host", "host-context", "hover", "indeterminate", "in-range", "invalid", "is", "lang", "last-child", "last-of-type", "left", "link", "local-link", "not", "nth-child", "nth-col", "nth-last-child", "nth-last-col", "nth-last-of-type", "nth-of-type", "only-child", "only-of-type", "optional", "out-of-range", "past", "placeholder-shown", "read-only", "read-write", "required", "right", "root", "scope", "target", "target-within", "user-invalid", "valid", "visited", "where"],
-            n = ["after", "backdrop", "before", "cue", "cue-region", "first-letter", "first-line", "grammar-error", "marker", "part", "placeholder", "selection", "slotted", "spelling-error"],
-            i = ["align-content", "align-items", "align-self", "all", "animation", "animation-delay", "animation-direction", "animation-duration", "animation-fill-mode", "animation-iteration-count", "animation-name", "animation-play-state", "animation-timing-function", "backface-visibility", "background", "background-attachment", "background-blend-mode", "background-clip", "background-color", "background-image", "background-origin", "background-position", "background-repeat", "background-size", "block-size", "border", "border-block", "border-block-color", "border-block-end", "border-block-end-color", "border-block-end-style", "border-block-end-width", "border-block-start", "border-block-start-color", "border-block-start-style", "border-block-start-width", "border-block-style", "border-block-width", "border-bottom", "border-bottom-color", "border-bottom-left-radius", "border-bottom-right-radius", "border-bottom-style", "border-bottom-width", "border-collapse", "border-color", "border-image", "border-image-outset", "border-image-repeat", "border-image-slice", "border-image-source", "border-image-width", "border-inline", "border-inline-color", "border-inline-end", "border-inline-end-color", "border-inline-end-style", "border-inline-end-width", "border-inline-start", "border-inline-start-color", "border-inline-start-style", "border-inline-start-width", "border-inline-style", "border-inline-width", "border-left", "border-left-color", "border-left-style", "border-left-width", "border-radius", "border-right", "border-right-color", "border-right-style", "border-right-width", "border-spacing", "border-style", "border-top", "border-top-color", "border-top-left-radius", "border-top-right-radius", "border-top-style", "border-top-width", "border-width", "bottom", "box-decoration-break", "box-shadow", "box-sizing", "break-after", "break-before", "break-inside", "caption-side", "caret-color", "clear", "clip", "clip-path", "clip-rule", "color", "column-count", "column-fill", "column-gap", "column-rule", "column-rule-color", "column-rule-style", "column-rule-width", "column-span", "column-width", "columns", "contain", "content", "content-visibility", "counter-increment", "counter-reset", "cue", "cue-after", "cue-before", "cursor", "direction", "display", "empty-cells", "filter", "flex", "flex-basis", "flex-direction", "flex-flow", "flex-grow", "flex-shrink", "flex-wrap", "float", "flow", "font", "font-display", "font-family", "font-feature-settings", "font-kerning", "font-language-override", "font-size", "font-size-adjust", "font-smoothing", "font-stretch", "font-style", "font-synthesis", "font-variant", "font-variant-caps", "font-variant-east-asian", "font-variant-ligatures", "font-variant-numeric", "font-variant-position", "font-variation-settings", "font-weight", "gap", "glyph-orientation-vertical", "grid", "grid-area", "grid-auto-columns", "grid-auto-flow", "grid-auto-rows", "grid-column", "grid-column-end", "grid-column-start", "grid-gap", "grid-row", "grid-row-end", "grid-row-start", "grid-template", "grid-template-areas", "grid-template-columns", "grid-template-rows", "hanging-punctuation", "height", "hyphens", "icon", "image-orientation", "image-rendering", "image-resolution", "ime-mode", "inline-size", "isolation", "justify-content", "left", "letter-spacing", "line-break", "line-height", "list-style", "list-style-image", "list-style-position", "list-style-type", "margin", "margin-block", "margin-block-end", "margin-block-start", "margin-bottom", "margin-inline", "margin-inline-end", "margin-inline-start", "margin-left", "margin-right", "margin-top", "marks", "mask", "mask-border", "mask-border-mode", "mask-border-outset", "mask-border-repeat", "mask-border-slice", "mask-border-source", "mask-border-width", "mask-clip", "mask-composite", "mask-image", "mask-mode", "mask-origin", "mask-position", "mask-repeat", "mask-size", "mask-type", "max-block-size", "max-height", "max-inline-size", "max-width", "min-block-size", "min-height", "min-inline-size", "min-width", "mix-blend-mode", "nav-down", "nav-index", "nav-left", "nav-right", "nav-up", "none", "normal", "object-fit", "object-position", "opacity", "order", "orphans", "outline", "outline-color", "outline-offset", "outline-style", "outline-width", "overflow", "overflow-wrap", "overflow-x", "overflow-y", "padding", "padding-block", "padding-block-end", "padding-block-start", "padding-bottom", "padding-inline", "padding-inline-end", "padding-inline-start", "padding-left", "padding-right", "padding-top", "page-break-after", "page-break-before", "page-break-inside", "pause", "pause-after", "pause-before", "perspective", "perspective-origin", "pointer-events", "position", "quotes", "resize", "rest", "rest-after", "rest-before", "right", "row-gap", "scroll-margin", "scroll-margin-block", "scroll-margin-block-end", "scroll-margin-block-start", "scroll-margin-bottom", "scroll-margin-inline", "scroll-margin-inline-end", "scroll-margin-inline-start", "scroll-margin-left", "scroll-margin-right", "scroll-margin-top", "scroll-padding", "scroll-padding-block", "scroll-padding-block-end", "scroll-padding-block-start", "scroll-padding-bottom", "scroll-padding-inline", "scroll-padding-inline-end", "scroll-padding-inline-start", "scroll-padding-left", "scroll-padding-right", "scroll-padding-top", "scroll-snap-align", "scroll-snap-stop", "scroll-snap-type", "scrollbar-color", "scrollbar-gutter", "scrollbar-width", "shape-image-threshold", "shape-margin", "shape-outside", "speak", "speak-as", "src", "tab-size", "table-layout", "text-align", "text-align-all", "text-align-last", "text-combine-upright", "text-decoration", "text-decoration-color", "text-decoration-line", "text-decoration-style", "text-emphasis", "text-emphasis-color", "text-emphasis-position", "text-emphasis-style", "text-indent", "text-justify", "text-orientation", "text-overflow", "text-rendering", "text-shadow", "text-transform", "text-underline-position", "top", "transform", "transform-box", "transform-origin", "transform-style", "transition", "transition-delay", "transition-duration", "transition-property", "transition-timing-function", "unicode-bidi", "vertical-align", "visibility", "voice-balance", "voice-duration", "voice-family", "voice-pitch", "voice-range", "voice-rate", "voice-stress", "voice-volume", "white-space", "widows", "width", "will-change", "word-break", "word-spacing", "word-wrap", "writing-mode", "z-index"].reverse();
+        const e = ["a", "abbr", "address", "article", "aside", "audio", "b", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "optgroup", "option", "p", "picture", "q", "quote", "samp", "section", "select", "source", "span", "strong", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "ul", "var", "video", "defs", "g", "marker", "mask", "pattern", "svg", "switch", "symbol", "feBlend", "feColorMatrix", "feComponentTransfer", "feComposite", "feConvolveMatrix", "feDiffuseLighting", "feDisplacementMap", "feFlood", "feGaussianBlur", "feImage", "feMerge", "feMorphology", "feOffset", "feSpecularLighting", "feTile", "feTurbulence", "linearGradient", "radialGradient", "stop", "circle", "ellipse", "image", "line", "path", "polygon", "polyline", "rect", "text", "use", "textPath", "tspan", "foreignObject", "clipPath"],
+            t = ["any-hover", "any-pointer", "aspect-ratio", "color", "color-gamut", "color-index", "device-aspect-ratio", "device-height", "device-width", "display-mode", "forced-colors", "grid", "height", "hover", "inverted-colors", "monochrome", "orientation", "overflow-block", "overflow-inline", "pointer", "prefers-color-scheme", "prefers-contrast", "prefers-reduced-motion", "prefers-reduced-transparency", "resolution", "scan", "scripting", "update", "width", "min-width", "max-width", "min-height", "max-height"].sort().reverse(),
+            a = ["active", "any-link", "blank", "checked", "current", "default", "defined", "dir", "disabled", "drop", "empty", "enabled", "first", "first-child", "first-of-type", "fullscreen", "future", "focus", "focus-visible", "focus-within", "has", "host", "host-context", "hover", "indeterminate", "in-range", "invalid", "is", "lang", "last-child", "last-of-type", "left", "link", "local-link", "not", "nth-child", "nth-col", "nth-last-child", "nth-last-col", "nth-last-of-type", "nth-of-type", "only-child", "only-of-type", "optional", "out-of-range", "past", "placeholder-shown", "read-only", "read-write", "required", "right", "root", "scope", "target", "target-within", "user-invalid", "valid", "visited", "where"].sort().reverse(),
+            n = ["after", "backdrop", "before", "cue", "cue-region", "first-letter", "first-line", "grammar-error", "marker", "part", "placeholder", "selection", "slotted", "spelling-error"].sort().reverse(),
+            i = ["accent-color", "align-content", "align-items", "align-self", "alignment-baseline", "all", "anchor-name", "animation", "animation-composition", "animation-delay", "animation-direction", "animation-duration", "animation-fill-mode", "animation-iteration-count", "animation-name", "animation-play-state", "animation-range", "animation-range-end", "animation-range-start", "animation-timeline", "animation-timing-function", "appearance", "aspect-ratio", "backdrop-filter", "backface-visibility", "background", "background-attachment", "background-blend-mode", "background-clip", "background-color", "background-image", "background-origin", "background-position", "background-position-x", "background-position-y", "background-repeat", "background-size", "baseline-shift", "block-size", "border", "border-block", "border-block-color", "border-block-end", "border-block-end-color", "border-block-end-style", "border-block-end-width", "border-block-start", "border-block-start-color", "border-block-start-style", "border-block-start-width", "border-block-style", "border-block-width", "border-bottom", "border-bottom-color", "border-bottom-left-radius", "border-bottom-right-radius", "border-bottom-style", "border-bottom-width", "border-collapse", "border-color", "border-end-end-radius", "border-end-start-radius", "border-image", "border-image-outset", "border-image-repeat", "border-image-slice", "border-image-source", "border-image-width", "border-inline", "border-inline-color", "border-inline-end", "border-inline-end-color", "border-inline-end-style", "border-inline-end-width", "border-inline-start", "border-inline-start-color", "border-inline-start-style", "border-inline-start-width", "border-inline-style", "border-inline-width", "border-left", "border-left-color", "border-left-style", "border-left-width", "border-radius", "border-right", "border-right-color", "border-right-style", "border-right-width", "border-spacing", "border-start-end-radius", "border-start-start-radius", "border-style", "border-top", "border-top-color", "border-top-left-radius", "border-top-right-radius", "border-top-style", "border-top-width", "border-width", "bottom", "box-align", "box-decoration-break", "box-direction", "box-flex", "box-flex-group", "box-lines", "box-ordinal-group", "box-orient", "box-pack", "box-shadow", "box-sizing", "break-after", "break-before", "break-inside", "caption-side", "caret-color", "clear", "clip", "clip-path", "clip-rule", "color", "color-interpolation", "color-interpolation-filters", "color-profile", "color-rendering", "color-scheme", "column-count", "column-fill", "column-gap", "column-rule", "column-rule-color", "column-rule-style", "column-rule-width", "column-span", "column-width", "columns", "contain", "contain-intrinsic-block-size", "contain-intrinsic-height", "contain-intrinsic-inline-size", "contain-intrinsic-size", "contain-intrinsic-width", "container", "container-name", "container-type", "content", "content-visibility", "counter-increment", "counter-reset", "counter-set", "cue", "cue-after", "cue-before", "cursor", "cx", "cy", "direction", "display", "dominant-baseline", "empty-cells", "enable-background", "field-sizing", "fill", "fill-opacity", "fill-rule", "filter", "flex", "flex-basis", "flex-direction", "flex-flow", "flex-grow", "flex-shrink", "flex-wrap", "float", "flood-color", "flood-opacity", "flow", "font", "font-display", "font-family", "font-feature-settings", "font-kerning", "font-language-override", "font-optical-sizing", "font-palette", "font-size", "font-size-adjust", "font-smooth", "font-smoothing", "font-stretch", "font-style", "font-synthesis", "font-synthesis-position", "font-synthesis-small-caps", "font-synthesis-style", "font-synthesis-weight", "font-variant", "font-variant-alternates", "font-variant-caps", "font-variant-east-asian", "font-variant-emoji", "font-variant-ligatures", "font-variant-numeric", "font-variant-position", "font-variation-settings", "font-weight", "forced-color-adjust", "gap", "glyph-orientation-horizontal", "glyph-orientation-vertical", "grid", "grid-area", "grid-auto-columns", "grid-auto-flow", "grid-auto-rows", "grid-column", "grid-column-end", "grid-column-start", "grid-gap", "grid-row", "grid-row-end", "grid-row-start", "grid-template", "grid-template-areas", "grid-template-columns", "grid-template-rows", "hanging-punctuation", "height", "hyphenate-character", "hyphenate-limit-chars", "hyphens", "icon", "image-orientation", "image-rendering", "image-resolution", "ime-mode", "initial-letter", "initial-letter-align", "inline-size", "inset", "inset-area", "inset-block", "inset-block-end", "inset-block-start", "inset-inline", "inset-inline-end", "inset-inline-start", "isolation", "justify-content", "justify-items", "justify-self", "kerning", "left", "letter-spacing", "lighting-color", "line-break", "line-height", "line-height-step", "list-style", "list-style-image", "list-style-position", "list-style-type", "margin", "margin-block", "margin-block-end", "margin-block-start", "margin-bottom", "margin-inline", "margin-inline-end", "margin-inline-start", "margin-left", "margin-right", "margin-top", "margin-trim", "marker", "marker-end", "marker-mid", "marker-start", "marks", "mask", "mask-border", "mask-border-mode", "mask-border-outset", "mask-border-repeat", "mask-border-slice", "mask-border-source", "mask-border-width", "mask-clip", "mask-composite", "mask-image", "mask-mode", "mask-origin", "mask-position", "mask-repeat", "mask-size", "mask-type", "masonry-auto-flow", "math-depth", "math-shift", "math-style", "max-block-size", "max-height", "max-inline-size", "max-width", "min-block-size", "min-height", "min-inline-size", "min-width", "mix-blend-mode", "nav-down", "nav-index", "nav-left", "nav-right", "nav-up", "none", "normal", "object-fit", "object-position", "offset", "offset-anchor", "offset-distance", "offset-path", "offset-position", "offset-rotate", "opacity", "order", "orphans", "outline", "outline-color", "outline-offset", "outline-style", "outline-width", "overflow", "overflow-anchor", "overflow-block", "overflow-clip-margin", "overflow-inline", "overflow-wrap", "overflow-x", "overflow-y", "overlay", "overscroll-behavior", "overscroll-behavior-block", "overscroll-behavior-inline", "overscroll-behavior-x", "overscroll-behavior-y", "padding", "padding-block", "padding-block-end", "padding-block-start", "padding-bottom", "padding-inline", "padding-inline-end", "padding-inline-start", "padding-left", "padding-right", "padding-top", "page", "page-break-after", "page-break-before", "page-break-inside", "paint-order", "pause", "pause-after", "pause-before", "perspective", "perspective-origin", "place-content", "place-items", "place-self", "pointer-events", "position", "position-anchor", "position-visibility", "print-color-adjust", "quotes", "r", "resize", "rest", "rest-after", "rest-before", "right", "rotate", "row-gap", "ruby-align", "ruby-position", "scale", "scroll-behavior", "scroll-margin", "scroll-margin-block", "scroll-margin-block-end", "scroll-margin-block-start", "scroll-margin-bottom", "scroll-margin-inline", "scroll-margin-inline-end", "scroll-margin-inline-start", "scroll-margin-left", "scroll-margin-right", "scroll-margin-top", "scroll-padding", "scroll-padding-block", "scroll-padding-block-end", "scroll-padding-block-start", "scroll-padding-bottom", "scroll-padding-inline", "scroll-padding-inline-end", "scroll-padding-inline-start", "scroll-padding-left", "scroll-padding-right", "scroll-padding-top", "scroll-snap-align", "scroll-snap-stop", "scroll-snap-type", "scroll-timeline", "scroll-timeline-axis", "scroll-timeline-name", "scrollbar-color", "scrollbar-gutter", "scrollbar-width", "shape-image-threshold", "shape-margin", "shape-outside", "shape-rendering", "speak", "speak-as", "src", "stop-color", "stop-opacity", "stroke", "stroke-dasharray", "stroke-dashoffset", "stroke-linecap", "stroke-linejoin", "stroke-miterlimit", "stroke-opacity", "stroke-width", "tab-size", "table-layout", "text-align", "text-align-all", "text-align-last", "text-anchor", "text-combine-upright", "text-decoration", "text-decoration-color", "text-decoration-line", "text-decoration-skip", "text-decoration-skip-ink", "text-decoration-style", "text-decoration-thickness", "text-emphasis", "text-emphasis-color", "text-emphasis-position", "text-emphasis-style", "text-indent", "text-justify", "text-orientation", "text-overflow", "text-rendering", "text-shadow", "text-size-adjust", "text-transform", "text-underline-offset", "text-underline-position", "text-wrap", "text-wrap-mode", "text-wrap-style", "timeline-scope", "top", "touch-action", "transform", "transform-box", "transform-origin", "transform-style", "transition", "transition-behavior", "transition-delay", "transition-duration", "transition-property", "transition-timing-function", "translate", "unicode-bidi", "user-modify", "user-select", "vector-effect", "vertical-align", "view-timeline", "view-timeline-axis", "view-timeline-inset", "view-timeline-name", "view-transition-name", "visibility", "voice-balance", "voice-duration", "voice-family", "voice-pitch", "voice-range", "voice-rate", "voice-stress", "voice-volume", "white-space", "white-space-collapse", "widows", "width", "will-change", "word-break", "word-spacing", "word-wrap", "writing-mode", "x", "y", "z-index", "zoom"].sort().reverse();
         return Pt = function (r) {
             const o = r.regex, s = (e => ({
                 IMPORTANT: {scope: "meta", begin: "!important"},
@@ -2588,7 +2594,7 @@
                 }, {className: "selector-tag", begin: "\\b(" + e.join("|") + ")\\b"}]
             }
         }, Pt
-    }()), Cs.registerLanguage("d", (Ft || (Ft = 1, Ut = function (e) {
+    }()), fs.registerLanguage("d", (Ut || (Ut = 1, Ft = function (e) {
         const t = {
                 $pattern: e.UNDERSCORE_IDENT_RE,
                 keyword: "abstract alias align asm assert auto body break byte case cast catch class const continue debug default delete deprecated do else enum export extern final finally for foreach foreach_reverse|10 goto if immutable import in inout int interface invariant is lazy macro mixin module new nothrow out override package pragma private protected public pure ref return scope shared static struct super switch synchronized template this throw try typedef typeid typeof union unittest version void volatile while with __FILE__ __LINE__ __gshared|10 __thread __traits __DATE__ __EOF__ __TIME__ __TIMESTAMP__ __VENDOR__ __VERSION__",
@@ -2626,7 +2632,7 @@
                 begin: "@[a-zA-Z_][a-zA-Z_\\d]*"
             }]
         }
-    }), Ut)), Cs.registerLanguage("markdown", (Gt || (Gt = 1, Bt = function (e) {
+    }), Ft)), fs.registerLanguage("markdown", (Gt || (Gt = 1, Bt = function (e) {
         const t = {begin: /<\/?[A-Za-z_]/, end: ">", subLanguage: "xml", relevance: 0}, a = {
             variants: [{
                 begin: /\[.+?\]\[.*?\]/,
@@ -2701,14 +2707,18 @@
                     excludeBegin: !0,
                     excludeEnd: !0
                 }, {className: "link", begin: /:\s*/, end: /$/, excludeBegin: !0}]
-            }]
+            }, {scope: "literal", match: /&([a-zA-Z0-9]+|#[0-9]{1,7}|#[Xx][0-9a-fA-F]{1,6});/}]
         }
-    }), Bt)), Cs.registerLanguage("dart", (Ht || (Ht = 1, Yt = function (e) {
+    }), Bt)), fs.registerLanguage("dart", (Ht || (Ht = 1, Yt = function (e) {
         const t = {className: "subst", variants: [{begin: "\\$[A-Za-z0-9_]+"}]}, a = {
             className: "subst",
             variants: [{begin: /\$\{/, end: /\}/}],
             keywords: "true false null this is new super"
         }, n = {
+            className: "number",
+            relevance: 0,
+            variants: [{match: /\b[0-9][0-9_]*(\.[0-9][0-9_]*)?([eE][+-]?[0-9][0-9_]*)?\b/}, {match: /\b0[xX][0-9A-Fa-f][0-9A-Fa-f_]*\b/}]
+        }, i = {
             className: "string",
             variants: [{begin: "r'''", end: "'''"}, {begin: 'r"""', end: '"""'}, {
                 begin: "r'",
@@ -2725,17 +2735,17 @@
                 contains: [e.BACKSLASH_ESCAPE, t, a]
             }, {begin: '"', end: '"', illegal: "\\n", contains: [e.BACKSLASH_ESCAPE, t, a]}]
         };
-        a.contains = [e.C_NUMBER_MODE, n];
-        const i = ["Comparable", "DateTime", "Duration", "Function", "Iterable", "Iterator", "List", "Map", "Match", "Object", "Pattern", "RegExp", "Set", "Stopwatch", "String", "StringBuffer", "StringSink", "Symbol", "Type", "Uri", "bool", "double", "int", "num", "Element", "ElementList"],
-            r = i.map((e => `${e}?`));
+        a.contains = [n, i];
+        const r = ["Comparable", "DateTime", "Duration", "Function", "Iterable", "Iterator", "List", "Map", "Match", "Object", "Pattern", "RegExp", "Set", "Stopwatch", "String", "StringBuffer", "StringSink", "Symbol", "Type", "Uri", "bool", "double", "int", "num", "Element", "ElementList"],
+            o = r.map((e => `${e}?`));
         return {
             name: "Dart",
             keywords: {
                 keyword: ["abstract", "as", "assert", "async", "await", "base", "break", "case", "catch", "class", "const", "continue", "covariant", "default", "deferred", "do", "dynamic", "else", "enum", "export", "extends", "extension", "external", "factory", "false", "final", "finally", "for", "Function", "get", "hide", "if", "implements", "import", "in", "interface", "is", "late", "library", "mixin", "new", "null", "on", "operator", "part", "required", "rethrow", "return", "sealed", "set", "show", "static", "super", "switch", "sync", "this", "throw", "true", "try", "typedef", "var", "void", "when", "while", "with", "yield"],
-                built_in: i.concat(r).concat(["Never", "Null", "dynamic", "print", "document", "querySelector", "querySelectorAll", "window"]),
+                built_in: r.concat(o).concat(["Never", "Null", "dynamic", "print", "document", "querySelector", "querySelectorAll", "window"]),
                 $pattern: /[A-Za-z][A-Za-z0-9_]*\??/
             },
-            contains: [n, e.COMMENT(/\/\*\*(?!\/)/, /\*\//, {
+            contains: [i, e.COMMENT(/\/\*\*(?!\/)/, /\*\//, {
                 subLanguage: "markdown",
                 relevance: 0
             }), e.COMMENT(/\/{3,} ?/, /$/, {
@@ -2751,15 +2761,16 @@
                 end: /\{/,
                 excludeEnd: !0,
                 contains: [{beginKeywords: "extends implements"}, e.UNDERSCORE_TITLE_MODE]
-            }, e.C_NUMBER_MODE, {className: "meta", begin: "@[A-Za-z]+"}, {begin: "=>"}]
+            }, n, {className: "meta", begin: "@[A-Za-z]+"}, {begin: "=>"}]
         }
-    }), Yt)), Cs.registerLanguage("delphi", (qt || (qt = 1, Vt = function (e) {
+    }), Yt)), fs.registerLanguage("delphi", (qt || (qt = 1, Vt = function (e) {
         const t = ["exports", "register", "file", "shl", "array", "record", "property", "for", "mod", "while", "set", "ally", "label", "uses", "raise", "not", "stored", "class", "safecall", "var", "interface", "or", "private", "static", "exit", "index", "inherited", "to", "else", "stdcall", "override", "shr", "asm", "far", "resourcestring", "finalization", "packed", "virtual", "out", "and", "protected", "library", "do", "xorwrite", "goto", "near", "function", "end", "div", "overload", "object", "unit", "begin", "string", "on", "inline", "repeat", "until", "destructor", "write", "message", "program", "with", "read", "initialization", "except", "default", "nil", "if", "case", "cdecl", "in", "downto", "threadvar", "of", "try", "pascal", "const", "external", "constructor", "type", "public", "then", "implementation", "finally", "published", "procedure", "absolute", "reintroduce", "operator", "as", "is", "abstract", "alias", "assembler", "bitpacked", "break", "continue", "cppdecl", "cvar", "enumerator", "experimental", "platform", "deprecated", "unimplemented", "dynamic", "export", "far16", "forward", "generic", "helper", "implements", "interrupt", "iochecks", "local", "name", "nodefault", "noreturn", "nostackframe", "oldfpccall", "otherwise", "saveregisters", "softfloat", "specialize", "strict", "unaligned", "varargs"],
             a = [e.C_LINE_COMMENT_MODE, e.COMMENT(/\{/, /\}/, {relevance: 0}), e.COMMENT(/\(\*/, /\*\)/, {relevance: 10})],
             n = {className: "meta", variants: [{begin: /\{\$/, end: /\}/}, {begin: /\(\*\$/, end: /\*\)/}]},
-            i = {className: "string", begin: /'/, end: /'/, contains: [{begin: /''/}]},
-            r = {className: "string", begin: /(#\d+)+/},
-            o = {begin: e.IDENT_RE + "\\s*=\\s*class\\s*\\(", returnBegin: !0, contains: [e.TITLE_MODE]}, s = {
+            i = {className: "string", begin: /'/, end: /'/, contains: [{begin: /''/}]}, r = {
+                className: "string",
+                variants: [{match: /#\d[\d_]*/}, {match: /#\$[\dA-Fa-f][\dA-Fa-f_]*/}, {match: /#&[0-7][0-7_]*/}, {match: /#%[01][01_]*/}]
+            }, o = {begin: e.IDENT_RE + "\\s*=\\s*class\\s*\\(", returnBegin: !0, contains: [e.TITLE_MODE]}, s = {
                 className: "function",
                 beginKeywords: "function constructor destructor procedure",
                 end: /[:;]/,
@@ -2778,13 +2789,16 @@
             case_insensitive: !0,
             keywords: t,
             illegal: /"|\$[G-Zg-z]|\/\*|<\/|\|/,
-            contains: [i, r, e.NUMBER_MODE, {
+            contains: [i, r, {
                 className: "number",
                 relevance: 0,
-                variants: [{begin: "\\$[0-9A-Fa-f]+"}, {begin: "&[0-7]+"}, {begin: "%[01]+"}]
+                variants: [{match: /\b\d[\d_]*(\.\d[\d_]*)?/}, {match: /\$[\dA-Fa-f_]+/}, {
+                    match: /\$/,
+                    relevance: 0
+                }, {match: /&[0-7][0-7_]*/}, {match: /%[01_]+/}, {match: /%/, relevance: 0}]
             }, o, s, n].concat(a)
         }
-    }), Vt)), Cs.registerLanguage("diff", ($t || ($t = 1, zt = function (e) {
+    }), Vt)), fs.registerLanguage("diff", ($t || ($t = 1, zt = function (e) {
         const t = e.regex;
         return {
             name: "Diff",
@@ -2805,7 +2819,7 @@
                 end: /$/
             }, {className: "addition", begin: /^!/, end: /$/}]
         }
-    }), zt)), Cs.registerLanguage("django", (Qt || (Qt = 1, Wt = function (e) {
+    }), zt)), fs.registerLanguage("django", (Qt || (Qt = 1, Wt = function (e) {
         const t = {
             begin: /\|[A-Za-z]+:?/,
             keywords: {name: "truncatewords removetags linebreaksbr yesno get_digit timesince random striptags filesizeformat escape linebreaks length_is ljust rjust cut urlize fix_ampersands title floatformat capfirst pprint divisibleby add make_list unordered_list urlencode timeuntil urlizetrunc wordcount stringformat linenumbers slice date dictsort dictsortreversed default_if_none pluralize lower join center default truncatewords_html upper length phone2numeric wordwrap time addslashes slugify first escapejs force_escape iriencode last safe safeseq truncatechars localize unlocalize localtime utc timezone"},
@@ -2828,7 +2842,7 @@
                 }]
             }, {className: "template-variable", begin: /\{\{/, end: /\}\}/, contains: [t]}]
         }
-    }), Wt)), Cs.registerLanguage("dns", (jt || (jt = 1, Kt = function (e) {
+    }), Wt)), fs.registerLanguage("dns", (jt || (jt = 1, Kt = function (e) {
         return {
             name: "DNS Zone",
             aliases: ["bind", "zone"],
@@ -2844,7 +2858,7 @@
                 begin: "((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\b"
             }, e.inherit(e.NUMBER_MODE, {begin: /\b\d+[dhwm]?/})]
         }
-    }), Kt)), Cs.registerLanguage("dockerfile", (Zt || (Zt = 1, Xt = function (e) {
+    }), Kt)), fs.registerLanguage("dockerfile", (Zt || (Zt = 1, Xt = function (e) {
         return {
             name: "Dockerfile",
             aliases: ["docker"],
@@ -2856,7 +2870,7 @@
             }],
             illegal: "</"
         }
-    }), Xt)), Cs.registerLanguage("dos", (ea || (ea = 1, Jt = function (e) {
+    }), Xt)), fs.registerLanguage("dos", (ea || (ea = 1, Jt = function (e) {
         const t = e.COMMENT(/^\s*@?rem\b/, /$/, {relevance: 10});
         return {
             name: "Batch file (DOS)",
@@ -2874,7 +2888,7 @@
                 contains: [e.inherit(e.TITLE_MODE, {begin: "([_a-zA-Z]\\w*\\.)*([_a-zA-Z]\\w*:)?[_a-zA-Z]\\w*"}), t]
             }, {className: "number", begin: "\\b\\d+", relevance: 0}, t]
         }
-    }), Jt)), Cs.registerLanguage("dsconfig", (aa || (aa = 1, ta = function (e) {
+    }), Jt)), fs.registerLanguage("dsconfig", (aa || (aa = 1, ta = function (e) {
         return {
             keywords: "dsconfig",
             contains: [{
@@ -2901,7 +2915,7 @@
                 relevance: 0
             }, {className: "string", begin: /\w+(\-\w+)*/, end: /(?=\W)/, relevance: 0}, e.HASH_COMMENT_MODE]
         }
-    }), ta)), Cs.registerLanguage("dts", (ia || (ia = 1, na = function (e) {
+    }), ta)), fs.registerLanguage("dts", (ia || (ia = 1, na = function (e) {
         const t = {
             className: "string",
             variants: [e.inherit(e.QUOTE_STRING_MODE, {begin: '((u8?|U)|L)?"'}), {
@@ -2955,7 +2969,7 @@
                 match: /\};|[;{}]/
             }, {begin: e.IDENT_RE + "::", keywords: ""}]
         }
-    }), na)), Cs.registerLanguage("dust", (oa || (oa = 1, ra = function (e) {
+    }), na)), fs.registerLanguage("dust", (oa || (oa = 1, ra = function (e) {
         return {
             name: "Dust",
             aliases: ["dst"],
@@ -2979,7 +2993,7 @@
                 keywords: "if eq ne lt lte gt gte select default math sep"
             }]
         }
-    }), ra)), Cs.registerLanguage("ebnf", (la || (la = 1, sa = function (e) {
+    }), ra)), fs.registerLanguage("ebnf", (la || (la = 1, sa = function (e) {
         const t = e.COMMENT(/\(\*/, /\*\)/);
         return {
             name: "Extended Backus-Naur Form",
@@ -2993,7 +3007,7 @@
                 }]
             }]
         }
-    }), sa)), Cs.registerLanguage("elixir", (_a || (_a = 1, ca = function (e) {
+    }), sa)), fs.registerLanguage("elixir", (_a || (_a = 1, ca = function (e) {
         const t = e.regex, a = "[a-zA-Z_][a-zA-Z0-9_.]*(!|\\?)?", n = {
                 $pattern: a,
                 keyword: ["after", "alias", "and", "case", "catch", "cond", "defstruct", "defguard", "do", "else", "end", "fn", "for", "if", "import", "in", "not", "or", "quote", "raise", "receive", "require", "reraise", "rescue", "try", "unless", "unquote", "unquote_splicing", "use", "when", "with|0"],
@@ -3060,7 +3074,7 @@
                 relevance: 0
             }, {className: "variable", begin: "(\\$\\W)|((\\$|@@?)(\\w+))"}];
         return i.contains = g, {name: "Elixir", aliases: ["ex", "exs"], keywords: n, contains: g}
-    }), ca)), Cs.registerLanguage("elm", (ma || (ma = 1, da = function (e) {
+    }), ca)), fs.registerLanguage("elm", (ma || (ma = 1, da = function (e) {
         const t = {variants: [e.COMMENT("--", "$"), e.COMMENT(/\{-/, /-\}/, {contains: ["self"]})]},
             a = {className: "type", begin: "\\b[A-Z][\\w']*", relevance: 0}, n = {
                 begin: "\\(",
@@ -3101,7 +3115,7 @@
             }, e.QUOTE_STRING_MODE, e.C_NUMBER_MODE, a, e.inherit(e.TITLE_MODE, {begin: "^[_a-z][\\w']*"}), t, {begin: "->|<-"}],
             illegal: /;/
         }
-    }), da)), Cs.registerLanguage("ruby", (ua || (ua = 1, pa = function (e) {
+    }), da)), fs.registerLanguage("ruby", (ua || (ua = 1, pa = function (e) {
         const t = e.regex, a = "([a-zA-Z_]\\w*[!?=]?|[-+~]@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?)",
             n = t.either(/\b([A-Z]+[a-z0-9]+)+/, /\b([A-Z]+[a-z0-9]+)+[A-Z]+/), i = t.concat(n, /(::\w+)*/), r = {
                 "variable.constant": ["__FILE__", "__LINE__", "__ENCODING__"],
@@ -3204,7 +3218,7 @@
             illegal: /\/\*/,
             contains: [e.SHEBANG({binary: "ruby"})].concat(g).concat(l).concat(u)
         }
-    }), pa)), Cs.registerLanguage("erb", (Ea || (Ea = 1, ga = function (e) {
+    }), pa)), fs.registerLanguage("erb", (Ea || (Ea = 1, ga = function (e) {
         return {
             name: "ERB",
             subLanguage: "xml",
@@ -3216,7 +3230,7 @@
                 excludeEnd: !0
             }]
         }
-    }), ga)), Cs.registerLanguage("erlang-repl", (ba || (ba = 1, Sa = function (e) {
+    }), ga)), fs.registerLanguage("erlang-repl", (ba || (ba = 1, Sa = function (e) {
         const t = e.regex;
         return {
             name: "Erlang REPL",
@@ -3237,9 +3251,9 @@
                 relevance: 0
             }, {begin: "[A-Z][a-zA-Z0-9_']*", relevance: 0}]
         }
-    }), Sa)), Cs.registerLanguage("erlang", (Ca || (Ca = 1, Ta = function (e) {
+    }), Sa)), fs.registerLanguage("erlang", (fa || (fa = 1, Ta = function (e) {
         const t = "[a-z'][a-zA-Z0-9_']*", a = "(" + t + ":" + t + "|" + t + ")", n = {
-                keyword: "after and andalso|10 band begin bnot bor bsl bzr bxor case catch cond div end fun if let not of orelse|10 query receive rem try when xor",
+                keyword: "after and andalso|10 band begin bnot bor bsl bzr bxor case catch cond div end fun if let not of orelse|10 query receive rem try when xor maybe else",
                 literal: "false true"
             }, i = e.COMMENT("%", "$"), r = {
                 className: "number",
@@ -3263,11 +3277,25 @@
                 relevance: 0,
                 returnBegin: !0,
                 contains: [{begin: "#" + e.UNDERSCORE_IDENT_RE, relevance: 0}, {begin: /\{/, end: /\}/, relevance: 0}]
-            }, m = {beginKeywords: "fun receive if try case", end: "end", keywords: n};
-        m.contains = [i, o, e.inherit(e.APOS_STRING_MODE, {className: ""}), m, s, e.QUOTE_STRING_MODE, r, l, c, _, d];
-        const p = [i, o, m, s, e.QUOTE_STRING_MODE, r, l, c, _, d];
-        s.contains[1].contains = p, l.contains = p, d.contains[1].contains = p;
-        const u = {className: "params", begin: "\\(", end: "\\)", contains: p};
+            }, m = {scope: "string", match: /\$(\\([^0-9]|[0-9]{1,3}|)|.)/},
+            p = {scope: "string", match: /"""("*)(?!")[\s\S]*?"""\1/}, u = {
+                scope: "string",
+                contains: [e.BACKSLASH_ESCAPE],
+                variants: [{match: /~\w?"""("*)(?!")[\s\S]*?"""\1/}, {begin: /~\w?\(/, end: /\)/}, {
+                    begin: /~\w?\[/,
+                    end: /\]/
+                }, {begin: /~\w?{/, end: /}/}, {begin: /~\w?</, end: />/}, {begin: /~\w?\//, end: /\//}, {
+                    begin: /~\w?\|/,
+                    end: /\|/
+                }, {begin: /~\w?'/, end: /'/}, {begin: /~\w?"/, end: /"/}, {begin: /~\w?`/, end: /`/}, {
+                    begin: /~\w?#/,
+                    end: /#/
+                }]
+            }, g = {beginKeywords: "fun receive if try case maybe", end: "end", keywords: n};
+        g.contains = [i, o, e.inherit(e.APOS_STRING_MODE, {className: ""}), g, s, u, p, e.QUOTE_STRING_MODE, r, l, c, _, d, m];
+        const E = [i, o, g, s, u, p, e.QUOTE_STRING_MODE, r, l, c, _, d, m];
+        s.contains[1].contains = E, l.contains = E, d.contains[1].contains = E;
+        const S = {className: "params", begin: "\\(", end: "\\)", contains: E};
         return {
             name: "Erlang",
             aliases: ["erl"],
@@ -3279,8 +3307,8 @@
                 end: "->",
                 returnBegin: !0,
                 illegal: "\\(|#|//|/\\*|\\\\|:|;",
-                contains: [u, e.inherit(e.TITLE_MODE, {begin: t})],
-                starts: {end: ";|\\.", keywords: n, contains: p}
+                contains: [S, e.inherit(e.TITLE_MODE, {begin: t})],
+                starts: {end: ";|\\.", keywords: n, contains: E}
             }, i, {
                 begin: "^-",
                 end: "\\.",
@@ -3289,12 +3317,12 @@
                 returnBegin: !0,
                 keywords: {
                     $pattern: "-" + e.IDENT_RE,
-                    keyword: ["-module", "-record", "-undef", "-export", "-ifdef", "-ifndef", "-author", "-copyright", "-doc", "-vsn", "-import", "-include", "-include_lib", "-compile", "-define", "-else", "-endif", "-file", "-behaviour", "-behavior", "-spec"].map((e => `${e}|1.5`)).join(" ")
+                    keyword: ["-module", "-record", "-undef", "-export", "-ifdef", "-ifndef", "-author", "-copyright", "-doc", "-moduledoc", "-vsn", "-import", "-include", "-include_lib", "-compile", "-define", "-else", "-endif", "-file", "-behaviour", "-behavior", "-spec", "-on_load", "-nifs"].map((e => `${e}|1.5`)).join(" ")
                 },
-                contains: [u]
-            }, r, e.QUOTE_STRING_MODE, d, c, _, l, {begin: /\.$/}]
+                contains: [S, u, p, e.QUOTE_STRING_MODE]
+            }, r, u, p, e.QUOTE_STRING_MODE, d, c, _, l, m, {begin: /\.$/}]
         }
-    }), Ta)), Cs.registerLanguage("excel", (Ra || (Ra = 1, fa = function (e) {
+    }), Ta)), fs.registerLanguage("excel", (Ra || (Ra = 1, Ca = function (e) {
         return {
             name: "Excel formulae",
             aliases: ["xlsx", "xls"],
@@ -3319,7 +3347,7 @@
                 relevance: 0
             }, e.COMMENT(/\bN\(/, /\)/, {excludeBegin: !0, excludeEnd: !0, illegal: /\n/})]
         }
-    }), fa)), Cs.registerLanguage("fix", Oa ? Na : (Oa = 1, Na = function (e) {
+    }), Ca)), fs.registerLanguage("fix", ha ? Na : (ha = 1, Na = function (e) {
         return {
             name: "FIX",
             contains: [{
@@ -3338,7 +3366,7 @@
             }],
             case_insensitive: !0
         }
-    })), Cs.registerLanguage("flix", (va || (va = 1, ha = function (e) {
+    })), fs.registerLanguage("flix", (va || (va = 1, Oa = function (e) {
         const t = {
             className: "function",
             beginKeywords: "def",
@@ -3361,7 +3389,7 @@
                 begin: /'(.|\\[xXuU][a-zA-Z0-9]+)'/
             }, {className: "string", variants: [{begin: '"', end: '"'}]}, t, e.C_NUMBER_MODE]
         }
-    }), ha)), Cs.registerLanguage("fortran", (Aa || (Aa = 1, Ia = function (e) {
+    }), Oa)), fs.registerLanguage("fortran", (Ia || (Ia = 1, ya = function (e) {
         const t = e.regex,
             a = {variants: [e.COMMENT("!", "$", {relevance: 0}), e.COMMENT("^C[ ]", "$", {relevance: 0}), e.COMMENT("^C$", "$", {relevance: 0})]},
             n = /(_[a-z_\d]+)?/, i = /([de][+-]?\d+)?/, r = {
@@ -3379,6 +3407,7 @@
             case_insensitive: !0,
             aliases: ["f90", "f95"],
             keywords: {
+                $pattern: /\b[a-z][a-z0-9_]+\b|\.[a-z][a-z0-9_]+\./,
                 keyword: ["kind", "do", "concurrent", "local", "shared", "while", "private", "call", "intrinsic", "where", "elsewhere", "type", "endtype", "endmodule", "endselect", "endinterface", "end", "enddo", "endif", "if", "forall", "endforall", "only", "contains", "default", "return", "stop", "then", "block", "endblock", "endassociate", "public", "subroutine|10", "function", "program", ".and.", ".or.", ".not.", ".le.", ".eq.", ".ge.", ".gt.", ".lt.", "goto", "save", "else", "use", "module", "select", "case", "access", "blank", "direct", "exist", "file", "fmt", "form", "formatted", "iostat", "name", "named", "nextrec", "number", "opened", "rec", "recl", "sequential", "status", "unformatted", "unit", "continue", "format", "pause", "cycle", "exit", "c_null_char", "c_alert", "c_backspace", "c_form_feed", "flush", "wait", "decimal", "round", "iomsg", "synchronous", "nopass", "non_overridable", "pass", "protected", "volatile", "abstract", "extends", "import", "non_intrinsic", "value", "deferred", "generic", "final", "enumerator", "class", "associate", "bind", "enum", "c_int", "c_short", "c_long", "c_long_long", "c_signed_char", "c_size_t", "c_int8_t", "c_int16_t", "c_int32_t", "c_int64_t", "c_int_least8_t", "c_int_least16_t", "c_int_least32_t", "c_int_least64_t", "c_int_fast8_t", "c_int_fast16_t", "c_int_fast32_t", "c_int_fast64_t", "c_intmax_t", "C_intptr_t", "c_float", "c_double", "c_long_double", "c_float_complex", "c_double_complex", "c_long_double_complex", "c_bool", "c_char", "c_null_ptr", "c_null_funptr", "c_new_line", "c_carriage_return", "c_horizontal_tab", "c_vertical_tab", "iso_c_binding", "c_loc", "c_funloc", "c_associated", "c_f_pointer", "c_ptr", "c_funptr", "iso_fortran_env", "character_storage_size", "error_unit", "file_storage_size", "input_unit", "iostat_end", "iostat_eor", "numeric_storage_size", "output_unit", "c_f_procpointer", "ieee_arithmetic", "ieee_support_underflow_control", "ieee_get_underflow_mode", "ieee_set_underflow_mode", "newunit", "contiguous", "recursive", "pad", "position", "action", "delim", "readwrite", "eor", "advance", "nml", "interface", "procedure", "namelist", "include", "sequence", "elemental", "pure", "impure", "integer", "real", "character", "complex", "logical", "codimension", "dimension", "allocatable|10", "parameter", "external", "implicit|10", "none", "double", "precision", "assign", "intent", "optional", "pointer", "target", "in", "out", "common", "equivalence", "data"],
                 literal: [".False.", ".True."],
                 built_in: ["alog", "alog10", "amax0", "amax1", "amin0", "amin1", "amod", "cabs", "ccos", "cexp", "clog", "csin", "csqrt", "dabs", "dacos", "dasin", "datan", "datan2", "dcos", "dcosh", "ddim", "dexp", "dint", "dlog", "dlog10", "dmax1", "dmin1", "dmod", "dnint", "dsign", "dsin", "dsinh", "dsqrt", "dtan", "dtanh", "float", "iabs", "idim", "idint", "idnint", "ifix", "isign", "max0", "max1", "min0", "min1", "sngl", "algama", "cdabs", "cdcos", "cdexp", "cdlog", "cdsin", "cdsqrt", "cqabs", "cqcos", "cqexp", "cqlog", "cqsin", "cqsqrt", "dcmplx", "dconjg", "derf", "derfc", "dfloat", "dgamma", "dimag", "dlgama", "iqint", "qabs", "qacos", "qasin", "qatan", "qatan2", "qcmplx", "qconjg", "qcos", "qcosh", "qdim", "qerf", "qerfc", "qexp", "qgamma", "qimag", "qlgama", "qlog", "qlog10", "qmax1", "qmin1", "qmod", "qnint", "qsign", "qsin", "qsinh", "qsqrt", "qtan", "qtanh", "abs", "acos", "aimag", "aint", "anint", "asin", "atan", "atan2", "char", "cmplx", "conjg", "cos", "cosh", "exp", "ichar", "index", "int", "log", "log10", "max", "min", "nint", "sign", "sin", "sinh", "sqrt", "tan", "tanh", "print", "write", "dim", "lge", "lgt", "lle", "llt", "mod", "nullify", "allocate", "deallocate", "adjustl", "adjustr", "all", "allocated", "any", "associated", "bit_size", "btest", "ceiling", "count", "cshift", "date_and_time", "digits", "dot_product", "eoshift", "epsilon", "exponent", "floor", "fraction", "huge", "iand", "ibclr", "ibits", "ibset", "ieor", "ior", "ishft", "ishftc", "lbound", "len_trim", "matmul", "maxexponent", "maxloc", "maxval", "merge", "minexponent", "minloc", "minval", "modulo", "mvbits", "nearest", "pack", "present", "product", "radix", "random_number", "random_seed", "range", "repeat", "reshape", "rrspacing", "scale", "scan", "selected_int_kind", "selected_real_kind", "set_exponent", "shape", "size", "spacing", "spread", "sum", "system_clock", "tiny", "transpose", "trim", "ubound", "unpack", "verify", "achar", "iachar", "transfer", "dble", "entry", "dprod", "cpu_time", "command_argument_count", "get_command", "get_command_argument", "get_environment_variable", "is_iostat_end", "ieee_arithmetic", "ieee_support_underflow_control", "ieee_get_underflow_mode", "ieee_set_underflow_mode", "is_iostat_eor", "move_alloc", "new_line", "selected_char_kind", "same_type_as", "extends_type_of", "acosh", "asinh", "atanh", "bessel_j0", "bessel_j1", "bessel_jn", "bessel_y0", "bessel_y1", "bessel_yn", "erf", "erfc", "erfc_scaled", "gamma", "log_gamma", "hypot", "norm2", "atomic_define", "atomic_ref", "execute_command_line", "leadz", "trailz", "storage_size", "merge_bits", "bge", "bgt", "ble", "blt", "dshiftl", "dshiftr", "findloc", "iall", "iany", "iparity", "image_index", "lcobound", "ucobound", "maskl", "maskr", "num_images", "parity", "popcnt", "poppar", "shifta", "shiftl", "shiftr", "this_image", "sync", "change", "team", "co_broadcast", "co_max", "co_min", "co_sum", "co_reduce"]
@@ -3390,8 +3419,8 @@
                 variants: [e.APOS_STRING_MODE, e.QUOTE_STRING_MODE]
             }, o, {begin: /^C\s*=(?!=)/, relevance: 0}, a, r]
         }
-    }), Ia)), Cs.registerLanguage("fsharp", function () {
-        if (Da) return ya;
+    }), ya)), fs.registerLanguage("fsharp", function () {
+        if (Da) return Aa;
 
         function e(e) {
             return new RegExp(e.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"), "m")
@@ -3417,7 +3446,7 @@
             return "(" + (a.capture ? "" : "?:") + e.map((e => t(e))).join("|") + ")"
         }
 
-        return Da = 1, ya = function (t) {
+        return Da = 1, Aa = function (t) {
             const r = {scope: "keyword", match: /\b(yield|return|let|do|match|use)!/},
                 o = ["bool", "byte", "sbyte", "int8", "int16", "int32", "uint8", "uint16", "uint32", "int", "uint", "int64", "uint64", "nativeint", "unativeint", "decimal", "float", "double", "float32", "single", "char", "string", "unit", "bigint", "option", "voption", "list", "array", "seq", "byref", "exn", "inref", "nativeptr", "obj", "outref", "voidptr", "Result"],
                 s = {
@@ -3451,50 +3480,50 @@
                     end: a(/\(|=|$/),
                     keywords: s,
                     contains: [l, t.inherit(c, {scope: null}), d, {scope: "operator", match: /<|>/}, E]
-                }, T = {scope: "computation-expression", match: /\b[_a-z]\w*(?=\s*\{)/}, C = {
+                }, T = {scope: "computation-expression", match: /\b[_a-z]\w*(?=\s*\{)/}, f = {
                     begin: [/^\s*/, n(/#/, i("if", "else", "endif", "line", "nowarn", "light", "r", "i", "I", "load", "time", "help", "quit")), /\b/],
                     beginScope: {2: "meta"},
                     end: a(/\s|$/)
-                }, f = {variants: [t.BINARY_NUMBER_MODE, t.C_NUMBER_MODE]},
+                }, C = {variants: [t.BINARY_NUMBER_MODE, t.C_NUMBER_MODE]},
                 R = {scope: "string", begin: /"/, end: /"/, contains: [t.BACKSLASH_ESCAPE]},
                 N = {scope: "string", begin: /@"/, end: /"/, contains: [{match: /""/}, t.BACKSLASH_ESCAPE]},
-                O = {scope: "string", begin: /"""/, end: /"""/, relevance: 2},
-                h = {scope: "subst", begin: /\{/, end: /\}/, keywords: s}, v = {
+                h = {scope: "string", begin: /"""/, end: /"""/, relevance: 2},
+                O = {scope: "subst", begin: /\{/, end: /\}/, keywords: s}, v = {
                     scope: "string",
                     begin: /\$"/,
                     end: /"/,
-                    contains: [{match: /\{\{/}, {match: /\}\}/}, t.BACKSLASH_ESCAPE, h]
-                }, I = {
+                    contains: [{match: /\{\{/}, {match: /\}\}/}, t.BACKSLASH_ESCAPE, O]
+                }, y = {
                     scope: "string",
                     begin: /(\$@|@\$)"/,
                     end: /"/,
-                    contains: [{match: /\{\{/}, {match: /\}\}/}, {match: /""/}, t.BACKSLASH_ESCAPE, h]
-                }, A = {
+                    contains: [{match: /\{\{/}, {match: /\}\}/}, {match: /""/}, t.BACKSLASH_ESCAPE, O]
+                }, I = {
                     scope: "string",
                     begin: /\$"""/,
                     end: /"""/,
-                    contains: [{match: /\{\{/}, {match: /\}\}/}, h],
+                    contains: [{match: /\{\{/}, {match: /\}\}/}, O],
                     relevance: 2
-                }, y = {
+                }, A = {
                     scope: "string",
                     match: n(/'/, i(/[^\\']/, /\\(?:.|\d{3}|x[a-fA-F\d]{2}|u[a-fA-F\d]{4}|U[a-fA-F\d]{8})/), /'/)
                 };
-            return h.contains = [I, v, N, R, y, r, l, c, E, T, C, f, d, p], {
+            return O.contains = [y, v, N, R, A, r, l, c, E, T, f, C, d, p], {
                 name: "F#",
                 aliases: ["fs", "f#"],
                 keywords: s,
                 illegal: /\/\*/,
                 classNameAliases: {"computation-expression": "keyword"},
-                contains: [r, {variants: [A, I, v, O, N, R, y]}, l, c, b, {
+                contains: [r, {variants: [I, y, v, h, N, R, A]}, l, c, b, {
                     scope: "meta",
                     begin: /\[</,
                     end: />\]/,
                     relevance: 2,
-                    contains: [c, O, N, R, y, f]
-                }, S, E, T, C, f, d, p]
+                    contains: [c, h, N, R, A, C]
+                }, S, E, T, f, C, d, p]
             }
-        }, ya
-    }()), Cs.registerLanguage("gams", (La || (La = 1, Ma = function (e) {
+        }, Aa
+    }()), fs.registerLanguage("gams", (Ma || (Ma = 1, xa = function (e) {
         const t = e.regex, a = {
             keyword: "abort acronym acronyms alias all and assign binary card diag display else eq file files for free ge gt if integer le loop lt maximizing minimizing model models ne negative no not option options or ord positive prod put putpage puttl repeat sameas semicont semiint smax smin solve sos1 sos2 sum system table then until using while xor yes",
             literal: "eps inf na",
@@ -3557,7 +3586,7 @@
                 }, n]
             }, e.C_NUMBER_MODE, n]
         }
-    }), Ma)), Cs.registerLanguage("gauss", (wa || (wa = 1, xa = function (e) {
+    }), xa)), fs.registerLanguage("gauss", (wa || (wa = 1, La = function (e) {
         const t = {
                 keyword: "bool break call callexe checkinterrupt clear clearg closeall cls comlog compile continue create debug declare delete disable dlibrary dllcall do dos ed edit else elseif enable end endfor endif endp endo errorlog errorlogat expr external fn for format goto gosub graph if keyword let lib library line load loadarray loadexe loadf loadk loadm loadp loads loadx local locate loopnextindex lprint lpwidth lshow matrix msym ndpclex new open output outwidth plot plotsym pop prcsn print printdos proc push retp return rndcon rndmod rndmult rndseed run save saveall screen scroll setarray show sparse stop string struct system trace trap threadfor threadendfor threadbegin threadjoin threadstat threadend until use while winprint ne ge le gt lt and xor or not eq eqv",
                 built_in: "abs acf aconcat aeye amax amean AmericanBinomCall AmericanBinomCall_Greeks AmericanBinomCall_ImpVol AmericanBinomPut AmericanBinomPut_Greeks AmericanBinomPut_ImpVol AmericanBSCall AmericanBSCall_Greeks AmericanBSCall_ImpVol AmericanBSPut AmericanBSPut_Greeks AmericanBSPut_ImpVol amin amult annotationGetDefaults annotationSetBkd annotationSetFont annotationSetLineColor annotationSetLineStyle annotationSetLineThickness annualTradingDays arccos arcsin areshape arrayalloc arrayindex arrayinit arraytomat asciiload asclabel astd astds asum atan atan2 atranspose axmargin balance band bandchol bandcholsol bandltsol bandrv bandsolpd bar base10 begwind besselj bessely beta box boxcox cdfBeta cdfBetaInv cdfBinomial cdfBinomialInv cdfBvn cdfBvn2 cdfBvn2e cdfCauchy cdfCauchyInv cdfChic cdfChii cdfChinc cdfChincInv cdfExp cdfExpInv cdfFc cdfFnc cdfFncInv cdfGam cdfGenPareto cdfHyperGeo cdfLaplace cdfLaplaceInv cdfLogistic cdfLogisticInv cdfmControlCreate cdfMvn cdfMvn2e cdfMvnce cdfMvne cdfMvt2e cdfMvtce cdfMvte cdfN cdfN2 cdfNc cdfNegBinomial cdfNegBinomialInv cdfNi cdfPoisson cdfPoissonInv cdfRayleigh cdfRayleighInv cdfTc cdfTci cdfTnc cdfTvn cdfWeibull cdfWeibullInv cdir ceil ChangeDir chdir chiBarSquare chol choldn cholsol cholup chrs close code cols colsf combinate combinated complex con cond conj cons ConScore contour conv convertsatostr convertstrtosa corrm corrms corrvc corrx corrxs cos cosh counts countwts crossprd crout croutp csrcol csrlin csvReadM csvReadSA cumprodc cumsumc curve cvtos datacreate datacreatecomplex datalist dataload dataloop dataopen datasave date datestr datestring datestrymd dayinyr dayofweek dbAddDatabase dbClose dbCommit dbCreateQuery dbExecQuery dbGetConnectOptions dbGetDatabaseName dbGetDriverName dbGetDrivers dbGetHostName dbGetLastErrorNum dbGetLastErrorText dbGetNumericalPrecPolicy dbGetPassword dbGetPort dbGetTableHeaders dbGetTables dbGetUserName dbHasFeature dbIsDriverAvailable dbIsOpen dbIsOpenError dbOpen dbQueryBindValue dbQueryClear dbQueryCols dbQueryExecPrepared dbQueryFetchAllM dbQueryFetchAllSA dbQueryFetchOneM dbQueryFetchOneSA dbQueryFinish dbQueryGetBoundValue dbQueryGetBoundValues dbQueryGetField dbQueryGetLastErrorNum dbQueryGetLastErrorText dbQueryGetLastInsertID dbQueryGetLastQuery dbQueryGetPosition dbQueryIsActive dbQueryIsForwardOnly dbQueryIsNull dbQueryIsSelect dbQueryIsValid dbQueryPrepare dbQueryRows dbQuerySeek dbQuerySeekFirst dbQuerySeekLast dbQuerySeekNext dbQuerySeekPrevious dbQuerySetForwardOnly dbRemoveDatabase dbRollback dbSetConnectOptions dbSetDatabaseName dbSetHostName dbSetNumericalPrecPolicy dbSetPort dbSetUserName dbTransaction DeleteFile delif delrows denseToSp denseToSpRE denToZero design det detl dfft dffti diag diagrv digamma doswin DOSWinCloseall DOSWinOpen dotfeq dotfeqmt dotfge dotfgemt dotfgt dotfgtmt dotfle dotflemt dotflt dotfltmt dotfne dotfnemt draw drop dsCreate dstat dstatmt dstatmtControlCreate dtdate dtday dttime dttodtv dttostr dttoutc dtvnormal dtvtodt dtvtoutc dummy dummybr dummydn eig eigh eighv eigv elapsedTradingDays endwind envget eof eqSolve eqSolvemt eqSolvemtControlCreate eqSolvemtOutCreate eqSolveset erf erfc erfccplx erfcplx error etdays ethsec etstr EuropeanBinomCall EuropeanBinomCall_Greeks EuropeanBinomCall_ImpVol EuropeanBinomPut EuropeanBinomPut_Greeks EuropeanBinomPut_ImpVol EuropeanBSCall EuropeanBSCall_Greeks EuropeanBSCall_ImpVol EuropeanBSPut EuropeanBSPut_Greeks EuropeanBSPut_ImpVol exctsmpl exec execbg exp extern eye fcheckerr fclearerr feq feqmt fflush fft ffti fftm fftmi fftn fge fgemt fgets fgetsa fgetsat fgetst fgt fgtmt fileinfo filesa fle flemt floor flt fltmt fmod fne fnemt fonts fopen formatcv formatnv fputs fputst fseek fstrerror ftell ftocv ftos ftostrC gamma gammacplx gammaii gausset gdaAppend gdaCreate gdaDStat gdaDStatMat gdaGetIndex gdaGetName gdaGetNames gdaGetOrders gdaGetType gdaGetTypes gdaGetVarInfo gdaIsCplx gdaLoad gdaPack gdaRead gdaReadByIndex gdaReadSome gdaReadSparse gdaReadStruct gdaReportVarInfo gdaSave gdaUpdate gdaUpdateAndPack gdaVars gdaWrite gdaWrite32 gdaWriteSome getarray getdims getf getGAUSShome getmatrix getmatrix4D getname getnamef getNextTradingDay getNextWeekDay getnr getorders getpath getPreviousTradingDay getPreviousWeekDay getRow getscalar3D getscalar4D getTrRow getwind glm gradcplx gradMT gradMTm gradMTT gradMTTm gradp graphprt graphset hasimag header headermt hess hessMT hessMTg hessMTgw hessMTm hessMTmw hessMTT hessMTTg hessMTTgw hessMTTm hessMTw hessp hist histf histp hsec imag indcv indexcat indices indices2 indicesf indicesfn indnv indsav integrate1d integrateControlCreate intgrat2 intgrat3 inthp1 inthp2 inthp3 inthp4 inthpControlCreate intquad1 intquad2 intquad3 intrleav intrleavsa intrsect intsimp inv invpd invswp iscplx iscplxf isden isinfnanmiss ismiss key keyav keyw lag lag1 lagn lapEighb lapEighi lapEighvb lapEighvi lapgEig lapgEigh lapgEighv lapgEigv lapgSchur lapgSvdcst lapgSvds lapgSvdst lapSvdcusv lapSvds lapSvdusv ldlp ldlsol linSolve listwise ln lncdfbvn lncdfbvn2 lncdfmvn lncdfn lncdfn2 lncdfnc lnfact lngammacplx lnpdfmvn lnpdfmvt lnpdfn lnpdft loadd loadstruct loadwind loess loessmt loessmtControlCreate log loglog logx logy lower lowmat lowmat1 ltrisol lu lusol machEpsilon make makevars makewind margin matalloc matinit mattoarray maxbytes maxc maxindc maxv maxvec mbesselei mbesselei0 mbesselei1 mbesseli mbesseli0 mbesseli1 meanc median mergeby mergevar minc minindc minv miss missex missrv moment momentd movingave movingaveExpwgt movingaveWgt nextindex nextn nextnevn nextwind ntos null null1 numCombinations ols olsmt olsmtControlCreate olsqr olsqr2 olsqrmt ones optn optnevn orth outtyp pacf packedToSp packr parse pause pdfCauchy pdfChi pdfExp pdfGenPareto pdfHyperGeo pdfLaplace pdfLogistic pdfn pdfPoisson pdfRayleigh pdfWeibull pi pinv pinvmt plotAddArrow plotAddBar plotAddBox plotAddHist plotAddHistF plotAddHistP plotAddPolar plotAddScatter plotAddShape plotAddTextbox plotAddTS plotAddXY plotArea plotBar plotBox plotClearLayout plotContour plotCustomLayout plotGetDefaults plotHist plotHistF plotHistP plotLayout plotLogLog plotLogX plotLogY plotOpenWindow plotPolar plotSave plotScatter plotSetAxesPen plotSetBar plotSetBarFill plotSetBarStacked plotSetBkdColor plotSetFill plotSetGrid plotSetLegend plotSetLineColor plotSetLineStyle plotSetLineSymbol plotSetLineThickness plotSetNewWindow plotSetTitle plotSetWhichYAxis plotSetXAxisShow plotSetXLabel plotSetXRange plotSetXTicInterval plotSetXTicLabel plotSetYAxisShow plotSetYLabel plotSetYRange plotSetZAxisShow plotSetZLabel plotSurface plotTS plotXY polar polychar polyeval polygamma polyint polymake polymat polymroot polymult polyroot pqgwin previousindex princomp printfm printfmt prodc psi putarray putf putvals pvCreate pvGetIndex pvGetParNames pvGetParVector pvLength pvList pvPack pvPacki pvPackm pvPackmi pvPacks pvPacksi pvPacksm pvPacksmi pvPutParVector pvTest pvUnpack QNewton QNewtonmt QNewtonmtControlCreate QNewtonmtOutCreate QNewtonSet QProg QProgmt QProgmtInCreate qqr qqre qqrep qr qre qrep qrsol qrtsol qtyr qtyre qtyrep quantile quantiled qyr qyre qyrep qz rank rankindx readr real reclassify reclassifyCuts recode recserar recsercp recserrc rerun rescale reshape rets rev rfft rffti rfftip rfftn rfftnp rfftp rndBernoulli rndBeta rndBinomial rndCauchy rndChiSquare rndCon rndCreateState rndExp rndGamma rndGeo rndGumbel rndHyperGeo rndi rndKMbeta rndKMgam rndKMi rndKMn rndKMnb rndKMp rndKMu rndKMvm rndLaplace rndLCbeta rndLCgam rndLCi rndLCn rndLCnb rndLCp rndLCu rndLCvm rndLogNorm rndMTu rndMVn rndMVt rndn rndnb rndNegBinomial rndp rndPoisson rndRayleigh rndStateSkip rndu rndvm rndWeibull rndWishart rotater round rows rowsf rref sampleData satostrC saved saveStruct savewind scale scale3d scalerr scalinfnanmiss scalmiss schtoc schur searchsourcepath seekr select selif seqa seqm setdif setdifsa setvars setvwrmode setwind shell shiftr sin singleindex sinh sleep solpd sortc sortcc sortd sorthc sorthcc sortind sortindc sortmc sortr sortrc spBiconjGradSol spChol spConjGradSol spCreate spDenseSubmat spDiagRvMat spEigv spEye spLDL spline spLU spNumNZE spOnes spreadSheetReadM spreadSheetReadSA spreadSheetWrite spScale spSubmat spToDense spTrTDense spTScalar spZeros sqpSolve sqpSolveMT sqpSolveMTControlCreate sqpSolveMTlagrangeCreate sqpSolveMToutCreate sqpSolveSet sqrt statements stdc stdsc stocv stof strcombine strindx strlen strput strrindx strsect strsplit strsplitPad strtodt strtof strtofcplx strtriml strtrimr strtrunc strtruncl strtruncpad strtruncr submat subscat substute subvec sumc sumr surface svd svd1 svd2 svdcusv svds svdusv sysstate tab tan tanh tempname time timedt timestr timeutc title tkf2eps tkf2ps tocart todaydt toeplitz token topolar trapchk trigamma trimr trunc type typecv typef union unionsa uniqindx uniqindxsa unique uniquesa upmat upmat1 upper utctodt utctodtv utrisol vals varCovMS varCovXS varget vargetl varmall varmares varput varputl vartypef vcm vcms vcx vcxs vec vech vecr vector vget view viewxyz vlist vnamecv volume vput vread vtypecv wait waitc walkindex where window writer xlabel xlsGetSheetCount xlsGetSheetSize xlsGetSheetTypes xlsMakeRange xlsReadM xlsReadSA xlsWrite xlsWriteM xlsWriteSA xpnd xtics xy xyz ylabel ytics zeros zeta zlabel ztics cdfEmpirical dot h5create h5open h5read h5readAttribute h5write h5writeAttribute ldl plotAddErrorBar plotAddSurface plotCDFEmpirical plotSetColormap plotSetContourLabels plotSetLegendFont plotSetTextInterpreter plotSetXTicCount plotSetYTicCount plotSetZLevels powerm strjoin sylvester strtrim",
@@ -3594,7 +3623,7 @@
                     end: n,
                     excludeEnd: !0,
                     contains: [].concat(r)
-                }, i || {});
+                }, {});
                 return s.contains.push(o), s.contains.push(e.C_NUMBER_MODE), s.contains.push(e.C_BLOCK_COMMENT_MODE), s.contains.push(a), s
             }, l = {className: "built_in", begin: "\\b(" + t.built_in.split(" ").join("|") + ")\\b"},
             c = {className: "string", begin: '"', end: '"', contains: [e.BACKSLASH_ESCAPE], relevance: 0}, _ = {
@@ -3633,7 +3662,7 @@
                 relevance: 0
             }, _, i]
         }
-    }), xa)), Cs.registerLanguage("gcode", (ka || (ka = 1, Pa = function (e) {
+    }), La)), fs.registerLanguage("gcode", (ka || (ka = 1, Pa = function (e) {
         const t = {
                 $pattern: "[A-Z_][A-Z0-9_.]*",
                 keyword: "IF DO WHILE ENDWHILE CALL ENDIF SUB ENDSUB GOTO REPEAT ENDREPEAT EQ LT GT NE GE LE OR XOR"
@@ -3658,7 +3687,7 @@
             keywords: t,
             contains: [{className: "meta", begin: "%"}, {className: "meta", begin: "([O])([0-9]+)"}].concat(n)
         }
-    }), Pa)), Cs.registerLanguage("gherkin", (Fa || (Fa = 1, Ua = function (e) {
+    }), Pa)), fs.registerLanguage("gherkin", (Ua || (Ua = 1, Fa = function (e) {
         return {
             name: "Gherkin",
             aliases: ["feature"],
@@ -3676,7 +3705,7 @@
                 end: '"""'
             }, e.QUOTE_STRING_MODE]
         }
-    }), Ua)), Cs.registerLanguage("glsl", (Ga || (Ga = 1, Ba = function (e) {
+    }), Fa)), fs.registerLanguage("glsl", (Ga || (Ga = 1, Ba = function (e) {
         return {
             name: "GLSL",
             keywords: {
@@ -3692,20 +3721,19 @@
                 end: "$"
             }]
         }
-    }), Ba)), Cs.registerLanguage("gml", (Ha || (Ha = 1, Ya = function (e) {
+    }), Ba)), fs.registerLanguage("gml", (Ha || (Ha = 1, Ya = function (e) {
         return {
             name: "GML",
             case_insensitive: !1,
             keywords: {
-                keyword: ["#endregion", "#macro", "#region", "and", "begin", "break", "case", "constructor", "continue", "default", "delete", "div", "do", "else", "end", "enum", "exit", "for", "function", "globalvar", "if", "mod", "not", "or", "repeat", "return", "switch", "then", "until", "var", "while", "with", "xor"],
-                built_in: ["abs", "achievement_available", "achievement_event", "achievement_get_challenges", "achievement_get_info", "achievement_get_pic", "achievement_increment", "achievement_load_friends", "achievement_load_leaderboard", "achievement_load_progress", "achievement_login", "achievement_login_status", "achievement_logout", "achievement_post", "achievement_post_score", "achievement_reset", "achievement_send_challenge", "achievement_show", "achievement_show_achievements", "achievement_show_challenge_notifications", "achievement_show_leaderboards", "action_inherited", "action_kill_object", "ads_disable", "ads_enable", "ads_engagement_active", "ads_engagement_available", "ads_engagement_launch", "ads_event", "ads_event_preload", "ads_get_display_height", "ads_get_display_width", "ads_interstitial_available", "ads_interstitial_display", "ads_move", "ads_set_reward_callback", "ads_setup", "alarm_get", "alarm_set", "analytics_event", "analytics_event_ext", "angle_difference", "ansi_char", "application_get_position", "application_surface_draw_enable", "application_surface_enable", "application_surface_is_enabled", "arccos", "arcsin", "arctan", "arctan2", "array_copy", "array_create", "array_delete", "array_equals", "array_height_2d", "array_insert", "array_length", "array_length_1d", "array_length_2d", "array_pop", "array_push", "array_resize", "array_sort", "asset_get_index", "asset_get_type", "audio_channel_num", "audio_create_buffer_sound", "audio_create_play_queue", "audio_create_stream", "audio_create_sync_group", "audio_debug", "audio_destroy_stream", "audio_destroy_sync_group", "audio_emitter_create", "audio_emitter_exists", "audio_emitter_falloff", "audio_emitter_free", "audio_emitter_gain", "audio_emitter_get_gain", "audio_emitter_get_listener_mask", "audio_emitter_get_pitch", "audio_emitter_get_vx", "audio_emitter_get_vy", "audio_emitter_get_vz", "audio_emitter_get_x", "audio_emitter_get_y", "audio_emitter_get_z", "audio_emitter_pitch", "audio_emitter_position", "audio_emitter_set_listener_mask", "audio_emitter_velocity", "audio_exists", "audio_falloff_set_model", "audio_free_buffer_sound", "audio_free_play_queue", "audio_get_listener_count", "audio_get_listener_info", "audio_get_listener_mask", "audio_get_master_gain", "audio_get_name", "audio_get_recorder_count", "audio_get_recorder_info", "audio_get_type", "audio_group_is_loaded", "audio_group_load", "audio_group_load_progress", "audio_group_name", "audio_group_set_gain", "audio_group_stop_all", "audio_group_unload", "audio_is_paused", "audio_is_playing", "audio_listener_get_data", "audio_listener_orientation", "audio_listener_position", "audio_listener_set_orientation", "audio_listener_set_position", "audio_listener_set_velocity", "audio_listener_velocity", "audio_master_gain", "audio_music_gain", "audio_music_is_playing", "audio_pause_all", "audio_pause_music", "audio_pause_sound", "audio_pause_sync_group", "audio_play_in_sync_group", "audio_play_music", "audio_play_sound", "audio_play_sound_at", "audio_play_sound_on", "audio_queue_sound", "audio_resume_all", "audio_resume_music", "audio_resume_sound", "audio_resume_sync_group", "audio_set_listener_mask", "audio_set_master_gain", "audio_sound_gain", "audio_sound_get_gain", "audio_sound_get_listener_mask", "audio_sound_get_pitch", "audio_sound_get_track_position", "audio_sound_length", "audio_sound_pitch", "audio_sound_set_listener_mask", "audio_sound_set_track_position", "audio_start_recording", "audio_start_sync_group", "audio_stop_all", "audio_stop_music", "audio_stop_recording", "audio_stop_sound", "audio_stop_sync_group", "audio_sync_group_debug", "audio_sync_group_get_track_pos", "audio_sync_group_is_playing", "audio_system", "background_get_height", "background_get_width", "base64_decode", "base64_encode", "browser_input_capture", "buffer_async_group_begin", "buffer_async_group_end", "buffer_async_group_option", "buffer_base64_decode", "buffer_base64_decode_ext", "buffer_base64_encode", "buffer_copy", "buffer_copy_from_vertex_buffer", "buffer_create", "buffer_create_from_vertex_buffer", "buffer_create_from_vertex_buffer_ext", "buffer_delete", "buffer_exists", "buffer_fill", "buffer_get_address", "buffer_get_alignment", "buffer_get_size", "buffer_get_surface", "buffer_get_type", "buffer_load", "buffer_load_async", "buffer_load_ext", "buffer_load_partial", "buffer_md5", "buffer_peek", "buffer_poke", "buffer_read", "buffer_resize", "buffer_save", "buffer_save_async", "buffer_save_ext", "buffer_seek", "buffer_set_surface", "buffer_sha1", "buffer_sizeof", "buffer_tell", "buffer_write", "camera_apply", "camera_create", "camera_create_view", "camera_destroy", "camera_get_active", "camera_get_begin_script", "camera_get_default", "camera_get_end_script", "camera_get_proj_mat", "camera_get_update_script", "camera_get_view_angle", "camera_get_view_border_x", "camera_get_view_border_y", "camera_get_view_height", "camera_get_view_mat", "camera_get_view_speed_x", "camera_get_view_speed_y", "camera_get_view_target", "camera_get_view_width", "camera_get_view_x", "camera_get_view_y", "camera_set_begin_script", "camera_set_default", "camera_set_end_script", "camera_set_proj_mat", "camera_set_update_script", "camera_set_view_angle", "camera_set_view_border", "camera_set_view_mat", "camera_set_view_pos", "camera_set_view_size", "camera_set_view_speed", "camera_set_view_target", "ceil", "choose", "chr", "clamp", "clickable_add", "clickable_add_ext", "clickable_change", "clickable_change_ext", "clickable_delete", "clickable_exists", "clickable_set_style", "clipboard_get_text", "clipboard_has_text", "clipboard_set_text", "cloud_file_save", "cloud_string_save", "cloud_synchronise", "code_is_compiled", "collision_circle", "collision_circle_list", "collision_ellipse", "collision_ellipse_list", "collision_line", "collision_line_list", "collision_point", "collision_point_list", "collision_rectangle", "collision_rectangle_list", "color_get_blue", "color_get_green", "color_get_hue", "color_get_red", "color_get_saturation", "color_get_value", "colour_get_blue", "colour_get_green", "colour_get_hue", "colour_get_red", "colour_get_saturation", "colour_get_value", "cos", "darccos", "darcsin", "darctan", "darctan2", "date_compare_date", "date_compare_datetime", "date_compare_time", "date_create_datetime", "date_current_datetime", "date_date_of", "date_date_string", "date_datetime_string", "date_day_span", "date_days_in_month", "date_days_in_year", "date_get_day", "date_get_day_of_year", "date_get_hour", "date_get_hour_of_year", "date_get_minute", "date_get_minute_of_year", "date_get_month", "date_get_second", "date_get_second_of_year", "date_get_timezone", "date_get_week", "date_get_weekday", "date_get_year", "date_hour_span", "date_inc_day", "date_inc_hour", "date_inc_minute", "date_inc_month", "date_inc_second", "date_inc_week", "date_inc_year", "date_is_today", "date_leap_year", "date_minute_span", "date_month_span", "date_second_span", "date_set_timezone", "date_time_of", "date_time_string", "date_valid_datetime", "date_week_span", "date_year_span", "dcos", "debug_event", "debug_get_callstack", "degtorad", "device_get_tilt_x", "device_get_tilt_y", "device_get_tilt_z", "device_is_keypad_open", "device_mouse_check_button", "device_mouse_check_button_pressed", "device_mouse_check_button_released", "device_mouse_dbclick_enable", "device_mouse_raw_x", "device_mouse_raw_y", "device_mouse_x", "device_mouse_x_to_gui", "device_mouse_y", "device_mouse_y_to_gui", "directory_create", "directory_destroy", "directory_exists", "display_get_dpi_x", "display_get_dpi_y", "display_get_gui_height", "display_get_gui_width", "display_get_height", "display_get_orientation", "display_get_sleep_margin", "display_get_timing_method", "display_get_width", "display_mouse_get_x", "display_mouse_get_y", "display_mouse_set", "display_reset", "display_set_gui_maximise", "display_set_gui_maximize", "display_set_gui_size", "display_set_sleep_margin", "display_set_timing_method", "display_set_ui_visibility", "distance_to_object", "distance_to_point", "dot_product", "dot_product_3d", "dot_product_3d_normalised", "dot_product_3d_normalized", "dot_product_normalised", "dot_product_normalized", "draw_arrow", "draw_background", "draw_background_ext", "draw_background_part_ext", "draw_background_tiled", "draw_button", "draw_circle", "draw_circle_color", "draw_circle_colour", "draw_clear", "draw_clear_alpha", "draw_ellipse", "draw_ellipse_color", "draw_ellipse_colour", "draw_enable_alphablend", "draw_enable_drawevent", "draw_enable_swf_aa", "draw_flush", "draw_get_alpha", "draw_get_color", "draw_get_colour", "draw_get_lighting", "draw_get_swf_aa_level", "draw_getpixel", "draw_getpixel_ext", "draw_healthbar", "draw_highscore", "draw_light_define_ambient", "draw_light_define_direction", "draw_light_define_point", "draw_light_enable", "draw_light_get", "draw_light_get_ambient", "draw_line", "draw_line_color", "draw_line_colour", "draw_line_width", "draw_line_width_color", "draw_line_width_colour", "draw_path", "draw_point", "draw_point_color", "draw_point_colour", "draw_primitive_begin", "draw_primitive_begin_texture", "draw_primitive_end", "draw_rectangle", "draw_rectangle_color", "draw_rectangle_colour", "draw_roundrect", "draw_roundrect_color", "draw_roundrect_color_ext", "draw_roundrect_colour", "draw_roundrect_colour_ext", "draw_roundrect_ext", "draw_self", "draw_set_alpha", "draw_set_alpha_test", "draw_set_alpha_test_ref_value", "draw_set_blend_mode", "draw_set_blend_mode_ext", "draw_set_circle_precision", "draw_set_color", "draw_set_color_write_enable", "draw_set_colour", "draw_set_font", "draw_set_halign", "draw_set_lighting", "draw_set_swf_aa_level", "draw_set_valign", "draw_skeleton", "draw_skeleton_collision", "draw_skeleton_instance", "draw_skeleton_time", "draw_sprite", "draw_sprite_ext", "draw_sprite_general", "draw_sprite_part", "draw_sprite_part_ext", "draw_sprite_pos", "draw_sprite_stretched", "draw_sprite_stretched_ext", "draw_sprite_tiled", "draw_sprite_tiled_ext", "draw_surface", "draw_surface_ext", "draw_surface_general", "draw_surface_part", "draw_surface_part_ext", "draw_surface_stretched", "draw_surface_stretched_ext", "draw_surface_tiled", "draw_surface_tiled_ext", "draw_text", "draw_text_color", "draw_text_colour", "draw_text_ext", "draw_text_ext_color", "draw_text_ext_colour", "draw_text_ext_transformed", "draw_text_ext_transformed_color", "draw_text_ext_transformed_colour", "draw_text_transformed", "draw_text_transformed_color", "draw_text_transformed_colour", "draw_texture_flush", "draw_tile", "draw_tilemap", "draw_triangle", "draw_triangle_color", "draw_triangle_colour", "draw_vertex", "draw_vertex_color", "draw_vertex_colour", "draw_vertex_texture", "draw_vertex_texture_color", "draw_vertex_texture_colour", "ds_exists", "ds_grid_add", "ds_grid_add_disk", "ds_grid_add_grid_region", "ds_grid_add_region", "ds_grid_clear", "ds_grid_copy", "ds_grid_create", "ds_grid_destroy", "ds_grid_get", "ds_grid_get_disk_max", "ds_grid_get_disk_mean", "ds_grid_get_disk_min", "ds_grid_get_disk_sum", "ds_grid_get_max", "ds_grid_get_mean", "ds_grid_get_min", "ds_grid_get_sum", "ds_grid_height", "ds_grid_multiply", "ds_grid_multiply_disk", "ds_grid_multiply_grid_region", "ds_grid_multiply_region", "ds_grid_read", "ds_grid_resize", "ds_grid_set", "ds_grid_set_disk", "ds_grid_set_grid_region", "ds_grid_set_region", "ds_grid_shuffle", "ds_grid_sort", "ds_grid_value_disk_exists", "ds_grid_value_disk_x", "ds_grid_value_disk_y", "ds_grid_value_exists", "ds_grid_value_x", "ds_grid_value_y", "ds_grid_width", "ds_grid_write", "ds_list_add", "ds_list_clear", "ds_list_copy", "ds_list_create", "ds_list_delete", "ds_list_destroy", "ds_list_empty", "ds_list_find_index", "ds_list_find_value", "ds_list_insert", "ds_list_mark_as_list", "ds_list_mark_as_map", "ds_list_read", "ds_list_replace", "ds_list_set", "ds_list_shuffle", "ds_list_size", "ds_list_sort", "ds_list_write", "ds_map_add", "ds_map_add_list", "ds_map_add_map", "ds_map_clear", "ds_map_copy", "ds_map_create", "ds_map_delete", "ds_map_destroy", "ds_map_empty", "ds_map_exists", "ds_map_find_first", "ds_map_find_last", "ds_map_find_next", "ds_map_find_previous", "ds_map_find_value", "ds_map_read", "ds_map_replace", "ds_map_replace_list", "ds_map_replace_map", "ds_map_secure_load", "ds_map_secure_load_buffer", "ds_map_secure_save", "ds_map_secure_save_buffer", "ds_map_set", "ds_map_size", "ds_map_write", "ds_priority_add", "ds_priority_change_priority", "ds_priority_clear", "ds_priority_copy", "ds_priority_create", "ds_priority_delete_max", "ds_priority_delete_min", "ds_priority_delete_value", "ds_priority_destroy", "ds_priority_empty", "ds_priority_find_max", "ds_priority_find_min", "ds_priority_find_priority", "ds_priority_read", "ds_priority_size", "ds_priority_write", "ds_queue_clear", "ds_queue_copy", "ds_queue_create", "ds_queue_dequeue", "ds_queue_destroy", "ds_queue_empty", "ds_queue_enqueue", "ds_queue_head", "ds_queue_read", "ds_queue_size", "ds_queue_tail", "ds_queue_write", "ds_set_precision", "ds_stack_clear", "ds_stack_copy", "ds_stack_create", "ds_stack_destroy", "ds_stack_empty", "ds_stack_pop", "ds_stack_push", "ds_stack_read", "ds_stack_size", "ds_stack_top", "ds_stack_write", "dsin", "dtan", "effect_clear", "effect_create_above", "effect_create_below", "environment_get_variable", "event_inherited", "event_perform", "event_perform_object", "event_user", "exp", "external_call", "external_define", "external_free", "facebook_accesstoken", "facebook_check_permission", "facebook_dialog", "facebook_graph_request", "facebook_init", "facebook_launch_offerwall", "facebook_login", "facebook_logout", "facebook_post_message", "facebook_request_publish_permissions", "facebook_request_read_permissions", "facebook_send_invite", "facebook_status", "facebook_user_id", "file_attributes", "file_bin_close", "file_bin_open", "file_bin_position", "file_bin_read_byte", "file_bin_rewrite", "file_bin_seek", "file_bin_size", "file_bin_write_byte", "file_copy", "file_delete", "file_exists", "file_find_close", "file_find_first", "file_find_next", "file_rename", "file_text_close", "file_text_eof", "file_text_eoln", "file_text_open_append", "file_text_open_from_string", "file_text_open_read", "file_text_open_write", "file_text_read_real", "file_text_read_string", "file_text_readln", "file_text_write_real", "file_text_write_string", "file_text_writeln", "filename_change_ext", "filename_dir", "filename_drive", "filename_ext", "filename_name", "filename_path", "floor", "font_add", "font_add_enable_aa", "font_add_get_enable_aa", "font_add_sprite", "font_add_sprite_ext", "font_delete", "font_exists", "font_get_bold", "font_get_first", "font_get_fontname", "font_get_italic", "font_get_last", "font_get_name", "font_get_size", "font_get_texture", "font_get_uvs", "font_replace", "font_replace_sprite", "font_replace_sprite_ext", "font_set_cache_size", "font_texture_page_size", "frac", "game_end", "game_get_speed", "game_load", "game_load_buffer", "game_restart", "game_save", "game_save_buffer", "game_set_speed", "gamepad_axis_count", "gamepad_axis_value", "gamepad_button_check", "gamepad_button_check_pressed", "gamepad_button_check_released", "gamepad_button_count", "gamepad_button_value", "gamepad_get_axis_deadzone", "gamepad_get_button_threshold", "gamepad_get_description", "gamepad_get_device_count", "gamepad_is_connected", "gamepad_is_supported", "gamepad_set_axis_deadzone", "gamepad_set_button_threshold", "gamepad_set_color", "gamepad_set_colour", "gamepad_set_vibration", "gesture_double_tap_distance", "gesture_double_tap_time", "gesture_drag_distance", "gesture_drag_time", "gesture_flick_speed", "gesture_get_double_tap_distance", "gesture_get_double_tap_time", "gesture_get_drag_distance", "gesture_get_drag_time", "gesture_get_flick_speed", "gesture_get_pinch_angle_away", "gesture_get_pinch_angle_towards", "gesture_get_pinch_distance", "gesture_get_rotate_angle", "gesture_get_rotate_time", "gesture_get_tap_count", "gesture_pinch_angle_away", "gesture_pinch_angle_towards", "gesture_pinch_distance", "gesture_rotate_angle", "gesture_rotate_time", "gesture_tap_count", "get_integer", "get_integer_async", "get_login_async", "get_open_filename", "get_open_filename_ext", "get_save_filename", "get_save_filename_ext", "get_string", "get_string_async", "get_timer", "gml_pragma", "gml_release_mode", "gpu_get_alphatestenable", "gpu_get_alphatestfunc", "gpu_get_alphatestref", "gpu_get_blendenable", "gpu_get_blendmode", "gpu_get_blendmode_dest", "gpu_get_blendmode_destalpha", "gpu_get_blendmode_ext", "gpu_get_blendmode_ext_sepalpha", "gpu_get_blendmode_src", "gpu_get_blendmode_srcalpha", "gpu_get_colorwriteenable", "gpu_get_colourwriteenable", "gpu_get_cullmode", "gpu_get_fog", "gpu_get_lightingenable", "gpu_get_state", "gpu_get_tex_filter", "gpu_get_tex_filter_ext", "gpu_get_tex_max_aniso", "gpu_get_tex_max_aniso_ext", "gpu_get_tex_max_mip", "gpu_get_tex_max_mip_ext", "gpu_get_tex_min_mip", "gpu_get_tex_min_mip_ext", "gpu_get_tex_mip_bias", "gpu_get_tex_mip_bias_ext", "gpu_get_tex_mip_enable", "gpu_get_tex_mip_enable_ext", "gpu_get_tex_mip_filter", "gpu_get_tex_mip_filter_ext", "gpu_get_tex_repeat", "gpu_get_tex_repeat_ext", "gpu_get_texfilter", "gpu_get_texfilter_ext", "gpu_get_texrepeat", "gpu_get_texrepeat_ext", "gpu_get_zfunc", "gpu_get_ztestenable", "gpu_get_zwriteenable", "gpu_pop_state", "gpu_push_state", "gpu_set_alphatestenable", "gpu_set_alphatestfunc", "gpu_set_alphatestref", "gpu_set_blendenable", "gpu_set_blendmode", "gpu_set_blendmode_ext", "gpu_set_blendmode_ext_sepalpha", "gpu_set_colorwriteenable", "gpu_set_colourwriteenable", "gpu_set_cullmode", "gpu_set_fog", "gpu_set_lightingenable", "gpu_set_state", "gpu_set_tex_filter", "gpu_set_tex_filter_ext", "gpu_set_tex_max_aniso", "gpu_set_tex_max_aniso_ext", "gpu_set_tex_max_mip", "gpu_set_tex_max_mip_ext", "gpu_set_tex_min_mip", "gpu_set_tex_min_mip_ext", "gpu_set_tex_mip_bias", "gpu_set_tex_mip_bias_ext", "gpu_set_tex_mip_enable", "gpu_set_tex_mip_enable_ext", "gpu_set_tex_mip_filter", "gpu_set_tex_mip_filter_ext", "gpu_set_tex_repeat", "gpu_set_tex_repeat_ext", "gpu_set_texfilter", "gpu_set_texfilter_ext", "gpu_set_texrepeat", "gpu_set_texrepeat_ext", "gpu_set_zfunc", "gpu_set_ztestenable", "gpu_set_zwriteenable", "highscore_add", "highscore_clear", "highscore_name", "highscore_value", "http_get", "http_get_file", "http_post_string", "http_request", "iap_acquire", "iap_activate", "iap_consume", "iap_enumerate_products", "iap_product_details", "iap_purchase_details", "iap_restore_all", "iap_status", "ini_close", "ini_key_delete", "ini_key_exists", "ini_open", "ini_open_from_string", "ini_read_real", "ini_read_string", "ini_section_delete", "ini_section_exists", "ini_write_real", "ini_write_string", "instance_activate_all", "instance_activate_layer", "instance_activate_object", "instance_activate_region", "instance_change", "instance_copy", "instance_create", "instance_create_depth", "instance_create_layer", "instance_deactivate_all", "instance_deactivate_layer", "instance_deactivate_object", "instance_deactivate_region", "instance_destroy", "instance_exists", "instance_find", "instance_furthest", "instance_id_get", "instance_nearest", "instance_number", "instance_place", "instance_place_list", "instance_position", "instance_position_list", "int64", "io_clear", "irandom", "irandom_range", "is_array", "is_bool", "is_infinity", "is_int32", "is_int64", "is_matrix", "is_method", "is_nan", "is_numeric", "is_ptr", "is_real", "is_string", "is_struct", "is_undefined", "is_vec3", "is_vec4", "json_decode", "json_encode", "keyboard_check", "keyboard_check_direct", "keyboard_check_pressed", "keyboard_check_released", "keyboard_clear", "keyboard_get_map", "keyboard_get_numlock", "keyboard_key_press", "keyboard_key_release", "keyboard_set_map", "keyboard_set_numlock", "keyboard_unset_map", "keyboard_virtual_height", "keyboard_virtual_hide", "keyboard_virtual_show", "keyboard_virtual_status", "layer_add_instance", "layer_background_alpha", "layer_background_blend", "layer_background_change", "layer_background_create", "layer_background_destroy", "layer_background_exists", "layer_background_get_alpha", "layer_background_get_blend", "layer_background_get_htiled", "layer_background_get_id", "layer_background_get_index", "layer_background_get_speed", "layer_background_get_sprite", "layer_background_get_stretch", "layer_background_get_visible", "layer_background_get_vtiled", "layer_background_get_xscale", "layer_background_get_yscale", "layer_background_htiled", "layer_background_index", "layer_background_speed", "layer_background_sprite", "layer_background_stretch", "layer_background_visible", "layer_background_vtiled", "layer_background_xscale", "layer_background_yscale", "layer_create", "layer_depth", "layer_destroy", "layer_destroy_instances", "layer_element_move", "layer_exists", "layer_force_draw_depth", "layer_get_all", "layer_get_all_elements", "layer_get_depth", "layer_get_element_layer", "layer_get_element_type", "layer_get_forced_depth", "layer_get_hspeed", "layer_get_id", "layer_get_id_at_depth", "layer_get_name", "layer_get_script_begin", "layer_get_script_end", "layer_get_shader", "layer_get_target_room", "layer_get_visible", "layer_get_vspeed", "layer_get_x", "layer_get_y", "layer_has_instance", "layer_hspeed", "layer_instance_get_instance", "layer_is_draw_depth_forced", "layer_reset_target_room", "layer_script_begin", "layer_script_end", "layer_set_target_room", "layer_set_visible", "layer_shader", "layer_sprite_alpha", "layer_sprite_angle", "layer_sprite_blend", "layer_sprite_change", "layer_sprite_create", "layer_sprite_destroy", "layer_sprite_exists", "layer_sprite_get_alpha", "layer_sprite_get_angle", "layer_sprite_get_blend", "layer_sprite_get_id", "layer_sprite_get_index", "layer_sprite_get_speed", "layer_sprite_get_sprite", "layer_sprite_get_x", "layer_sprite_get_xscale", "layer_sprite_get_y", "layer_sprite_get_yscale", "layer_sprite_index", "layer_sprite_speed", "layer_sprite_x", "layer_sprite_xscale", "layer_sprite_y", "layer_sprite_yscale", "layer_tile_alpha", "layer_tile_blend", "layer_tile_change", "layer_tile_create", "layer_tile_destroy", "layer_tile_exists", "layer_tile_get_alpha", "layer_tile_get_blend", "layer_tile_get_region", "layer_tile_get_sprite", "layer_tile_get_visible", "layer_tile_get_x", "layer_tile_get_xscale", "layer_tile_get_y", "layer_tile_get_yscale", "layer_tile_region", "layer_tile_visible", "layer_tile_x", "layer_tile_xscale", "layer_tile_y", "layer_tile_yscale", "layer_tilemap_create", "layer_tilemap_destroy", "layer_tilemap_exists", "layer_tilemap_get_id", "layer_vspeed", "layer_x", "layer_y", "lengthdir_x", "lengthdir_y", "lerp", "ln", "load_csv", "log10", "log2", "logn", "make_color_hsv", "make_color_rgb", "make_colour_hsv", "make_colour_rgb", "math_get_epsilon", "math_set_epsilon", "matrix_build", "matrix_build_identity", "matrix_build_lookat", "matrix_build_projection_ortho", "matrix_build_projection_perspective", "matrix_build_projection_perspective_fov", "matrix_get", "matrix_multiply", "matrix_set", "matrix_stack_clear", "matrix_stack_is_empty", "matrix_stack_multiply", "matrix_stack_pop", "matrix_stack_push", "matrix_stack_set", "matrix_stack_top", "matrix_transform_vertex", "max", "md5_file", "md5_string_unicode", "md5_string_utf8", "mean", "median", "merge_color", "merge_colour", "min", "motion_add", "motion_set", "mouse_check_button", "mouse_check_button_pressed", "mouse_check_button_released", "mouse_clear", "mouse_wheel_down", "mouse_wheel_up", "move_bounce_all", "move_bounce_solid", "move_contact_all", "move_contact_solid", "move_outside_all", "move_outside_solid", "move_random", "move_snap", "move_towards_point", "move_wrap", "mp_grid_add_cell", "mp_grid_add_instances", "mp_grid_add_rectangle", "mp_grid_clear_all", "mp_grid_clear_cell", "mp_grid_clear_rectangle", "mp_grid_create", "mp_grid_destroy", "mp_grid_draw", "mp_grid_get_cell", "mp_grid_path", "mp_grid_to_ds_grid", "mp_linear_path", "mp_linear_path_object", "mp_linear_step", "mp_linear_step_object", "mp_potential_path", "mp_potential_path_object", "mp_potential_settings", "mp_potential_step", "mp_potential_step_object", "network_connect", "network_connect_raw", "network_create_server", "network_create_server_raw", "network_create_socket", "network_create_socket_ext", "network_destroy", "network_resolve", "network_send_broadcast", "network_send_packet", "network_send_raw", "network_send_udp", "network_send_udp_raw", "network_set_config", "network_set_timeout", "object_exists", "object_get_depth", "object_get_mask", "object_get_name", "object_get_parent", "object_get_persistent", "object_get_physics", "object_get_solid", "object_get_sprite", "object_get_visible", "object_is_ancestor", "object_set_mask", "object_set_persistent", "object_set_solid", "object_set_sprite", "object_set_visible", "ord", "os_get_config", "os_get_info", "os_get_language", "os_get_region", "os_is_network_connected", "os_is_paused", "os_lock_orientation", "os_powersave_enable", "parameter_count", "parameter_string", "part_emitter_burst", "part_emitter_clear", "part_emitter_create", "part_emitter_destroy", "part_emitter_destroy_all", "part_emitter_exists", "part_emitter_region", "part_emitter_stream", "part_particles_clear", "part_particles_count", "part_particles_create", "part_particles_create_color", "part_particles_create_colour", "part_system_automatic_draw", "part_system_automatic_update", "part_system_clear", "part_system_create", "part_system_create_layer", "part_system_depth", "part_system_destroy", "part_system_draw_order", "part_system_drawit", "part_system_exists", "part_system_get_layer", "part_system_layer", "part_system_position", "part_system_update", "part_type_alpha1", "part_type_alpha2", "part_type_alpha3", "part_type_blend", "part_type_clear", "part_type_color1", "part_type_color2", "part_type_color3", "part_type_color_hsv", "part_type_color_mix", "part_type_color_rgb", "part_type_colour1", "part_type_colour2", "part_type_colour3", "part_type_colour_hsv", "part_type_colour_mix", "part_type_colour_rgb", "part_type_create", "part_type_death", "part_type_destroy", "part_type_direction", "part_type_exists", "part_type_gravity", "part_type_life", "part_type_orientation", "part_type_scale", "part_type_shape", "part_type_size", "part_type_speed", "part_type_sprite", "part_type_step", "path_add", "path_add_point", "path_append", "path_assign", "path_change_point", "path_clear_points", "path_delete", "path_delete_point", "path_duplicate", "path_end", "path_exists", "path_flip", "path_get_closed", "path_get_kind", "path_get_length", "path_get_name", "path_get_number", "path_get_point_speed", "path_get_point_x", "path_get_point_y", "path_get_precision", "path_get_speed", "path_get_time", "path_get_x", "path_get_y", "path_insert_point", "path_mirror", "path_rescale", "path_reverse", "path_rotate", "path_set_closed", "path_set_kind", "path_set_precision", "path_shift", "path_start", "physics_apply_angular_impulse", "physics_apply_force", "physics_apply_impulse", "physics_apply_local_force", "physics_apply_local_impulse", "physics_apply_torque", "physics_draw_debug", "physics_fixture_add_point", "physics_fixture_bind", "physics_fixture_bind_ext", "physics_fixture_create", "physics_fixture_delete", "physics_fixture_set_angular_damping", "physics_fixture_set_awake", "physics_fixture_set_box_shape", "physics_fixture_set_chain_shape", "physics_fixture_set_circle_shape", "physics_fixture_set_collision_group", "physics_fixture_set_density", "physics_fixture_set_edge_shape", "physics_fixture_set_friction", "physics_fixture_set_kinematic", "physics_fixture_set_linear_damping", "physics_fixture_set_polygon_shape", "physics_fixture_set_restitution", "physics_fixture_set_sensor", "physics_get_density", "physics_get_friction", "physics_get_restitution", "physics_joint_delete", "physics_joint_distance_create", "physics_joint_enable_motor", "physics_joint_friction_create", "physics_joint_gear_create", "physics_joint_get_value", "physics_joint_prismatic_create", "physics_joint_pulley_create", "physics_joint_revolute_create", "physics_joint_rope_create", "physics_joint_set_value", "physics_joint_weld_create", "physics_joint_wheel_create", "physics_mass_properties", "physics_particle_count", "physics_particle_create", "physics_particle_delete", "physics_particle_delete_region_box", "physics_particle_delete_region_circle", "physics_particle_delete_region_poly", "physics_particle_draw", "physics_particle_draw_ext", "physics_particle_get_damping", "physics_particle_get_data", "physics_particle_get_data_particle", "physics_particle_get_density", "physics_particle_get_gravity_scale", "physics_particle_get_group_flags", "physics_particle_get_max_count", "physics_particle_get_radius", "physics_particle_group_add_point", "physics_particle_group_begin", "physics_particle_group_box", "physics_particle_group_circle", "physics_particle_group_count", "physics_particle_group_delete", "physics_particle_group_end", "physics_particle_group_get_ang_vel", "physics_particle_group_get_angle", "physics_particle_group_get_centre_x", "physics_particle_group_get_centre_y", "physics_particle_group_get_data", "physics_particle_group_get_inertia", "physics_particle_group_get_mass", "physics_particle_group_get_vel_x", "physics_particle_group_get_vel_y", "physics_particle_group_get_x", "physics_particle_group_get_y", "physics_particle_group_join", "physics_particle_group_polygon", "physics_particle_set_category_flags", "physics_particle_set_damping", "physics_particle_set_density", "physics_particle_set_flags", "physics_particle_set_gravity_scale", "physics_particle_set_group_flags", "physics_particle_set_max_count", "physics_particle_set_radius", "physics_pause_enable", "physics_remove_fixture", "physics_set_density", "physics_set_friction", "physics_set_restitution", "physics_test_overlap", "physics_world_create", "physics_world_draw_debug", "physics_world_gravity", "physics_world_update_iterations", "physics_world_update_speed", "place_empty", "place_free", "place_meeting", "place_snapped", "point_direction", "point_distance", "point_distance_3d", "point_in_circle", "point_in_rectangle", "point_in_triangle", "position_change", "position_destroy", "position_empty", "position_meeting", "power", "ptr", "push_cancel_local_notification", "push_get_first_local_notification", "push_get_next_local_notification", "push_local_notification", "radtodeg", "random", "random_get_seed", "random_range", "random_set_seed", "randomise", "randomize", "real", "rectangle_in_circle", "rectangle_in_rectangle", "rectangle_in_triangle", "room_add", "room_assign", "room_duplicate", "room_exists", "room_get_camera", "room_get_name", "room_get_viewport", "room_goto", "room_goto_next", "room_goto_previous", "room_instance_add", "room_instance_clear", "room_next", "room_previous", "room_restart", "room_set_background_color", "room_set_background_colour", "room_set_camera", "room_set_height", "room_set_persistent", "room_set_view", "room_set_view_enabled", "room_set_viewport", "room_set_width", "round", "screen_save", "screen_save_part", "script_execute", "script_exists", "script_get_name", "sha1_file", "sha1_string_unicode", "sha1_string_utf8", "shader_current", "shader_enable_corner_id", "shader_get_name", "shader_get_sampler_index", "shader_get_uniform", "shader_is_compiled", "shader_reset", "shader_set", "shader_set_uniform_f", "shader_set_uniform_f_array", "shader_set_uniform_i", "shader_set_uniform_i_array", "shader_set_uniform_matrix", "shader_set_uniform_matrix_array", "shaders_are_supported", "shop_leave_rating", "show_debug_message", "show_debug_overlay", "show_error", "show_message", "show_message_async", "show_question", "show_question_async", "sign", "sin", "skeleton_animation_clear", "skeleton_animation_get", "skeleton_animation_get_duration", "skeleton_animation_get_ext", "skeleton_animation_get_frame", "skeleton_animation_get_frames", "skeleton_animation_list", "skeleton_animation_mix", "skeleton_animation_set", "skeleton_animation_set_ext", "skeleton_animation_set_frame", "skeleton_attachment_create", "skeleton_attachment_get", "skeleton_attachment_set", "skeleton_bone_data_get", "skeleton_bone_data_set", "skeleton_bone_state_get", "skeleton_bone_state_set", "skeleton_collision_draw_set", "skeleton_get_bounds", "skeleton_get_minmax", "skeleton_get_num_bounds", "skeleton_skin_get", "skeleton_skin_list", "skeleton_skin_set", "skeleton_slot_data", "sprite_add", "sprite_add_from_surface", "sprite_assign", "sprite_collision_mask", "sprite_create_from_surface", "sprite_delete", "sprite_duplicate", "sprite_exists", "sprite_flush", "sprite_flush_multi", "sprite_get_bbox_bottom", "sprite_get_bbox_left", "sprite_get_bbox_right", "sprite_get_bbox_top", "sprite_get_height", "sprite_get_name", "sprite_get_number", "sprite_get_speed", "sprite_get_speed_type", "sprite_get_texture", "sprite_get_tpe", "sprite_get_uvs", "sprite_get_width", "sprite_get_xoffset", "sprite_get_yoffset", "sprite_merge", "sprite_prefetch", "sprite_prefetch_multi", "sprite_replace", "sprite_save", "sprite_save_strip", "sprite_set_alpha_from_sprite", "sprite_set_cache_size", "sprite_set_cache_size_ext", "sprite_set_offset", "sprite_set_speed", "sqr", "sqrt", "steam_activate_overlay", "steam_activate_overlay_browser", "steam_activate_overlay_store", "steam_activate_overlay_user", "steam_available_languages", "steam_clear_achievement", "steam_create_leaderboard", "steam_current_game_language", "steam_download_friends_scores", "steam_download_scores", "steam_download_scores_around_user", "steam_file_delete", "steam_file_exists", "steam_file_persisted", "steam_file_read", "steam_file_share", "steam_file_size", "steam_file_write", "steam_file_write_file", "steam_get_achievement", "steam_get_app_id", "steam_get_persona_name", "steam_get_quota_free", "steam_get_quota_total", "steam_get_stat_avg_rate", "steam_get_stat_float", "steam_get_stat_int", "steam_get_user_account_id", "steam_get_user_persona_name", "steam_get_user_steam_id", "steam_initialised", "steam_is_cloud_enabled_for_account", "steam_is_cloud_enabled_for_app", "steam_is_overlay_activated", "steam_is_overlay_enabled", "steam_is_screenshot_requested", "steam_is_user_logged_on", "steam_reset_all_stats", "steam_reset_all_stats_achievements", "steam_send_screenshot", "steam_set_achievement", "steam_set_stat_avg_rate", "steam_set_stat_float", "steam_set_stat_int", "steam_stats_ready", "steam_ugc_create_item", "steam_ugc_create_query_all", "steam_ugc_create_query_all_ex", "steam_ugc_create_query_user", "steam_ugc_create_query_user_ex", "steam_ugc_download", "steam_ugc_get_item_install_info", "steam_ugc_get_item_update_info", "steam_ugc_get_item_update_progress", "steam_ugc_get_subscribed_items", "steam_ugc_num_subscribed_items", "steam_ugc_query_add_excluded_tag", "steam_ugc_query_add_required_tag", "steam_ugc_query_set_allow_cached_response", "steam_ugc_query_set_cloud_filename_filter", "steam_ugc_query_set_match_any_tag", "steam_ugc_query_set_ranked_by_trend_days", "steam_ugc_query_set_return_long_description", "steam_ugc_query_set_return_total_only", "steam_ugc_query_set_search_text", "steam_ugc_request_item_details", "steam_ugc_send_query", "steam_ugc_set_item_content", "steam_ugc_set_item_description", "steam_ugc_set_item_preview", "steam_ugc_set_item_tags", "steam_ugc_set_item_title", "steam_ugc_set_item_visibility", "steam_ugc_start_item_update", "steam_ugc_submit_item_update", "steam_ugc_subscribe_item", "steam_ugc_unsubscribe_item", "steam_upload_score", "steam_upload_score_buffer", "steam_upload_score_buffer_ext", "steam_upload_score_ext", "steam_user_installed_dlc", "steam_user_owns_dlc", "string", "string_byte_at", "string_byte_length", "string_char_at", "string_copy", "string_count", "string_delete", "string_digits", "string_format", "string_hash_to_newline", "string_height", "string_height_ext", "string_insert", "string_length", "string_letters", "string_lettersdigits", "string_lower", "string_ord_at", "string_pos", "string_repeat", "string_replace", "string_replace_all", "string_set_byte_at", "string_upper", "string_width", "string_width_ext", "surface_copy", "surface_copy_part", "surface_create", "surface_create_ext", "surface_depth_disable", "surface_exists", "surface_free", "surface_get_depth_disable", "surface_get_height", "surface_get_texture", "surface_get_width", "surface_getpixel", "surface_getpixel_ext", "surface_reset_target", "surface_resize", "surface_save", "surface_save_part", "surface_set_target", "surface_set_target_ext", "tan", "texture_get_height", "texture_get_texel_height", "texture_get_texel_width", "texture_get_uvs", "texture_get_width", "texture_global_scale", "texture_set_stage", "tile_get_empty", "tile_get_flip", "tile_get_index", "tile_get_mirror", "tile_get_rotate", "tile_set_empty", "tile_set_flip", "tile_set_index", "tile_set_mirror", "tile_set_rotate", "tilemap_clear", "tilemap_get", "tilemap_get_at_pixel", "tilemap_get_cell_x_at_pixel", "tilemap_get_cell_y_at_pixel", "tilemap_get_frame", "tilemap_get_global_mask", "tilemap_get_height", "tilemap_get_mask", "tilemap_get_tile_height", "tilemap_get_tile_width", "tilemap_get_tileset", "tilemap_get_width", "tilemap_get_x", "tilemap_get_y", "tilemap_set", "tilemap_set_at_pixel", "tilemap_set_global_mask", "tilemap_set_mask", "tilemap_tileset", "tilemap_x", "tilemap_y", "timeline_add", "timeline_clear", "timeline_delete", "timeline_exists", "timeline_get_name", "timeline_max_moment", "timeline_moment_add_script", "timeline_moment_clear", "timeline_size", "typeof", "url_get_domain", "url_open", "url_open_ext", "url_open_full", "variable_global_exists", "variable_global_get", "variable_global_set", "variable_instance_exists", "variable_instance_get", "variable_instance_get_names", "variable_instance_set", "variable_struct_exists", "variable_struct_get", "variable_struct_get_names", "variable_struct_names_count", "variable_struct_remove", "variable_struct_set", "vertex_argb", "vertex_begin", "vertex_color", "vertex_colour", "vertex_create_buffer", "vertex_create_buffer_ext", "vertex_create_buffer_from_buffer", "vertex_create_buffer_from_buffer_ext", "vertex_delete_buffer", "vertex_end", "vertex_float1", "vertex_float2", "vertex_float3", "vertex_float4", "vertex_format_add_color", "vertex_format_add_colour", "vertex_format_add_custom", "vertex_format_add_normal", "vertex_format_add_position", "vertex_format_add_position_3d", "vertex_format_add_texcoord", "vertex_format_add_textcoord", "vertex_format_begin", "vertex_format_delete", "vertex_format_end", "vertex_freeze", "vertex_get_buffer_size", "vertex_get_number", "vertex_normal", "vertex_position", "vertex_position_3d", "vertex_submit", "vertex_texcoord", "vertex_ubyte4", "view_get_camera", "view_get_hport", "view_get_surface_id", "view_get_visible", "view_get_wport", "view_get_xport", "view_get_yport", "view_set_camera", "view_set_hport", "view_set_surface_id", "view_set_visible", "view_set_wport", "view_set_xport", "view_set_yport", "virtual_key_add", "virtual_key_delete", "virtual_key_hide", "virtual_key_show", "win8_appbar_add_element", "win8_appbar_enable", "win8_appbar_remove_element", "win8_device_touchscreen_available", "win8_license_initialize_sandbox", "win8_license_trial_version", "win8_livetile_badge_clear", "win8_livetile_badge_notification", "win8_livetile_notification_begin", "win8_livetile_notification_end", "win8_livetile_notification_expiry", "win8_livetile_notification_image_add", "win8_livetile_notification_secondary_begin", "win8_livetile_notification_tag", "win8_livetile_notification_text_add", "win8_livetile_queue_enable", "win8_livetile_tile_clear", "win8_livetile_tile_notification", "win8_search_add_suggestions", "win8_search_disable", "win8_search_enable", "win8_secondarytile_badge_notification", "win8_secondarytile_delete", "win8_secondarytile_pin", "win8_settingscharm_add_entry", "win8_settingscharm_add_html_entry", "win8_settingscharm_add_xaml_entry", "win8_settingscharm_get_xaml_property", "win8_settingscharm_remove_entry", "win8_settingscharm_set_xaml_property", "win8_share_file", "win8_share_image", "win8_share_screenshot", "win8_share_text", "win8_share_url", "window_center", "window_device", "window_get_caption", "window_get_color", "window_get_colour", "window_get_cursor", "window_get_fullscreen", "window_get_height", "window_get_visible_rects", "window_get_width", "window_get_x", "window_get_y", "window_handle", "window_has_focus", "window_mouse_get_x", "window_mouse_get_y", "window_mouse_set", "window_set_caption", "window_set_color", "window_set_colour", "window_set_cursor", "window_set_fullscreen", "window_set_max_height", "window_set_max_width", "window_set_min_height", "window_set_min_width", "window_set_position", "window_set_rectangle", "window_set_size", "window_view_mouse_get_x", "window_view_mouse_get_y", "window_views_mouse_get_x", "window_views_mouse_get_y", "winphone_license_trial_version", "winphone_tile_back_content", "winphone_tile_back_content_wide", "winphone_tile_back_image", "winphone_tile_back_image_wide", "winphone_tile_back_title", "winphone_tile_background_color", "winphone_tile_background_colour", "winphone_tile_count", "winphone_tile_cycle_images", "winphone_tile_front_image", "winphone_tile_front_image_small", "winphone_tile_front_image_wide", "winphone_tile_icon_image", "winphone_tile_small_background_image", "winphone_tile_small_icon_image", "winphone_tile_title", "winphone_tile_wide_content", "zip_unzip"],
-                literal: ["all", "false", "noone", "pointer_invalid", "pointer_null", "true", "undefined"],
-                symbol: ["ANSI_CHARSET", "ARABIC_CHARSET", "BALTIC_CHARSET", "CHINESEBIG5_CHARSET", "DEFAULT_CHARSET", "EASTEUROPE_CHARSET", "GB2312_CHARSET", "GM_build_date", "GM_runtime_version", "GM_version", "GREEK_CHARSET", "HANGEUL_CHARSET", "HEBREW_CHARSET", "JOHAB_CHARSET", "MAC_CHARSET", "OEM_CHARSET", "RUSSIAN_CHARSET", "SHIFTJIS_CHARSET", "SYMBOL_CHARSET", "THAI_CHARSET", "TURKISH_CHARSET", "VIETNAMESE_CHARSET", "achievement_achievement_info", "achievement_filter_all_players", "achievement_filter_favorites_only", "achievement_filter_friends_only", "achievement_friends_info", "achievement_leaderboard_info", "achievement_our_info", "achievement_pic_loaded", "achievement_show_achievement", "achievement_show_bank", "achievement_show_friend_picker", "achievement_show_leaderboard", "achievement_show_profile", "achievement_show_purchase_prompt", "achievement_show_ui", "achievement_type_achievement_challenge", "achievement_type_score_challenge", "asset_font", "asset_object", "asset_path", "asset_room", "asset_script", "asset_shader", "asset_sound", "asset_sprite", "asset_tiles", "asset_timeline", "asset_unknown", "audio_3d", "audio_falloff_exponent_distance", "audio_falloff_exponent_distance_clamped", "audio_falloff_inverse_distance", "audio_falloff_inverse_distance_clamped", "audio_falloff_linear_distance", "audio_falloff_linear_distance_clamped", "audio_falloff_none", "audio_mono", "audio_new_system", "audio_old_system", "audio_stereo", "bm_add", "bm_complex", "bm_dest_alpha", "bm_dest_color", "bm_dest_colour", "bm_inv_dest_alpha", "bm_inv_dest_color", "bm_inv_dest_colour", "bm_inv_src_alpha", "bm_inv_src_color", "bm_inv_src_colour", "bm_max", "bm_normal", "bm_one", "bm_src_alpha", "bm_src_alpha_sat", "bm_src_color", "bm_src_colour", "bm_subtract", "bm_zero", "browser_chrome", "browser_edge", "browser_firefox", "browser_ie", "browser_ie_mobile", "browser_not_a_browser", "browser_opera", "browser_safari", "browser_safari_mobile", "browser_tizen", "browser_unknown", "browser_windows_store", "buffer_bool", "buffer_f16", "buffer_f32", "buffer_f64", "buffer_fast", "buffer_fixed", "buffer_generalerror", "buffer_grow", "buffer_invalidtype", "buffer_network", "buffer_outofbounds", "buffer_outofspace", "buffer_s16", "buffer_s32", "buffer_s8", "buffer_seek_end", "buffer_seek_relative", "buffer_seek_start", "buffer_string", "buffer_surface_copy", "buffer_text", "buffer_u16", "buffer_u32", "buffer_u64", "buffer_u8", "buffer_vbuffer", "buffer_wrap", "button_type", "c_aqua", "c_black", "c_blue", "c_dkgray", "c_fuchsia", "c_gray", "c_green", "c_lime", "c_ltgray", "c_maroon", "c_navy", "c_olive", "c_orange", "c_purple", "c_red", "c_silver", "c_teal", "c_white", "c_yellow", "cmpfunc_always", "cmpfunc_equal", "cmpfunc_greater", "cmpfunc_greaterequal", "cmpfunc_less", "cmpfunc_lessequal", "cmpfunc_never", "cmpfunc_notequal", "cr_appstart", "cr_arrow", "cr_beam", "cr_cross", "cr_default", "cr_drag", "cr_handpoint", "cr_hourglass", "cr_none", "cr_size_all", "cr_size_nesw", "cr_size_ns", "cr_size_nwse", "cr_size_we", "cr_uparrow", "cull_clockwise", "cull_counterclockwise", "cull_noculling", "device_emulator", "device_ios_ipad", "device_ios_ipad_retina", "device_ios_iphone", "device_ios_iphone5", "device_ios_iphone6", "device_ios_iphone6plus", "device_ios_iphone_retina", "device_ios_unknown", "device_tablet", "display_landscape", "display_landscape_flipped", "display_portrait", "display_portrait_flipped", "dll_cdecl", "dll_stdcall", "ds_type_grid", "ds_type_list", "ds_type_map", "ds_type_priority", "ds_type_queue", "ds_type_stack", "ef_cloud", "ef_ellipse", "ef_explosion", "ef_firework", "ef_flare", "ef_rain", "ef_ring", "ef_smoke", "ef_smokeup", "ef_snow", "ef_spark", "ef_star", "ev_alarm", "ev_animation_end", "ev_boundary", "ev_cleanup", "ev_close_button", "ev_collision", "ev_create", "ev_destroy", "ev_draw", "ev_draw_begin", "ev_draw_end", "ev_draw_post", "ev_draw_pre", "ev_end_of_path", "ev_game_end", "ev_game_start", "ev_gesture", "ev_gesture_double_tap", "ev_gesture_drag_end", "ev_gesture_drag_start", "ev_gesture_dragging", "ev_gesture_flick", "ev_gesture_pinch_end", "ev_gesture_pinch_in", "ev_gesture_pinch_out", "ev_gesture_pinch_start", "ev_gesture_rotate_end", "ev_gesture_rotate_start", "ev_gesture_rotating", "ev_gesture_tap", "ev_global_gesture_double_tap", "ev_global_gesture_drag_end", "ev_global_gesture_drag_start", "ev_global_gesture_dragging", "ev_global_gesture_flick", "ev_global_gesture_pinch_end", "ev_global_gesture_pinch_in", "ev_global_gesture_pinch_out", "ev_global_gesture_pinch_start", "ev_global_gesture_rotate_end", "ev_global_gesture_rotate_start", "ev_global_gesture_rotating", "ev_global_gesture_tap", "ev_global_left_button", "ev_global_left_press", "ev_global_left_release", "ev_global_middle_button", "ev_global_middle_press", "ev_global_middle_release", "ev_global_right_button", "ev_global_right_press", "ev_global_right_release", "ev_gui", "ev_gui_begin", "ev_gui_end", "ev_joystick1_button1", "ev_joystick1_button2", "ev_joystick1_button3", "ev_joystick1_button4", "ev_joystick1_button5", "ev_joystick1_button6", "ev_joystick1_button7", "ev_joystick1_button8", "ev_joystick1_down", "ev_joystick1_left", "ev_joystick1_right", "ev_joystick1_up", "ev_joystick2_button1", "ev_joystick2_button2", "ev_joystick2_button3", "ev_joystick2_button4", "ev_joystick2_button5", "ev_joystick2_button6", "ev_joystick2_button7", "ev_joystick2_button8", "ev_joystick2_down", "ev_joystick2_left", "ev_joystick2_right", "ev_joystick2_up", "ev_keyboard", "ev_keypress", "ev_keyrelease", "ev_left_button", "ev_left_press", "ev_left_release", "ev_middle_button", "ev_middle_press", "ev_middle_release", "ev_mouse", "ev_mouse_enter", "ev_mouse_leave", "ev_mouse_wheel_down", "ev_mouse_wheel_up", "ev_no_button", "ev_no_more_health", "ev_no_more_lives", "ev_other", "ev_outside", "ev_right_button", "ev_right_press", "ev_right_release", "ev_room_end", "ev_room_start", "ev_step", "ev_step_begin", "ev_step_end", "ev_step_normal", "ev_trigger", "ev_user0", "ev_user1", "ev_user2", "ev_user3", "ev_user4", "ev_user5", "ev_user6", "ev_user7", "ev_user8", "ev_user9", "ev_user10", "ev_user11", "ev_user12", "ev_user13", "ev_user14", "ev_user15", "fa_archive", "fa_bottom", "fa_center", "fa_directory", "fa_hidden", "fa_left", "fa_middle", "fa_readonly", "fa_right", "fa_sysfile", "fa_top", "fa_volumeid", "fb_login_default", "fb_login_fallback_to_webview", "fb_login_forcing_safari", "fb_login_forcing_webview", "fb_login_no_fallback_to_webview", "fb_login_use_system_account", "gamespeed_fps", "gamespeed_microseconds", "ge_lose", "global", "gp_axislh", "gp_axislv", "gp_axisrh", "gp_axisrv", "gp_face1", "gp_face2", "gp_face3", "gp_face4", "gp_padd", "gp_padl", "gp_padr", "gp_padu", "gp_select", "gp_shoulderl", "gp_shoulderlb", "gp_shoulderr", "gp_shoulderrb", "gp_start", "gp_stickl", "gp_stickr", "iap_available", "iap_canceled", "iap_ev_consume", "iap_ev_product", "iap_ev_purchase", "iap_ev_restore", "iap_ev_storeload", "iap_failed", "iap_purchased", "iap_refunded", "iap_status_available", "iap_status_loading", "iap_status_processing", "iap_status_restoring", "iap_status_unavailable", "iap_status_uninitialised", "iap_storeload_failed", "iap_storeload_ok", "iap_unavailable", "input_type", "kbv_autocapitalize_characters", "kbv_autocapitalize_none", "kbv_autocapitalize_sentences", "kbv_autocapitalize_words", "kbv_returnkey_continue", "kbv_returnkey_default", "kbv_returnkey_done", "kbv_returnkey_emergency", "kbv_returnkey_go", "kbv_returnkey_google", "kbv_returnkey_join", "kbv_returnkey_next", "kbv_returnkey_route", "kbv_returnkey_search", "kbv_returnkey_send", "kbv_returnkey_yahoo", "kbv_type_ascii", "kbv_type_default", "kbv_type_email", "kbv_type_numbers", "kbv_type_phone", "kbv_type_phone_name", "kbv_type_url", "layerelementtype_background", "layerelementtype_instance", "layerelementtype_oldtilemap", "layerelementtype_particlesystem", "layerelementtype_sprite", "layerelementtype_tile", "layerelementtype_tilemap", "layerelementtype_undefined", "lb_disp_none", "lb_disp_numeric", "lb_disp_time_ms", "lb_disp_time_sec", "lb_sort_ascending", "lb_sort_descending", "lb_sort_none", "leaderboard_type_number", "leaderboard_type_time_mins_secs", "lighttype_dir", "lighttype_point", "local", "matrix_projection", "matrix_view", "matrix_world", "mb_any", "mb_left", "mb_middle", "mb_none", "mb_right", "mip_markedonly", "mip_off", "mip_on", "network_config_connect_timeout", "network_config_disable_reliable_udp", "network_config_enable_reliable_udp", "network_config_use_non_blocking_socket", "network_socket_bluetooth", "network_socket_tcp", "network_socket_udp", "network_type_connect", "network_type_data", "network_type_disconnect", "network_type_non_blocking_connect", "of_challen", "of_challenge_tie", "of_challenge_win", "os_3ds", "os_android", "os_bb10", "os_ios", "os_linux", "os_macosx", "os_ps3", "os_ps4", "os_psvita", "os_switch", "os_symbian", "os_tizen", "os_tvos", "os_unknown", "os_uwp", "os_wiiu", "os_win32", "os_win8native", "os_windows", "os_winphone", "os_xbox360", "os_xboxone", "other", "ov_achievements", "ov_community", "ov_friends", "ov_gamegroup", "ov_players", "ov_settings", "path_action_continue", "path_action_restart", "path_action_reverse", "path_action_stop", "phy_debug_render_aabb", "phy_debug_render_collision_pairs", "phy_debug_render_coms", "phy_debug_render_core_shapes", "phy_debug_render_joints", "phy_debug_render_obb", "phy_debug_render_shapes", "phy_joint_anchor_1_x", "phy_joint_anchor_1_y", "phy_joint_anchor_2_x", "phy_joint_anchor_2_y", "phy_joint_angle", "phy_joint_angle_limits", "phy_joint_damping_ratio", "phy_joint_frequency", "phy_joint_length_1", "phy_joint_length_2", "phy_joint_lower_angle_limit", "phy_joint_max_force", "phy_joint_max_length", "phy_joint_max_motor_force", "phy_joint_max_motor_torque", "phy_joint_max_torque", "phy_joint_motor_force", "phy_joint_motor_speed", "phy_joint_motor_torque", "phy_joint_reaction_force_x", "phy_joint_reaction_force_y", "phy_joint_reaction_torque", "phy_joint_speed", "phy_joint_translation", "phy_joint_upper_angle_limit", "phy_particle_data_flag_category", "phy_particle_data_flag_color", "phy_particle_data_flag_colour", "phy_particle_data_flag_position", "phy_particle_data_flag_typeflags", "phy_particle_data_flag_velocity", "phy_particle_flag_colormixing", "phy_particle_flag_colourmixing", "phy_particle_flag_elastic", "phy_particle_flag_powder", "phy_particle_flag_spring", "phy_particle_flag_tensile", "phy_particle_flag_viscous", "phy_particle_flag_wall", "phy_particle_flag_water", "phy_particle_flag_zombie", "phy_particle_group_flag_rigid", "phy_particle_group_flag_solid", "pi", "pr_linelist", "pr_linestrip", "pr_pointlist", "pr_trianglefan", "pr_trianglelist", "pr_trianglestrip", "ps_distr_gaussian", "ps_distr_invgaussian", "ps_distr_linear", "ps_shape_diamond", "ps_shape_ellipse", "ps_shape_line", "ps_shape_rectangle", "pt_shape_circle", "pt_shape_cloud", "pt_shape_disk", "pt_shape_explosion", "pt_shape_flare", "pt_shape_line", "pt_shape_pixel", "pt_shape_ring", "pt_shape_smoke", "pt_shape_snow", "pt_shape_spark", "pt_shape_sphere", "pt_shape_square", "pt_shape_star", "spritespeed_framespergameframe", "spritespeed_framespersecond", "text_type", "tf_anisotropic", "tf_linear", "tf_point", "tile_flip", "tile_index_mask", "tile_mirror", "tile_rotate", "timezone_local", "timezone_utc", "tm_countvsyncs", "tm_sleep", "ty_real", "ty_string", "ugc_filetype_community", "ugc_filetype_microtrans", "ugc_list_Favorited", "ugc_list_Followed", "ugc_list_Published", "ugc_list_Subscribed", "ugc_list_UsedOrPlayed", "ugc_list_VotedDown", "ugc_list_VotedOn", "ugc_list_VotedUp", "ugc_list_WillVoteLater", "ugc_match_AllGuides", "ugc_match_Artwork", "ugc_match_Collections", "ugc_match_ControllerBindings", "ugc_match_IntegratedGuides", "ugc_match_Items", "ugc_match_Items_Mtx", "ugc_match_Items_ReadyToUse", "ugc_match_Screenshots", "ugc_match_UsableInGame", "ugc_match_Videos", "ugc_match_WebGuides", "ugc_query_AcceptedForGameRankedByAcceptanceDate", "ugc_query_CreatedByFollowedUsersRankedByPublicationDate", "ugc_query_CreatedByFriendsRankedByPublicationDate", "ugc_query_FavoritedByFriendsRankedByPublicationDate", "ugc_query_NotYetRated", "ugc_query_RankedByNumTimesReported", "ugc_query_RankedByPublicationDate", "ugc_query_RankedByTextSearch", "ugc_query_RankedByTotalVotesAsc", "ugc_query_RankedByTrend", "ugc_query_RankedByVote", "ugc_query_RankedByVotesUp", "ugc_result_success", "ugc_sortorder_CreationOrderAsc", "ugc_sortorder_CreationOrderDesc", "ugc_sortorder_ForModeration", "ugc_sortorder_LastUpdatedDesc", "ugc_sortorder_SubscriptionDateDesc", "ugc_sortorder_TitleAsc", "ugc_sortorder_VoteScoreDesc", "ugc_visibility_friends_only", "ugc_visibility_private", "ugc_visibility_public", "vertex_type_color", "vertex_type_colour", "vertex_type_float1", "vertex_type_float2", "vertex_type_float3", "vertex_type_float4", "vertex_type_ubyte4", "vertex_usage_binormal", "vertex_usage_blendindices", "vertex_usage_blendweight", "vertex_usage_color", "vertex_usage_colour", "vertex_usage_depth", "vertex_usage_fog", "vertex_usage_normal", "vertex_usage_position", "vertex_usage_psize", "vertex_usage_sample", "vertex_usage_tangent", "vertex_usage_texcoord", "vertex_usage_textcoord", "vk_add", "vk_alt", "vk_anykey", "vk_backspace", "vk_control", "vk_decimal", "vk_delete", "vk_divide", "vk_down", "vk_end", "vk_enter", "vk_escape", "vk_f1", "vk_f2", "vk_f3", "vk_f4", "vk_f5", "vk_f6", "vk_f7", "vk_f8", "vk_f9", "vk_f10", "vk_f11", "vk_f12", "vk_home", "vk_insert", "vk_lalt", "vk_lcontrol", "vk_left", "vk_lshift", "vk_multiply", "vk_nokey", "vk_numpad0", "vk_numpad1", "vk_numpad2", "vk_numpad3", "vk_numpad4", "vk_numpad5", "vk_numpad6", "vk_numpad7", "vk_numpad8", "vk_numpad9", "vk_pagedown", "vk_pageup", "vk_pause", "vk_printscreen", "vk_ralt", "vk_rcontrol", "vk_return", "vk_right", "vk_rshift", "vk_shift", "vk_space", "vk_subtract", "vk_tab", "vk_up"],
-                "variable.language": ["alarm", "application_surface", "argument", "argument0", "argument1", "argument2", "argument3", "argument4", "argument5", "argument6", "argument7", "argument8", "argument9", "argument10", "argument11", "argument12", "argument13", "argument14", "argument15", "argument_count", "argument_relative", "async_load", "background_color", "background_colour", "background_showcolor", "background_showcolour", "bbox_bottom", "bbox_left", "bbox_right", "bbox_top", "browser_height", "browser_width", "caption_health", "caption_lives", "caption_score", "current_day", "current_hour", "current_minute", "current_month", "current_second", "current_time", "current_weekday", "current_year", "cursor_sprite", "debug_mode", "delta_time", "depth", "direction", "display_aa", "error_last", "error_occurred", "event_action", "event_data", "event_number", "event_object", "event_type", "fps", "fps_real", "friction", "game_display_name", "game_id", "game_project_name", "game_save_id", "gamemaker_pro", "gamemaker_registered", "gamemaker_version", "gravity", "gravity_direction", "health", "hspeed", "iap_data", "id|0", "image_alpha", "image_angle", "image_blend", "image_index", "image_number", "image_speed", "image_xscale", "image_yscale", "instance_count", "instance_id", "keyboard_key", "keyboard_lastchar", "keyboard_lastkey", "keyboard_string", "layer", "lives", "mask_index", "mouse_button", "mouse_lastbutton", "mouse_x", "mouse_y", "object_index", "os_browser", "os_device", "os_type", "os_version", "path_endaction", "path_index", "path_orientation", "path_position", "path_positionprevious", "path_scale", "path_speed", "persistent", "phy_active", "phy_angular_damping", "phy_angular_velocity", "phy_bullet", "phy_col_normal_x", "phy_col_normal_y", "phy_collision_points", "phy_collision_x", "phy_collision_y", "phy_com_x", "phy_com_y", "phy_dynamic", "phy_fixed_rotation", "phy_inertia", "phy_kinematic", "phy_linear_damping", "phy_linear_velocity_x", "phy_linear_velocity_y", "phy_mass", "phy_position_x", "phy_position_xprevious", "phy_position_y", "phy_position_yprevious", "phy_rotation", "phy_sleeping", "phy_speed", "phy_speed_x", "phy_speed_y", "program_directory", "room", "room_caption", "room_first", "room_height", "room_last", "room_persistent", "room_speed", "room_width", "score", "self", "show_health", "show_lives", "show_score", "solid", "speed", "sprite_height", "sprite_index", "sprite_width", "sprite_xoffset", "sprite_yoffset", "temp_directory", "timeline_index", "timeline_loop", "timeline_position", "timeline_running", "timeline_speed", "view_angle", "view_camera", "view_current", "view_enabled", "view_hborder", "view_hport", "view_hspeed", "view_hview", "view_object", "view_surface_id", "view_vborder", "view_visible", "view_vspeed", "view_wport", "view_wview", "view_xport", "view_xview", "view_yport", "view_yview", "visible", "vspeed", "webgl_enabled", "working_directory", "xprevious", "xstart", "x|0", "yprevious", "ystart", "y|0"]
+                keyword: ["#endregion", "#macro", "#region", "and", "begin", "break", "case", "constructor", "continue", "default", "delete", "div", "do", "else", "end", "enum", "exit", "for", "function", "globalvar", "if", "mod", "new", "not", "or", "repeat", "return", "static", "switch", "then", "until", "var", "while", "with", "xor"],
+                built_in: ["abs", "alarm_get", "alarm_set", "angle_difference", "animcurve_channel_evaluate", "animcurve_channel_new", "animcurve_create", "animcurve_destroy", "animcurve_exists", "animcurve_get", "animcurve_get_channel", "animcurve_get_channel_index", "animcurve_point_new", "ansi_char", "application_get_position", "application_surface_draw_enable", "application_surface_enable", "application_surface_is_enabled", "arccos", "arcsin", "arctan", "arctan2", "array_all", "array_any", "array_concat", "array_contains", "array_contains_ext", "array_copy", "array_copy_while", "array_create", "array_create_ext", "array_delete", "array_equals", "array_filter", "array_filter_ext", "array_find_index", "array_first", "array_foreach", "array_get", "array_get_index", "array_insert", "array_intersection", "array_last", "array_length", "array_map", "array_map_ext", "array_pop", "array_push", "array_reduce", "array_resize", "array_reverse", "array_reverse_ext", "array_set", "array_shuffle", "array_shuffle_ext", "array_sort", "array_union", "array_unique", "array_unique_ext", "asset_add_tags", "asset_clear_tags", "asset_get_ids", "asset_get_index", "asset_get_tags", "asset_get_type", "asset_has_any_tag", "asset_has_tags", "asset_remove_tags", "audio_bus_clear_emitters", "audio_bus_create", "audio_bus_get_emitters", "audio_channel_num", "audio_create_buffer_sound", "audio_create_play_queue", "audio_create_stream", "audio_create_sync_group", "audio_debug", "audio_destroy_stream", "audio_destroy_sync_group", "audio_effect_create", "audio_emitter_bus", "audio_emitter_create", "audio_emitter_exists", "audio_emitter_falloff", "audio_emitter_free", "audio_emitter_gain", "audio_emitter_get_bus", "audio_emitter_get_gain", "audio_emitter_get_listener_mask", "audio_emitter_get_pitch", "audio_emitter_get_vx", "audio_emitter_get_vy", "audio_emitter_get_vz", "audio_emitter_get_x", "audio_emitter_get_y", "audio_emitter_get_z", "audio_emitter_pitch", "audio_emitter_position", "audio_emitter_set_listener_mask", "audio_emitter_velocity", "audio_exists", "audio_falloff_set_model", "audio_free_buffer_sound", "audio_free_play_queue", "audio_get_listener_count", "audio_get_listener_info", "audio_get_listener_mask", "audio_get_master_gain", "audio_get_name", "audio_get_recorder_count", "audio_get_recorder_info", "audio_get_type", "audio_group_get_assets", "audio_group_get_gain", "audio_group_is_loaded", "audio_group_load", "audio_group_load_progress", "audio_group_name", "audio_group_set_gain", "audio_group_stop_all", "audio_group_unload", "audio_is_paused", "audio_is_playing", "audio_listener_get_data", "audio_listener_orientation", "audio_listener_position", "audio_listener_set_orientation", "audio_listener_set_position", "audio_listener_set_velocity", "audio_listener_velocity", "audio_master_gain", "audio_pause_all", "audio_pause_sound", "audio_pause_sync_group", "audio_play_in_sync_group", "audio_play_sound", "audio_play_sound_at", "audio_play_sound_ext", "audio_play_sound_on", "audio_queue_sound", "audio_resume_all", "audio_resume_sound", "audio_resume_sync_group", "audio_set_listener_mask", "audio_set_master_gain", "audio_sound_gain", "audio_sound_get_audio_group", "audio_sound_get_gain", "audio_sound_get_listener_mask", "audio_sound_get_loop", "audio_sound_get_loop_end", "audio_sound_get_loop_start", "audio_sound_get_pitch", "audio_sound_get_track_position", "audio_sound_is_playable", "audio_sound_length", "audio_sound_loop", "audio_sound_loop_end", "audio_sound_loop_start", "audio_sound_pitch", "audio_sound_set_listener_mask", "audio_sound_set_track_position", "audio_start_recording", "audio_start_sync_group", "audio_stop_all", "audio_stop_recording", "audio_stop_sound", "audio_stop_sync_group", "audio_sync_group_debug", "audio_sync_group_get_track_pos", "audio_sync_group_is_paused", "audio_sync_group_is_playing", "audio_system_is_available", "audio_system_is_initialised", "base64_decode", "base64_encode", "bool", "browser_input_capture", "buffer_async_group_begin", "buffer_async_group_end", "buffer_async_group_option", "buffer_base64_decode", "buffer_base64_decode_ext", "buffer_base64_encode", "buffer_compress", "buffer_copy", "buffer_copy_from_vertex_buffer", "buffer_copy_stride", "buffer_crc32", "buffer_create", "buffer_create_from_vertex_buffer", "buffer_create_from_vertex_buffer_ext", "buffer_decompress", "buffer_delete", "buffer_exists", "buffer_fill", "buffer_get_address", "buffer_get_alignment", "buffer_get_size", "buffer_get_surface", "buffer_get_type", "buffer_load", "buffer_load_async", "buffer_load_ext", "buffer_load_partial", "buffer_md5", "buffer_peek", "buffer_poke", "buffer_read", "buffer_resize", "buffer_save", "buffer_save_async", "buffer_save_ext", "buffer_seek", "buffer_set_surface", "buffer_set_used_size", "buffer_sha1", "buffer_sizeof", "buffer_tell", "buffer_write", "call_cancel", "call_later", "camera_apply", "camera_copy_transforms", "camera_create", "camera_create_view", "camera_destroy", "camera_get_active", "camera_get_begin_script", "camera_get_default", "camera_get_end_script", "camera_get_proj_mat", "camera_get_update_script", "camera_get_view_angle", "camera_get_view_border_x", "camera_get_view_border_y", "camera_get_view_height", "camera_get_view_mat", "camera_get_view_speed_x", "camera_get_view_speed_y", "camera_get_view_target", "camera_get_view_width", "camera_get_view_x", "camera_get_view_y", "camera_set_begin_script", "camera_set_default", "camera_set_end_script", "camera_set_proj_mat", "camera_set_update_script", "camera_set_view_angle", "camera_set_view_border", "camera_set_view_mat", "camera_set_view_pos", "camera_set_view_size", "camera_set_view_speed", "camera_set_view_target", "ceil", "choose", "chr", "clamp", "clickable_add", "clickable_add_ext", "clickable_change", "clickable_change_ext", "clickable_delete", "clickable_exists", "clickable_set_style", "clipboard_get_text", "clipboard_has_text", "clipboard_set_text", "cloud_file_save", "cloud_string_save", "cloud_synchronise", "code_is_compiled", "collision_circle", "collision_circle_list", "collision_ellipse", "collision_ellipse_list", "collision_line", "collision_line_list", "collision_point", "collision_point_list", "collision_rectangle", "collision_rectangle_list", "color_get_blue", "color_get_green", "color_get_hue", "color_get_red", "color_get_saturation", "color_get_value", "colour_get_blue", "colour_get_green", "colour_get_hue", "colour_get_red", "colour_get_saturation", "colour_get_value", "cos", "darccos", "darcsin", "darctan", "darctan2", "date_compare_date", "date_compare_datetime", "date_compare_time", "date_create_datetime", "date_current_datetime", "date_date_of", "date_date_string", "date_datetime_string", "date_day_span", "date_days_in_month", "date_days_in_year", "date_get_day", "date_get_day_of_year", "date_get_hour", "date_get_hour_of_year", "date_get_minute", "date_get_minute_of_year", "date_get_month", "date_get_second", "date_get_second_of_year", "date_get_timezone", "date_get_week", "date_get_weekday", "date_get_year", "date_hour_span", "date_inc_day", "date_inc_hour", "date_inc_minute", "date_inc_month", "date_inc_second", "date_inc_week", "date_inc_year", "date_is_today", "date_leap_year", "date_minute_span", "date_month_span", "date_second_span", "date_set_timezone", "date_time_of", "date_time_string", "date_valid_datetime", "date_week_span", "date_year_span", "db_to_lin", "dbg_add_font_glyphs", "dbg_button", "dbg_checkbox", "dbg_color", "dbg_colour", "dbg_drop_down", "dbg_same_line", "dbg_section", "dbg_section_delete", "dbg_section_exists", "dbg_slider", "dbg_slider_int", "dbg_sprite", "dbg_text", "dbg_text_input", "dbg_view", "dbg_view_delete", "dbg_view_exists", "dbg_watch", "dcos", "debug_event", "debug_get_callstack", "degtorad", "device_get_tilt_x", "device_get_tilt_y", "device_get_tilt_z", "device_is_keypad_open", "device_mouse_check_button", "device_mouse_check_button_pressed", "device_mouse_check_button_released", "device_mouse_dbclick_enable", "device_mouse_raw_x", "device_mouse_raw_y", "device_mouse_x", "device_mouse_x_to_gui", "device_mouse_y", "device_mouse_y_to_gui", "directory_create", "directory_destroy", "directory_exists", "display_get_dpi_x", "display_get_dpi_y", "display_get_frequency", "display_get_gui_height", "display_get_gui_width", "display_get_height", "display_get_orientation", "display_get_sleep_margin", "display_get_timing_method", "display_get_width", "display_mouse_get_x", "display_mouse_get_y", "display_mouse_set", "display_reset", "display_set_gui_maximise", "display_set_gui_maximize", "display_set_gui_size", "display_set_sleep_margin", "display_set_timing_method", "display_set_ui_visibility", "distance_to_object", "distance_to_point", "dot_product", "dot_product_3d", "dot_product_3d_normalised", "dot_product_3d_normalized", "dot_product_normalised", "dot_product_normalized", "draw_arrow", "draw_button", "draw_circle", "draw_circle_color", "draw_circle_colour", "draw_clear", "draw_clear_alpha", "draw_ellipse", "draw_ellipse_color", "draw_ellipse_colour", "draw_enable_drawevent", "draw_enable_skeleton_blendmodes", "draw_enable_swf_aa", "draw_flush", "draw_get_alpha", "draw_get_color", "draw_get_colour", "draw_get_enable_skeleton_blendmodes", "draw_get_font", "draw_get_halign", "draw_get_lighting", "draw_get_swf_aa_level", "draw_get_valign", "draw_getpixel", "draw_getpixel_ext", "draw_healthbar", "draw_highscore", "draw_light_define_ambient", "draw_light_define_direction", "draw_light_define_point", "draw_light_enable", "draw_light_get", "draw_light_get_ambient", "draw_line", "draw_line_color", "draw_line_colour", "draw_line_width", "draw_line_width_color", "draw_line_width_colour", "draw_path", "draw_point", "draw_point_color", "draw_point_colour", "draw_primitive_begin", "draw_primitive_begin_texture", "draw_primitive_end", "draw_rectangle", "draw_rectangle_color", "draw_rectangle_colour", "draw_roundrect", "draw_roundrect_color", "draw_roundrect_color_ext", "draw_roundrect_colour", "draw_roundrect_colour_ext", "draw_roundrect_ext", "draw_self", "draw_set_alpha", "draw_set_circle_precision", "draw_set_color", "draw_set_colour", "draw_set_font", "draw_set_halign", "draw_set_lighting", "draw_set_swf_aa_level", "draw_set_valign", "draw_skeleton", "draw_skeleton_collision", "draw_skeleton_instance", "draw_skeleton_time", "draw_sprite", "draw_sprite_ext", "draw_sprite_general", "draw_sprite_part", "draw_sprite_part_ext", "draw_sprite_pos", "draw_sprite_stretched", "draw_sprite_stretched_ext", "draw_sprite_tiled", "draw_sprite_tiled_ext", "draw_surface", "draw_surface_ext", "draw_surface_general", "draw_surface_part", "draw_surface_part_ext", "draw_surface_stretched", "draw_surface_stretched_ext", "draw_surface_tiled", "draw_surface_tiled_ext", "draw_text", "draw_text_color", "draw_text_colour", "draw_text_ext", "draw_text_ext_color", "draw_text_ext_colour", "draw_text_ext_transformed", "draw_text_ext_transformed_color", "draw_text_ext_transformed_colour", "draw_text_transformed", "draw_text_transformed_color", "draw_text_transformed_colour", "draw_texture_flush", "draw_tile", "draw_tilemap", "draw_triangle", "draw_triangle_color", "draw_triangle_colour", "draw_vertex", "draw_vertex_color", "draw_vertex_colour", "draw_vertex_texture", "draw_vertex_texture_color", "draw_vertex_texture_colour", "ds_exists", "ds_grid_add", "ds_grid_add_disk", "ds_grid_add_grid_region", "ds_grid_add_region", "ds_grid_clear", "ds_grid_copy", "ds_grid_create", "ds_grid_destroy", "ds_grid_get", "ds_grid_get_disk_max", "ds_grid_get_disk_mean", "ds_grid_get_disk_min", "ds_grid_get_disk_sum", "ds_grid_get_max", "ds_grid_get_mean", "ds_grid_get_min", "ds_grid_get_sum", "ds_grid_height", "ds_grid_multiply", "ds_grid_multiply_disk", "ds_grid_multiply_grid_region", "ds_grid_multiply_region", "ds_grid_read", "ds_grid_resize", "ds_grid_set", "ds_grid_set_disk", "ds_grid_set_grid_region", "ds_grid_set_region", "ds_grid_shuffle", "ds_grid_sort", "ds_grid_to_mp_grid", "ds_grid_value_disk_exists", "ds_grid_value_disk_x", "ds_grid_value_disk_y", "ds_grid_value_exists", "ds_grid_value_x", "ds_grid_value_y", "ds_grid_width", "ds_grid_write", "ds_list_add", "ds_list_clear", "ds_list_copy", "ds_list_create", "ds_list_delete", "ds_list_destroy", "ds_list_empty", "ds_list_find_index", "ds_list_find_value", "ds_list_insert", "ds_list_is_list", "ds_list_is_map", "ds_list_mark_as_list", "ds_list_mark_as_map", "ds_list_read", "ds_list_replace", "ds_list_set", "ds_list_shuffle", "ds_list_size", "ds_list_sort", "ds_list_write", "ds_map_add", "ds_map_add_list", "ds_map_add_map", "ds_map_clear", "ds_map_copy", "ds_map_create", "ds_map_delete", "ds_map_destroy", "ds_map_empty", "ds_map_exists", "ds_map_find_first", "ds_map_find_last", "ds_map_find_next", "ds_map_find_previous", "ds_map_find_value", "ds_map_is_list", "ds_map_is_map", "ds_map_keys_to_array", "ds_map_read", "ds_map_replace", "ds_map_replace_list", "ds_map_replace_map", "ds_map_secure_load", "ds_map_secure_load_buffer", "ds_map_secure_save", "ds_map_secure_save_buffer", "ds_map_set", "ds_map_size", "ds_map_values_to_array", "ds_map_write", "ds_priority_add", "ds_priority_change_priority", "ds_priority_clear", "ds_priority_copy", "ds_priority_create", "ds_priority_delete_max", "ds_priority_delete_min", "ds_priority_delete_value", "ds_priority_destroy", "ds_priority_empty", "ds_priority_find_max", "ds_priority_find_min", "ds_priority_find_priority", "ds_priority_read", "ds_priority_size", "ds_priority_write", "ds_queue_clear", "ds_queue_copy", "ds_queue_create", "ds_queue_dequeue", "ds_queue_destroy", "ds_queue_empty", "ds_queue_enqueue", "ds_queue_head", "ds_queue_read", "ds_queue_size", "ds_queue_tail", "ds_queue_write", "ds_set_precision", "ds_stack_clear", "ds_stack_copy", "ds_stack_create", "ds_stack_destroy", "ds_stack_empty", "ds_stack_pop", "ds_stack_push", "ds_stack_read", "ds_stack_size", "ds_stack_top", "ds_stack_write", "dsin", "dtan", "effect_clear", "effect_create_above", "effect_create_below", "effect_create_depth", "effect_create_layer", "environment_get_variable", "event_inherited", "event_perform", "event_perform_async", "event_perform_object", "event_user", "exception_unhandled_handler", "exp", "extension_exists", "extension_get_option_count", "extension_get_option_names", "extension_get_option_value", "extension_get_options", "extension_get_version", "external_call", "external_define", "external_free", "file_attributes", "file_bin_close", "file_bin_open", "file_bin_position", "file_bin_read_byte", "file_bin_rewrite", "file_bin_seek", "file_bin_size", "file_bin_write_byte", "file_copy", "file_delete", "file_exists", "file_find_close", "file_find_first", "file_find_next", "file_rename", "file_text_close", "file_text_eof", "file_text_eoln", "file_text_open_append", "file_text_open_from_string", "file_text_open_read", "file_text_open_write", "file_text_read_real", "file_text_read_string", "file_text_readln", "file_text_write_real", "file_text_write_string", "file_text_writeln", "filename_change_ext", "filename_dir", "filename_drive", "filename_ext", "filename_name", "filename_path", "floor", "font_add", "font_add_enable_aa", "font_add_get_enable_aa", "font_add_sprite", "font_add_sprite_ext", "font_cache_glyph", "font_delete", "font_enable_effects", "font_enable_sdf", "font_exists", "font_get_bold", "font_get_first", "font_get_fontname", "font_get_info", "font_get_italic", "font_get_last", "font_get_name", "font_get_sdf_enabled", "font_get_sdf_spread", "font_get_size", "font_get_texture", "font_get_uvs", "font_replace_sprite", "font_replace_sprite_ext", "font_sdf_spread", "font_set_cache_size", "frac", "fx_create", "fx_get_name", "fx_get_parameter", "fx_get_parameter_names", "fx_get_parameters", "fx_get_single_layer", "fx_set_parameter", "fx_set_parameters", "fx_set_single_layer", "game_change", "game_end", "game_get_speed", "game_load", "game_load_buffer", "game_restart", "game_save", "game_save_buffer", "game_set_speed", "gamepad_axis_count", "gamepad_axis_value", "gamepad_button_check", "gamepad_button_check_pressed", "gamepad_button_check_released", "gamepad_button_count", "gamepad_button_value", "gamepad_get_axis_deadzone", "gamepad_get_button_threshold", "gamepad_get_description", "gamepad_get_device_count", "gamepad_get_guid", "gamepad_get_mapping", "gamepad_get_option", "gamepad_hat_count", "gamepad_hat_value", "gamepad_is_connected", "gamepad_is_supported", "gamepad_remove_mapping", "gamepad_set_axis_deadzone", "gamepad_set_button_threshold", "gamepad_set_color", "gamepad_set_colour", "gamepad_set_option", "gamepad_set_vibration", "gamepad_test_mapping", "gc_collect", "gc_enable", "gc_get_stats", "gc_get_target_frame_time", "gc_is_enabled", "gc_target_frame_time", "gesture_double_tap_distance", "gesture_double_tap_time", "gesture_drag_distance", "gesture_drag_time", "gesture_flick_speed", "gesture_get_double_tap_distance", "gesture_get_double_tap_time", "gesture_get_drag_distance", "gesture_get_drag_time", "gesture_get_flick_speed", "gesture_get_pinch_angle_away", "gesture_get_pinch_angle_towards", "gesture_get_pinch_distance", "gesture_get_rotate_angle", "gesture_get_rotate_time", "gesture_get_tap_count", "gesture_pinch_angle_away", "gesture_pinch_angle_towards", "gesture_pinch_distance", "gesture_rotate_angle", "gesture_rotate_time", "gesture_tap_count", "get_integer", "get_integer_async", "get_login_async", "get_open_filename", "get_open_filename_ext", "get_save_filename", "get_save_filename_ext", "get_string", "get_string_async", "get_timer", "gif_add_surface", "gif_open", "gif_save", "gif_save_buffer", "gml_pragma", "gml_release_mode", "gpu_get_alphatestenable", "gpu_get_alphatestref", "gpu_get_blendenable", "gpu_get_blendmode", "gpu_get_blendmode_dest", "gpu_get_blendmode_destalpha", "gpu_get_blendmode_ext", "gpu_get_blendmode_ext_sepalpha", "gpu_get_blendmode_src", "gpu_get_blendmode_srcalpha", "gpu_get_colorwriteenable", "gpu_get_colourwriteenable", "gpu_get_cullmode", "gpu_get_depth", "gpu_get_fog", "gpu_get_state", "gpu_get_tex_filter", "gpu_get_tex_filter_ext", "gpu_get_tex_max_aniso", "gpu_get_tex_max_aniso_ext", "gpu_get_tex_max_mip", "gpu_get_tex_max_mip_ext", "gpu_get_tex_min_mip", "gpu_get_tex_min_mip_ext", "gpu_get_tex_mip_bias", "gpu_get_tex_mip_bias_ext", "gpu_get_tex_mip_enable", "gpu_get_tex_mip_enable_ext", "gpu_get_tex_mip_filter", "gpu_get_tex_mip_filter_ext", "gpu_get_tex_repeat", "gpu_get_tex_repeat_ext", "gpu_get_texfilter", "gpu_get_texfilter_ext", "gpu_get_texrepeat", "gpu_get_texrepeat_ext", "gpu_get_zfunc", "gpu_get_ztestenable", "gpu_get_zwriteenable", "gpu_pop_state", "gpu_push_state", "gpu_set_alphatestenable", "gpu_set_alphatestref", "gpu_set_blendenable", "gpu_set_blendmode", "gpu_set_blendmode_ext", "gpu_set_blendmode_ext_sepalpha", "gpu_set_colorwriteenable", "gpu_set_colourwriteenable", "gpu_set_cullmode", "gpu_set_depth", "gpu_set_fog", "gpu_set_state", "gpu_set_tex_filter", "gpu_set_tex_filter_ext", "gpu_set_tex_max_aniso", "gpu_set_tex_max_aniso_ext", "gpu_set_tex_max_mip", "gpu_set_tex_max_mip_ext", "gpu_set_tex_min_mip", "gpu_set_tex_min_mip_ext", "gpu_set_tex_mip_bias", "gpu_set_tex_mip_bias_ext", "gpu_set_tex_mip_enable", "gpu_set_tex_mip_enable_ext", "gpu_set_tex_mip_filter", "gpu_set_tex_mip_filter_ext", "gpu_set_tex_repeat", "gpu_set_tex_repeat_ext", "gpu_set_texfilter", "gpu_set_texfilter_ext", "gpu_set_texrepeat", "gpu_set_texrepeat_ext", "gpu_set_zfunc", "gpu_set_ztestenable", "gpu_set_zwriteenable", "handle_parse", "highscore_add", "highscore_clear", "highscore_name", "highscore_value", "http_get", "http_get_file", "http_get_request_crossorigin", "http_post_string", "http_request", "http_set_request_crossorigin", "iap_acquire", "iap_activate", "iap_consume", "iap_enumerate_products", "iap_product_details", "iap_purchase_details", "iap_restore_all", "iap_status", "ini_close", "ini_key_delete", "ini_key_exists", "ini_open", "ini_open_from_string", "ini_read_real", "ini_read_string", "ini_section_delete", "ini_section_exists", "ini_write_real", "ini_write_string", "instance_activate_all", "instance_activate_layer", "instance_activate_object", "instance_activate_region", "instance_change", "instance_copy", "instance_create_depth", "instance_create_layer", "instance_deactivate_all", "instance_deactivate_layer", "instance_deactivate_object", "instance_deactivate_region", "instance_destroy", "instance_exists", "instance_find", "instance_furthest", "instance_id_get", "instance_nearest", "instance_number", "instance_place", "instance_place_list", "instance_position", "instance_position_list", "instanceof", "int64", "io_clear", "irandom", "irandom_range", "is_array", "is_bool", "is_callable", "is_debug_overlay_open", "is_handle", "is_infinity", "is_instanceof", "is_int32", "is_int64", "is_keyboard_used_debug_overlay", "is_method", "is_mouse_over_debug_overlay", "is_nan", "is_numeric", "is_ptr", "is_real", "is_string", "is_struct", "is_undefined", "json_decode", "json_encode", "json_parse", "json_stringify", "keyboard_check", "keyboard_check_direct", "keyboard_check_pressed", "keyboard_check_released", "keyboard_clear", "keyboard_get_map", "keyboard_get_numlock", "keyboard_key_press", "keyboard_key_release", "keyboard_set_map", "keyboard_set_numlock", "keyboard_unset_map", "keyboard_virtual_height", "keyboard_virtual_hide", "keyboard_virtual_show", "keyboard_virtual_status", "layer_add_instance", "layer_background_alpha", "layer_background_blend", "layer_background_change", "layer_background_create", "layer_background_destroy", "layer_background_exists", "layer_background_get_alpha", "layer_background_get_blend", "layer_background_get_htiled", "layer_background_get_id", "layer_background_get_index", "layer_background_get_speed", "layer_background_get_sprite", "layer_background_get_stretch", "layer_background_get_visible", "layer_background_get_vtiled", "layer_background_get_xscale", "layer_background_get_yscale", "layer_background_htiled", "layer_background_index", "layer_background_speed", "layer_background_sprite", "layer_background_stretch", "layer_background_visible", "layer_background_vtiled", "layer_background_xscale", "layer_background_yscale", "layer_clear_fx", "layer_create", "layer_depth", "layer_destroy", "layer_destroy_instances", "layer_element_move", "layer_enable_fx", "layer_exists", "layer_force_draw_depth", "layer_fx_is_enabled", "layer_get_all", "layer_get_all_elements", "layer_get_depth", "layer_get_element_layer", "layer_get_element_type", "layer_get_forced_depth", "layer_get_fx", "layer_get_hspeed", "layer_get_id", "layer_get_id_at_depth", "layer_get_name", "layer_get_script_begin", "layer_get_script_end", "layer_get_shader", "layer_get_target_room", "layer_get_visible", "layer_get_vspeed", "layer_get_x", "layer_get_y", "layer_has_instance", "layer_hspeed", "layer_instance_get_instance", "layer_is_draw_depth_forced", "layer_reset_target_room", "layer_script_begin", "layer_script_end", "layer_sequence_angle", "layer_sequence_create", "layer_sequence_destroy", "layer_sequence_exists", "layer_sequence_get_angle", "layer_sequence_get_headdir", "layer_sequence_get_headpos", "layer_sequence_get_instance", "layer_sequence_get_length", "layer_sequence_get_sequence", "layer_sequence_get_speedscale", "layer_sequence_get_x", "layer_sequence_get_xscale", "layer_sequence_get_y", "layer_sequence_get_yscale", "layer_sequence_headdir", "layer_sequence_headpos", "layer_sequence_is_finished", "layer_sequence_is_paused", "layer_sequence_pause", "layer_sequence_play", "layer_sequence_speedscale", "layer_sequence_x", "layer_sequence_xscale", "layer_sequence_y", "layer_sequence_yscale", "layer_set_fx", "layer_set_target_room", "layer_set_visible", "layer_shader", "layer_sprite_alpha", "layer_sprite_angle", "layer_sprite_blend", "layer_sprite_change", "layer_sprite_create", "layer_sprite_destroy", "layer_sprite_exists", "layer_sprite_get_alpha", "layer_sprite_get_angle", "layer_sprite_get_blend", "layer_sprite_get_id", "layer_sprite_get_index", "layer_sprite_get_speed", "layer_sprite_get_sprite", "layer_sprite_get_x", "layer_sprite_get_xscale", "layer_sprite_get_y", "layer_sprite_get_yscale", "layer_sprite_index", "layer_sprite_speed", "layer_sprite_x", "layer_sprite_xscale", "layer_sprite_y", "layer_sprite_yscale", "layer_tile_alpha", "layer_tile_blend", "layer_tile_change", "layer_tile_create", "layer_tile_destroy", "layer_tile_exists", "layer_tile_get_alpha", "layer_tile_get_blend", "layer_tile_get_region", "layer_tile_get_sprite", "layer_tile_get_visible", "layer_tile_get_x", "layer_tile_get_xscale", "layer_tile_get_y", "layer_tile_get_yscale", "layer_tile_region", "layer_tile_visible", "layer_tile_x", "layer_tile_xscale", "layer_tile_y", "layer_tile_yscale", "layer_tilemap_create", "layer_tilemap_destroy", "layer_tilemap_exists", "layer_tilemap_get_id", "layer_vspeed", "layer_x", "layer_y", "lengthdir_x", "lengthdir_y", "lerp", "lin_to_db", "ln", "load_csv", "log10", "log2", "logn", "make_color_hsv", "make_color_rgb", "make_colour_hsv", "make_colour_rgb", "math_get_epsilon", "math_set_epsilon", "matrix_build", "matrix_build_identity", "matrix_build_lookat", "matrix_build_projection_ortho", "matrix_build_projection_perspective", "matrix_build_projection_perspective_fov", "matrix_get", "matrix_multiply", "matrix_set", "matrix_stack_clear", "matrix_stack_is_empty", "matrix_stack_pop", "matrix_stack_push", "matrix_stack_set", "matrix_stack_top", "matrix_transform_vertex", "max", "md5_file", "md5_string_unicode", "md5_string_utf8", "mean", "median", "merge_color", "merge_colour", "method", "method_call", "method_get_index", "method_get_self", "min", "motion_add", "motion_set", "mouse_check_button", "mouse_check_button_pressed", "mouse_check_button_released", "mouse_clear", "mouse_wheel_down", "mouse_wheel_up", "move_and_collide", "move_bounce_all", "move_bounce_solid", "move_contact_all", "move_contact_solid", "move_outside_all", "move_outside_solid", "move_random", "move_snap", "move_towards_point", "move_wrap", "mp_grid_add_cell", "mp_grid_add_instances", "mp_grid_add_rectangle", "mp_grid_clear_all", "mp_grid_clear_cell", "mp_grid_clear_rectangle", "mp_grid_create", "mp_grid_destroy", "mp_grid_draw", "mp_grid_get_cell", "mp_grid_path", "mp_grid_to_ds_grid", "mp_linear_path", "mp_linear_path_object", "mp_linear_step", "mp_linear_step_object", "mp_potential_path", "mp_potential_path_object", "mp_potential_settings", "mp_potential_step", "mp_potential_step_object", "nameof", "network_connect", "network_connect_async", "network_connect_raw", "network_connect_raw_async", "network_create_server", "network_create_server_raw", "network_create_socket", "network_create_socket_ext", "network_destroy", "network_resolve", "network_send_broadcast", "network_send_packet", "network_send_raw", "network_send_udp", "network_send_udp_raw", "network_set_config", "network_set_timeout", "object_exists", "object_get_mask", "object_get_name", "object_get_parent", "object_get_persistent", "object_get_physics", "object_get_solid", "object_get_sprite", "object_get_visible", "object_is_ancestor", "object_set_mask", "object_set_persistent", "object_set_solid", "object_set_sprite", "object_set_visible", "ord", "os_check_permission", "os_get_config", "os_get_info", "os_get_language", "os_get_region", "os_is_network_connected", "os_is_paused", "os_lock_orientation", "os_powersave_enable", "os_request_permission", "os_set_orientation_lock", "parameter_count", "parameter_string", "part_emitter_burst", "part_emitter_clear", "part_emitter_create", "part_emitter_delay", "part_emitter_destroy", "part_emitter_destroy_all", "part_emitter_enable", "part_emitter_exists", "part_emitter_interval", "part_emitter_region", "part_emitter_relative", "part_emitter_stream", "part_particles_burst", "part_particles_clear", "part_particles_count", "part_particles_create", "part_particles_create_color", "part_particles_create_colour", "part_system_angle", "part_system_automatic_draw", "part_system_automatic_update", "part_system_clear", "part_system_color", "part_system_colour", "part_system_create", "part_system_create_layer", "part_system_depth", "part_system_destroy", "part_system_draw_order", "part_system_drawit", "part_system_exists", "part_system_get_info", "part_system_get_layer", "part_system_global_space", "part_system_layer", "part_system_position", "part_system_update", "part_type_alpha1", "part_type_alpha2", "part_type_alpha3", "part_type_blend", "part_type_clear", "part_type_color1", "part_type_color2", "part_type_color3", "part_type_color_hsv", "part_type_color_mix", "part_type_color_rgb", "part_type_colour1", "part_type_colour2", "part_type_colour3", "part_type_colour_hsv", "part_type_colour_mix", "part_type_colour_rgb", "part_type_create", "part_type_death", "part_type_destroy", "part_type_direction", "part_type_exists", "part_type_gravity", "part_type_life", "part_type_orientation", "part_type_scale", "part_type_shape", "part_type_size", "part_type_size_x", "part_type_size_y", "part_type_speed", "part_type_sprite", "part_type_step", "part_type_subimage", "particle_exists", "particle_get_info", "path_add", "path_add_point", "path_append", "path_assign", "path_change_point", "path_clear_points", "path_delete", "path_delete_point", "path_duplicate", "path_end", "path_exists", "path_flip", "path_get_closed", "path_get_kind", "path_get_length", "path_get_name", "path_get_number", "path_get_point_speed", "path_get_point_x", "path_get_point_y", "path_get_precision", "path_get_speed", "path_get_x", "path_get_y", "path_insert_point", "path_mirror", "path_rescale", "path_reverse", "path_rotate", "path_set_closed", "path_set_kind", "path_set_precision", "path_shift", "path_start", "physics_apply_angular_impulse", "physics_apply_force", "physics_apply_impulse", "physics_apply_local_force", "physics_apply_local_impulse", "physics_apply_torque", "physics_draw_debug", "physics_fixture_add_point", "physics_fixture_bind", "physics_fixture_bind_ext", "physics_fixture_create", "physics_fixture_delete", "physics_fixture_set_angular_damping", "physics_fixture_set_awake", "physics_fixture_set_box_shape", "physics_fixture_set_chain_shape", "physics_fixture_set_circle_shape", "physics_fixture_set_collision_group", "physics_fixture_set_density", "physics_fixture_set_edge_shape", "physics_fixture_set_friction", "physics_fixture_set_kinematic", "physics_fixture_set_linear_damping", "physics_fixture_set_polygon_shape", "physics_fixture_set_restitution", "physics_fixture_set_sensor", "physics_get_density", "physics_get_friction", "physics_get_restitution", "physics_joint_delete", "physics_joint_distance_create", "physics_joint_enable_motor", "physics_joint_friction_create", "physics_joint_gear_create", "physics_joint_get_value", "physics_joint_prismatic_create", "physics_joint_pulley_create", "physics_joint_revolute_create", "physics_joint_rope_create", "physics_joint_set_value", "physics_joint_weld_create", "physics_joint_wheel_create", "physics_mass_properties", "physics_particle_count", "physics_particle_create", "physics_particle_delete", "physics_particle_delete_region_box", "physics_particle_delete_region_circle", "physics_particle_delete_region_poly", "physics_particle_draw", "physics_particle_draw_ext", "physics_particle_get_damping", "physics_particle_get_data", "physics_particle_get_data_particle", "physics_particle_get_density", "physics_particle_get_gravity_scale", "physics_particle_get_group_flags", "physics_particle_get_max_count", "physics_particle_get_radius", "physics_particle_group_add_point", "physics_particle_group_begin", "physics_particle_group_box", "physics_particle_group_circle", "physics_particle_group_count", "physics_particle_group_delete", "physics_particle_group_end", "physics_particle_group_get_ang_vel", "physics_particle_group_get_angle", "physics_particle_group_get_centre_x", "physics_particle_group_get_centre_y", "physics_particle_group_get_data", "physics_particle_group_get_inertia", "physics_particle_group_get_mass", "physics_particle_group_get_vel_x", "physics_particle_group_get_vel_y", "physics_particle_group_get_x", "physics_particle_group_get_y", "physics_particle_group_join", "physics_particle_group_polygon", "physics_particle_set_category_flags", "physics_particle_set_damping", "physics_particle_set_density", "physics_particle_set_flags", "physics_particle_set_gravity_scale", "physics_particle_set_group_flags", "physics_particle_set_max_count", "physics_particle_set_radius", "physics_pause_enable", "physics_remove_fixture", "physics_set_density", "physics_set_friction", "physics_set_restitution", "physics_test_overlap", "physics_world_create", "physics_world_draw_debug", "physics_world_gravity", "physics_world_update_iterations", "physics_world_update_speed", "place_empty", "place_free", "place_meeting", "place_snapped", "point_direction", "point_distance", "point_distance_3d", "point_in_circle", "point_in_rectangle", "point_in_triangle", "position_change", "position_destroy", "position_empty", "position_meeting", "power", "ptr", "radtodeg", "random", "random_get_seed", "random_range", "random_set_seed", "randomise", "randomize", "real", "rectangle_in_circle", "rectangle_in_rectangle", "rectangle_in_triangle", "ref_create", "rollback_chat", "rollback_create_game", "rollback_define_extra_network_latency", "rollback_define_input", "rollback_define_input_frame_delay", "rollback_define_mock_input", "rollback_define_player", "rollback_display_events", "rollback_get_info", "rollback_get_input", "rollback_get_player_prefs", "rollback_join_game", "rollback_leave_game", "rollback_set_player_prefs", "rollback_start_game", "rollback_sync_on_frame", "rollback_use_late_join", "rollback_use_manual_start", "rollback_use_player_prefs", "rollback_use_random_input", "room_add", "room_assign", "room_duplicate", "room_exists", "room_get_camera", "room_get_info", "room_get_name", "room_get_viewport", "room_goto", "room_goto_next", "room_goto_previous", "room_instance_add", "room_instance_clear", "room_next", "room_previous", "room_restart", "room_set_camera", "room_set_height", "room_set_persistent", "room_set_view_enabled", "room_set_viewport", "room_set_width", "round", "scheduler_resolution_get", "scheduler_resolution_set", "screen_save", "screen_save_part", "script_execute", "script_execute_ext", "script_exists", "script_get_name", "sequence_create", "sequence_destroy", "sequence_exists", "sequence_get", "sequence_get_objects", "sequence_instance_override_object", "sequence_keyframe_new", "sequence_keyframedata_new", "sequence_track_new", "sha1_file", "sha1_string_unicode", "sha1_string_utf8", "shader_current", "shader_enable_corner_id", "shader_get_name", "shader_get_sampler_index", "shader_get_uniform", "shader_is_compiled", "shader_reset", "shader_set", "shader_set_uniform_f", "shader_set_uniform_f_array", "shader_set_uniform_f_buffer", "shader_set_uniform_i", "shader_set_uniform_i_array", "shader_set_uniform_matrix", "shader_set_uniform_matrix_array", "shaders_are_supported", "shop_leave_rating", "show_debug_message", "show_debug_message_ext", "show_debug_overlay", "show_error", "show_message", "show_message_async", "show_question", "show_question_async", "sign", "sin", "skeleton_animation_clear", "skeleton_animation_get", "skeleton_animation_get_duration", "skeleton_animation_get_event_frames", "skeleton_animation_get_ext", "skeleton_animation_get_frame", "skeleton_animation_get_frames", "skeleton_animation_get_position", "skeleton_animation_is_finished", "skeleton_animation_is_looping", "skeleton_animation_list", "skeleton_animation_mix", "skeleton_animation_set", "skeleton_animation_set_ext", "skeleton_animation_set_frame", "skeleton_animation_set_position", "skeleton_attachment_create", "skeleton_attachment_create_color", "skeleton_attachment_create_colour", "skeleton_attachment_destroy", "skeleton_attachment_exists", "skeleton_attachment_get", "skeleton_attachment_replace", "skeleton_attachment_replace_color", "skeleton_attachment_replace_colour", "skeleton_attachment_set", "skeleton_bone_data_get", "skeleton_bone_data_set", "skeleton_bone_list", "skeleton_bone_state_get", "skeleton_bone_state_set", "skeleton_collision_draw_set", "skeleton_find_slot", "skeleton_get_bounds", "skeleton_get_minmax", "skeleton_get_num_bounds", "skeleton_skin_create", "skeleton_skin_get", "skeleton_skin_list", "skeleton_skin_set", "skeleton_slot_alpha_get", "skeleton_slot_color_get", "skeleton_slot_color_set", "skeleton_slot_colour_get", "skeleton_slot_colour_set", "skeleton_slot_data", "skeleton_slot_data_instance", "skeleton_slot_list", "sprite_add", "sprite_add_ext", "sprite_add_from_surface", "sprite_assign", "sprite_collision_mask", "sprite_create_from_surface", "sprite_delete", "sprite_duplicate", "sprite_exists", "sprite_flush", "sprite_flush_multi", "sprite_get_bbox_bottom", "sprite_get_bbox_left", "sprite_get_bbox_mode", "sprite_get_bbox_right", "sprite_get_bbox_top", "sprite_get_height", "sprite_get_info", "sprite_get_name", "sprite_get_nineslice", "sprite_get_number", "sprite_get_speed", "sprite_get_speed_type", "sprite_get_texture", "sprite_get_tpe", "sprite_get_uvs", "sprite_get_width", "sprite_get_xoffset", "sprite_get_yoffset", "sprite_merge", "sprite_nineslice_create", "sprite_prefetch", "sprite_prefetch_multi", "sprite_replace", "sprite_save", "sprite_save_strip", "sprite_set_alpha_from_sprite", "sprite_set_bbox", "sprite_set_bbox_mode", "sprite_set_cache_size", "sprite_set_cache_size_ext", "sprite_set_nineslice", "sprite_set_offset", "sprite_set_speed", "sqr", "sqrt", "static_get", "static_set", "string", "string_byte_at", "string_byte_length", "string_char_at", "string_concat", "string_concat_ext", "string_copy", "string_count", "string_delete", "string_digits", "string_ends_with", "string_ext", "string_foreach", "string_format", "string_hash_to_newline", "string_height", "string_height_ext", "string_insert", "string_join", "string_join_ext", "string_last_pos", "string_last_pos_ext", "string_length", "string_letters", "string_lettersdigits", "string_lower", "string_ord_at", "string_pos", "string_pos_ext", "string_repeat", "string_replace", "string_replace_all", "string_set_byte_at", "string_split", "string_split_ext", "string_starts_with", "string_trim", "string_trim_end", "string_trim_start", "string_upper", "string_width", "string_width_ext", "struct_exists", "struct_foreach", "struct_get", "struct_get_from_hash", "struct_get_names", "struct_names_count", "struct_remove", "struct_set", "struct_set_from_hash", "surface_copy", "surface_copy_part", "surface_create", "surface_create_ext", "surface_depth_disable", "surface_exists", "surface_format_is_supported", "surface_free", "surface_get_depth_disable", "surface_get_format", "surface_get_height", "surface_get_target", "surface_get_target_ext", "surface_get_texture", "surface_get_width", "surface_getpixel", "surface_getpixel_ext", "surface_reset_target", "surface_resize", "surface_save", "surface_save_part", "surface_set_target", "surface_set_target_ext", "tag_get_asset_ids", "tag_get_assets", "tan", "texture_debug_messages", "texture_flush", "texture_get_height", "texture_get_texel_height", "texture_get_texel_width", "texture_get_uvs", "texture_get_width", "texture_global_scale", "texture_is_ready", "texture_prefetch", "texture_set_stage", "texturegroup_get_fonts", "texturegroup_get_names", "texturegroup_get_sprites", "texturegroup_get_status", "texturegroup_get_textures", "texturegroup_get_tilesets", "texturegroup_load", "texturegroup_set_mode", "texturegroup_unload", "tile_get_empty", "tile_get_flip", "tile_get_index", "tile_get_mirror", "tile_get_rotate", "tile_set_empty", "tile_set_flip", "tile_set_index", "tile_set_mirror", "tile_set_rotate", "tilemap_clear", "tilemap_get", "tilemap_get_at_pixel", "tilemap_get_cell_x_at_pixel", "tilemap_get_cell_y_at_pixel", "tilemap_get_frame", "tilemap_get_global_mask", "tilemap_get_height", "tilemap_get_mask", "tilemap_get_tile_height", "tilemap_get_tile_width", "tilemap_get_tileset", "tilemap_get_width", "tilemap_get_x", "tilemap_get_y", "tilemap_set", "tilemap_set_at_pixel", "tilemap_set_global_mask", "tilemap_set_height", "tilemap_set_mask", "tilemap_set_width", "tilemap_tileset", "tilemap_x", "tilemap_y", "tileset_get_info", "tileset_get_name", "tileset_get_texture", "tileset_get_uvs", "time_bpm_to_seconds", "time_seconds_to_bpm", "time_source_create", "time_source_destroy", "time_source_exists", "time_source_get_children", "time_source_get_parent", "time_source_get_period", "time_source_get_reps_completed", "time_source_get_reps_remaining", "time_source_get_state", "time_source_get_time_remaining", "time_source_get_units", "time_source_pause", "time_source_reconfigure", "time_source_reset", "time_source_resume", "time_source_start", "time_source_stop", "timeline_add", "timeline_clear", "timeline_delete", "timeline_exists", "timeline_get_name", "timeline_max_moment", "timeline_moment_add_script", "timeline_moment_clear", "timeline_size", "typeof", "url_get_domain", "url_open", "url_open_ext", "url_open_full", "uwp_device_touchscreen_available", "uwp_livetile_badge_clear", "uwp_livetile_badge_notification", "uwp_livetile_notification_begin", "uwp_livetile_notification_end", "uwp_livetile_notification_expiry", "uwp_livetile_notification_image_add", "uwp_livetile_notification_secondary_begin", "uwp_livetile_notification_tag", "uwp_livetile_notification_template_add", "uwp_livetile_notification_text_add", "uwp_livetile_queue_enable", "uwp_livetile_tile_clear", "uwp_secondarytile_badge_clear", "uwp_secondarytile_badge_notification", "uwp_secondarytile_delete", "uwp_secondarytile_pin", "uwp_secondarytile_tile_clear", "variable_clone", "variable_get_hash", "variable_global_exists", "variable_global_get", "variable_global_set", "variable_instance_exists", "variable_instance_get", "variable_instance_get_names", "variable_instance_names_count", "variable_instance_set", "variable_struct_exists", "variable_struct_get", "variable_struct_get_names", "variable_struct_names_count", "variable_struct_remove", "variable_struct_set", "vertex_argb", "vertex_begin", "vertex_color", "vertex_colour", "vertex_create_buffer", "vertex_create_buffer_ext", "vertex_create_buffer_from_buffer", "vertex_create_buffer_from_buffer_ext", "vertex_delete_buffer", "vertex_end", "vertex_float1", "vertex_float2", "vertex_float3", "vertex_float4", "vertex_format_add_color", "vertex_format_add_colour", "vertex_format_add_custom", "vertex_format_add_normal", "vertex_format_add_position", "vertex_format_add_position_3d", "vertex_format_add_texcoord", "vertex_format_begin", "vertex_format_delete", "vertex_format_end", "vertex_format_get_info", "vertex_freeze", "vertex_get_buffer_size", "vertex_get_number", "vertex_normal", "vertex_position", "vertex_position_3d", "vertex_submit", "vertex_submit_ext", "vertex_texcoord", "vertex_ubyte4", "vertex_update_buffer_from_buffer", "vertex_update_buffer_from_vertex", "video_close", "video_draw", "video_enable_loop", "video_get_duration", "video_get_format", "video_get_position", "video_get_status", "video_get_volume", "video_is_looping", "video_open", "video_pause", "video_resume", "video_seek_to", "video_set_volume", "view_get_camera", "view_get_hport", "view_get_surface_id", "view_get_visible", "view_get_wport", "view_get_xport", "view_get_yport", "view_set_camera", "view_set_hport", "view_set_surface_id", "view_set_visible", "view_set_wport", "view_set_xport", "view_set_yport", "virtual_key_add", "virtual_key_delete", "virtual_key_hide", "virtual_key_show", "wallpaper_set_config", "wallpaper_set_subscriptions", "weak_ref_alive", "weak_ref_any_alive", "weak_ref_create", "window_center", "window_device", "window_enable_borderless_fullscreen", "window_get_borderless_fullscreen", "window_get_caption", "window_get_color", "window_get_colour", "window_get_cursor", "window_get_fullscreen", "window_get_height", "window_get_showborder", "window_get_visible_rects", "window_get_width", "window_get_x", "window_get_y", "window_handle", "window_has_focus", "window_mouse_get_delta_x", "window_mouse_get_delta_y", "window_mouse_get_locked", "window_mouse_get_x", "window_mouse_get_y", "window_mouse_set", "window_mouse_set_locked", "window_set_caption", "window_set_color", "window_set_colour", "window_set_cursor", "window_set_fullscreen", "window_set_max_height", "window_set_max_width", "window_set_min_height", "window_set_min_width", "window_set_position", "window_set_rectangle", "window_set_showborder", "window_set_size", "window_view_mouse_get_x", "window_view_mouse_get_y", "window_views_mouse_get_x", "window_views_mouse_get_y", "winphone_tile_background_color", "winphone_tile_background_colour", "zip_add_file", "zip_create", "zip_save", "zip_unzip", "zip_unzip_async"],
+                symbol: ["AudioEffect", "AudioEffectType", "AudioLFOType", "GM_build_date", "GM_build_type", "GM_is_sandboxed", "GM_project_filename", "GM_runtime_version", "GM_version", "NaN", "_GMFILE_", "_GMFUNCTION_", "_GMLINE_", "alignmentH", "alignmentV", "all", "animcurvetype_bezier", "animcurvetype_catmullrom", "animcurvetype_linear", "asset_animationcurve", "asset_font", "asset_object", "asset_path", "asset_room", "asset_script", "asset_sequence", "asset_shader", "asset_sound", "asset_sprite", "asset_tiles", "asset_timeline", "asset_unknown", "audio_3D", "audio_bus_main", "audio_falloff_exponent_distance", "audio_falloff_exponent_distance_clamped", "audio_falloff_exponent_distance_scaled", "audio_falloff_inverse_distance", "audio_falloff_inverse_distance_clamped", "audio_falloff_inverse_distance_scaled", "audio_falloff_linear_distance", "audio_falloff_linear_distance_clamped", "audio_falloff_none", "audio_mono", "audio_stereo", "bboxkind_diamond", "bboxkind_ellipse", "bboxkind_precise", "bboxkind_rectangular", "bboxmode_automatic", "bboxmode_fullimage", "bboxmode_manual", "bm_add", "bm_dest_alpha", "bm_dest_color", "bm_dest_colour", "bm_inv_dest_alpha", "bm_inv_dest_color", "bm_inv_dest_colour", "bm_inv_src_alpha", "bm_inv_src_color", "bm_inv_src_colour", "bm_max", "bm_normal", "bm_one", "bm_src_alpha", "bm_src_alpha_sat", "bm_src_color", "bm_src_colour", "bm_subtract", "bm_zero", "browser_chrome", "browser_edge", "browser_firefox", "browser_ie", "browser_ie_mobile", "browser_not_a_browser", "browser_opera", "browser_safari", "browser_safari_mobile", "browser_tizen", "browser_unknown", "browser_windows_store", "buffer_bool", "buffer_f16", "buffer_f32", "buffer_f64", "buffer_fast", "buffer_fixed", "buffer_grow", "buffer_s16", "buffer_s32", "buffer_s8", "buffer_seek_end", "buffer_seek_relative", "buffer_seek_start", "buffer_string", "buffer_text", "buffer_u16", "buffer_u32", "buffer_u64", "buffer_u8", "buffer_vbuffer", "buffer_wrap", "c_aqua", "c_black", "c_blue", "c_dkgray", "c_dkgrey", "c_fuchsia", "c_gray", "c_green", "c_grey", "c_lime", "c_ltgray", "c_ltgrey", "c_maroon", "c_navy", "c_olive", "c_orange", "c_purple", "c_red", "c_silver", "c_teal", "c_white", "c_yellow", "cache_directory", "characterSpacing", "cmpfunc_always", "cmpfunc_equal", "cmpfunc_greater", "cmpfunc_greaterequal", "cmpfunc_less", "cmpfunc_lessequal", "cmpfunc_never", "cmpfunc_notequal", "coreColor", "coreColour", "cr_appstart", "cr_arrow", "cr_beam", "cr_cross", "cr_default", "cr_drag", "cr_handpoint", "cr_hourglass", "cr_none", "cr_size_all", "cr_size_nesw", "cr_size_ns", "cr_size_nwse", "cr_size_we", "cr_uparrow", "cull_clockwise", "cull_counterclockwise", "cull_noculling", "device_emulator", "device_ios_ipad", "device_ios_ipad_retina", "device_ios_iphone", "device_ios_iphone5", "device_ios_iphone6", "device_ios_iphone6plus", "device_ios_iphone_retina", "device_ios_unknown", "device_tablet", "display_landscape", "display_landscape_flipped", "display_portrait", "display_portrait_flipped", "dll_cdecl", "dll_stdcall", "dropShadowEnabled", "dropShadowEnabled", "ds_type_grid", "ds_type_list", "ds_type_map", "ds_type_priority", "ds_type_queue", "ds_type_stack", "ef_cloud", "ef_ellipse", "ef_explosion", "ef_firework", "ef_flare", "ef_rain", "ef_ring", "ef_smoke", "ef_smokeup", "ef_snow", "ef_spark", "ef_star", "effectsEnabled", "effectsEnabled", "ev_alarm", "ev_animation_end", "ev_animation_event", "ev_animation_update", "ev_async_audio_playback", "ev_async_audio_playback_ended", "ev_async_audio_recording", "ev_async_dialog", "ev_async_push_notification", "ev_async_save_load", "ev_async_save_load", "ev_async_social", "ev_async_system_event", "ev_async_web", "ev_async_web_cloud", "ev_async_web_iap", "ev_async_web_image_load", "ev_async_web_networking", "ev_async_web_steam", "ev_audio_playback", "ev_audio_playback_ended", "ev_audio_recording", "ev_boundary", "ev_boundary_view0", "ev_boundary_view1", "ev_boundary_view2", "ev_boundary_view3", "ev_boundary_view4", "ev_boundary_view5", "ev_boundary_view6", "ev_boundary_view7", "ev_broadcast_message", "ev_cleanup", "ev_collision", "ev_create", "ev_destroy", "ev_dialog_async", "ev_draw", "ev_draw_begin", "ev_draw_end", "ev_draw_normal", "ev_draw_post", "ev_draw_pre", "ev_end_of_path", "ev_game_end", "ev_game_start", "ev_gesture", "ev_gesture_double_tap", "ev_gesture_drag_end", "ev_gesture_drag_start", "ev_gesture_dragging", "ev_gesture_flick", "ev_gesture_pinch_end", "ev_gesture_pinch_in", "ev_gesture_pinch_out", "ev_gesture_pinch_start", "ev_gesture_rotate_end", "ev_gesture_rotate_start", "ev_gesture_rotating", "ev_gesture_tap", "ev_global_gesture_double_tap", "ev_global_gesture_drag_end", "ev_global_gesture_drag_start", "ev_global_gesture_dragging", "ev_global_gesture_flick", "ev_global_gesture_pinch_end", "ev_global_gesture_pinch_in", "ev_global_gesture_pinch_out", "ev_global_gesture_pinch_start", "ev_global_gesture_rotate_end", "ev_global_gesture_rotate_start", "ev_global_gesture_rotating", "ev_global_gesture_tap", "ev_global_left_button", "ev_global_left_press", "ev_global_left_release", "ev_global_middle_button", "ev_global_middle_press", "ev_global_middle_release", "ev_global_right_button", "ev_global_right_press", "ev_global_right_release", "ev_gui", "ev_gui_begin", "ev_gui_end", "ev_joystick1_button1", "ev_joystick1_button2", "ev_joystick1_button3", "ev_joystick1_button4", "ev_joystick1_button5", "ev_joystick1_button6", "ev_joystick1_button7", "ev_joystick1_button8", "ev_joystick1_down", "ev_joystick1_left", "ev_joystick1_right", "ev_joystick1_up", "ev_joystick2_button1", "ev_joystick2_button2", "ev_joystick2_button3", "ev_joystick2_button4", "ev_joystick2_button5", "ev_joystick2_button6", "ev_joystick2_button7", "ev_joystick2_button8", "ev_joystick2_down", "ev_joystick2_left", "ev_joystick2_right", "ev_joystick2_up", "ev_keyboard", "ev_keypress", "ev_keyrelease", "ev_left_button", "ev_left_press", "ev_left_release", "ev_middle_button", "ev_middle_press", "ev_middle_release", "ev_mouse", "ev_mouse_enter", "ev_mouse_leave", "ev_mouse_wheel_down", "ev_mouse_wheel_up", "ev_no_button", "ev_no_more_health", "ev_no_more_lives", "ev_other", "ev_outside", "ev_outside_view0", "ev_outside_view1", "ev_outside_view2", "ev_outside_view3", "ev_outside_view4", "ev_outside_view5", "ev_outside_view6", "ev_outside_view7", "ev_pre_create", "ev_push_notification", "ev_right_button", "ev_right_press", "ev_right_release", "ev_room_end", "ev_room_start", "ev_social", "ev_step", "ev_step_begin", "ev_step_end", "ev_step_normal", "ev_system_event", "ev_trigger", "ev_user0", "ev_user1", "ev_user10", "ev_user11", "ev_user12", "ev_user13", "ev_user14", "ev_user15", "ev_user2", "ev_user3", "ev_user4", "ev_user5", "ev_user6", "ev_user7", "ev_user8", "ev_user9", "ev_web_async", "ev_web_cloud", "ev_web_iap", "ev_web_image_load", "ev_web_networking", "ev_web_sound_load", "ev_web_steam", "fa_archive", "fa_bottom", "fa_center", "fa_directory", "fa_hidden", "fa_left", "fa_middle", "fa_none", "fa_readonly", "fa_right", "fa_sysfile", "fa_top", "fa_volumeid", "false", "frameSizeX", "frameSizeY", "gamespeed_fps", "gamespeed_microseconds", "global", "glowColor", "glowColour", "glowEnabled", "glowEnabled", "glowEnd", "glowStart", "gp_axis_acceleration_x", "gp_axis_acceleration_y", "gp_axis_acceleration_z", "gp_axis_angular_velocity_x", "gp_axis_angular_velocity_y", "gp_axis_angular_velocity_z", "gp_axis_orientation_w", "gp_axis_orientation_x", "gp_axis_orientation_y", "gp_axis_orientation_z", "gp_axislh", "gp_axislv", "gp_axisrh", "gp_axisrv", "gp_face1", "gp_face2", "gp_face3", "gp_face4", "gp_padd", "gp_padl", "gp_padr", "gp_padu", "gp_select", "gp_shoulderl", "gp_shoulderlb", "gp_shoulderr", "gp_shoulderrb", "gp_start", "gp_stickl", "gp_stickr", "iap_available", "iap_canceled", "iap_ev_consume", "iap_ev_product", "iap_ev_purchase", "iap_ev_restore", "iap_ev_storeload", "iap_failed", "iap_purchased", "iap_refunded", "iap_status_available", "iap_status_loading", "iap_status_processing", "iap_status_restoring", "iap_status_unavailable", "iap_status_uninitialised", "iap_storeload_failed", "iap_storeload_ok", "iap_unavailable", "infinity", "kbv_autocapitalize_characters", "kbv_autocapitalize_none", "kbv_autocapitalize_sentences", "kbv_autocapitalize_words", "kbv_returnkey_continue", "kbv_returnkey_default", "kbv_returnkey_done", "kbv_returnkey_emergency", "kbv_returnkey_go", "kbv_returnkey_google", "kbv_returnkey_join", "kbv_returnkey_next", "kbv_returnkey_route", "kbv_returnkey_search", "kbv_returnkey_send", "kbv_returnkey_yahoo", "kbv_type_ascii", "kbv_type_default", "kbv_type_email", "kbv_type_numbers", "kbv_type_phone", "kbv_type_phone_name", "kbv_type_url", "layerelementtype_background", "layerelementtype_instance", "layerelementtype_oldtilemap", "layerelementtype_particlesystem", "layerelementtype_sequence", "layerelementtype_sprite", "layerelementtype_tile", "layerelementtype_tilemap", "layerelementtype_undefined", "leaderboard_type_number", "leaderboard_type_time_mins_secs", "lighttype_dir", "lighttype_point", "lineSpacing", "m_axisx", "m_axisx_gui", "m_axisy", "m_axisy_gui", "m_scroll_down", "m_scroll_up", "matrix_projection", "matrix_view", "matrix_world", "mb_any", "mb_left", "mb_middle", "mb_none", "mb_right", "mb_side1", "mb_side2", "mip_markedonly", "mip_off", "mip_on", "network_config_avoid_time_wait", "network_config_connect_timeout", "network_config_disable_multicast", "network_config_disable_reliable_udp", "network_config_enable_multicast", "network_config_enable_reliable_udp", "network_config_use_non_blocking_socket", "network_config_websocket_protocol", "network_connect_active", "network_connect_blocking", "network_connect_nonblocking", "network_connect_none", "network_connect_passive", "network_send_binary", "network_send_text", "network_socket_bluetooth", "network_socket_tcp", "network_socket_udp", "network_socket_ws", "network_socket_wss", "network_type_connect", "network_type_data", "network_type_disconnect", "network_type_down", "network_type_non_blocking_connect", "network_type_up", "network_type_up_failed", "nineslice_blank", "nineslice_bottom", "nineslice_center", "nineslice_centre", "nineslice_hide", "nineslice_left", "nineslice_mirror", "nineslice_repeat", "nineslice_right", "nineslice_stretch", "nineslice_top", "noone", "of_challenge_lose", "of_challenge_tie", "of_challenge_win", "os_android", "os_gdk", "os_gxgames", "os_ios", "os_linux", "os_macosx", "os_operagx", "os_permission_denied", "os_permission_denied_dont_request", "os_permission_granted", "os_ps3", "os_ps4", "os_ps5", "os_psvita", "os_switch", "os_tvos", "os_unknown", "os_uwp", "os_win8native", "os_windows", "os_winphone", "os_xboxone", "os_xboxseriesxs", "other", "outlineColor", "outlineColour", "outlineDist", "outlineEnabled", "outlineEnabled", "paragraphSpacing", "path_action_continue", "path_action_restart", "path_action_reverse", "path_action_stop", "phy_debug_render_aabb", "phy_debug_render_collision_pairs", "phy_debug_render_coms", "phy_debug_render_core_shapes", "phy_debug_render_joints", "phy_debug_render_obb", "phy_debug_render_shapes", "phy_joint_anchor_1_x", "phy_joint_anchor_1_y", "phy_joint_anchor_2_x", "phy_joint_anchor_2_y", "phy_joint_angle", "phy_joint_angle_limits", "phy_joint_damping_ratio", "phy_joint_frequency", "phy_joint_length_1", "phy_joint_length_2", "phy_joint_lower_angle_limit", "phy_joint_max_force", "phy_joint_max_length", "phy_joint_max_motor_force", "phy_joint_max_motor_torque", "phy_joint_max_torque", "phy_joint_motor_force", "phy_joint_motor_speed", "phy_joint_motor_torque", "phy_joint_reaction_force_x", "phy_joint_reaction_force_y", "phy_joint_reaction_torque", "phy_joint_speed", "phy_joint_translation", "phy_joint_upper_angle_limit", "phy_particle_data_flag_category", "phy_particle_data_flag_color", "phy_particle_data_flag_colour", "phy_particle_data_flag_position", "phy_particle_data_flag_typeflags", "phy_particle_data_flag_velocity", "phy_particle_flag_colormixing", "phy_particle_flag_colourmixing", "phy_particle_flag_elastic", "phy_particle_flag_powder", "phy_particle_flag_spring", "phy_particle_flag_tensile", "phy_particle_flag_viscous", "phy_particle_flag_wall", "phy_particle_flag_water", "phy_particle_flag_zombie", "phy_particle_group_flag_rigid", "phy_particle_group_flag_solid", "pi", "pointer_invalid", "pointer_null", "pr_linelist", "pr_linestrip", "pr_pointlist", "pr_trianglefan", "pr_trianglelist", "pr_trianglestrip", "ps_distr_gaussian", "ps_distr_invgaussian", "ps_distr_linear", "ps_mode_burst", "ps_mode_stream", "ps_shape_diamond", "ps_shape_ellipse", "ps_shape_line", "ps_shape_rectangle", "pt_shape_circle", "pt_shape_cloud", "pt_shape_disk", "pt_shape_explosion", "pt_shape_flare", "pt_shape_line", "pt_shape_pixel", "pt_shape_ring", "pt_shape_smoke", "pt_shape_snow", "pt_shape_spark", "pt_shape_sphere", "pt_shape_square", "pt_shape_star", "rollback_chat_message", "rollback_connect_error", "rollback_connect_info", "rollback_connected_to_peer", "rollback_connection_rejected", "rollback_disconnected_from_peer", "rollback_end_game", "rollback_game_full", "rollback_game_info", "rollback_game_interrupted", "rollback_game_resumed", "rollback_high_latency", "rollback_player_prefs", "rollback_protocol_rejected", "rollback_synchronized_with_peer", "rollback_synchronizing_with_peer", "self", "seqaudiokey_loop", "seqaudiokey_oneshot", "seqdir_left", "seqdir_right", "seqinterpolation_assign", "seqinterpolation_lerp", "seqplay_loop", "seqplay_oneshot", "seqplay_pingpong", "seqtextkey_bottom", "seqtextkey_center", "seqtextkey_justify", "seqtextkey_left", "seqtextkey_middle", "seqtextkey_right", "seqtextkey_top", "seqtracktype_audio", "seqtracktype_bool", "seqtracktype_clipmask", "seqtracktype_clipmask_mask", "seqtracktype_clipmask_subject", "seqtracktype_color", "seqtracktype_colour", "seqtracktype_empty", "seqtracktype_graphic", "seqtracktype_group", "seqtracktype_instance", "seqtracktype_message", "seqtracktype_moment", "seqtracktype_particlesystem", "seqtracktype_real", "seqtracktype_sequence", "seqtracktype_spriteframes", "seqtracktype_string", "seqtracktype_text", "shadowColor", "shadowColour", "shadowOffsetX", "shadowOffsetY", "shadowSoftness", "sprite_add_ext_error_cancelled", "sprite_add_ext_error_decompressfailed", "sprite_add_ext_error_loadfailed", "sprite_add_ext_error_setupfailed", "sprite_add_ext_error_spritenotfound", "sprite_add_ext_error_unknown", "spritespeed_framespergameframe", "spritespeed_framespersecond", "surface_r16float", "surface_r32float", "surface_r8unorm", "surface_rg8unorm", "surface_rgba16float", "surface_rgba32float", "surface_rgba4unorm", "surface_rgba8unorm", "texturegroup_status_fetched", "texturegroup_status_loaded", "texturegroup_status_loading", "texturegroup_status_unloaded", "tf_anisotropic", "tf_linear", "tf_point", "thickness", "tile_flip", "tile_index_mask", "tile_mirror", "tile_rotate", "time_source_expire_after", "time_source_expire_nearest", "time_source_game", "time_source_global", "time_source_state_active", "time_source_state_initial", "time_source_state_paused", "time_source_state_stopped", "time_source_units_frames", "time_source_units_seconds", "timezone_local", "timezone_utc", "tm_countvsyncs", "tm_sleep", "tm_systemtiming", "true", "ty_real", "ty_string", "undefined", "vertex_type_color", "vertex_type_colour", "vertex_type_float1", "vertex_type_float2", "vertex_type_float3", "vertex_type_float4", "vertex_type_ubyte4", "vertex_usage_binormal", "vertex_usage_blendindices", "vertex_usage_blendweight", "vertex_usage_color", "vertex_usage_colour", "vertex_usage_depth", "vertex_usage_fog", "vertex_usage_normal", "vertex_usage_position", "vertex_usage_psize", "vertex_usage_sample", "vertex_usage_tangent", "vertex_usage_texcoord", "video_format_rgba", "video_format_yuv", "video_status_closed", "video_status_paused", "video_status_playing", "video_status_preparing", "vk_add", "vk_alt", "vk_anykey", "vk_backspace", "vk_control", "vk_decimal", "vk_delete", "vk_divide", "vk_down", "vk_end", "vk_enter", "vk_escape", "vk_f1", "vk_f10", "vk_f11", "vk_f12", "vk_f2", "vk_f3", "vk_f4", "vk_f5", "vk_f6", "vk_f7", "vk_f8", "vk_f9", "vk_home", "vk_insert", "vk_lalt", "vk_lcontrol", "vk_left", "vk_lshift", "vk_multiply", "vk_nokey", "vk_numpad0", "vk_numpad1", "vk_numpad2", "vk_numpad3", "vk_numpad4", "vk_numpad5", "vk_numpad6", "vk_numpad7", "vk_numpad8", "vk_numpad9", "vk_pagedown", "vk_pageup", "vk_pause", "vk_printscreen", "vk_ralt", "vk_rcontrol", "vk_return", "vk_right", "vk_rshift", "vk_shift", "vk_space", "vk_subtract", "vk_tab", "vk_up", "wallpaper_config", "wallpaper_subscription_data", "wrap"],
+                "variable.language": ["alarm", "application_surface", "argument", "argument0", "argument1", "argument2", "argument3", "argument4", "argument5", "argument6", "argument7", "argument8", "argument9", "argument10", "argument11", "argument12", "argument13", "argument14", "argument15", "argument_count", "async_load", "background_color", "background_colour", "background_showcolor", "background_showcolour", "bbox_bottom", "bbox_left", "bbox_right", "bbox_top", "browser_height", "browser_width", "colour?ColourTrack", "current_day", "current_hour", "current_minute", "current_month", "current_second", "current_time", "current_weekday", "current_year", "cursor_sprite", "debug_mode", "delta_time", "depth", "direction", "display_aa", "drawn_by_sequence", "event_action", "event_data", "event_number", "event_object", "event_type", "font_texture_page_size", "fps", "fps_real", "friction", "game_display_name", "game_id", "game_project_name", "game_save_id", "gravity", "gravity_direction", "health", "hspeed", "iap_data", "id", "image_alpha", "image_angle", "image_blend", "image_index", "image_number", "image_speed", "image_xscale", "image_yscale", "in_collision_tree", "in_sequence", "instance_count", "instance_id", "keyboard_key", "keyboard_lastchar", "keyboard_lastkey", "keyboard_string", "layer", "lives", "longMessage", "managed", "mask_index", "message", "mouse_button", "mouse_lastbutton", "mouse_x", "mouse_y", "object_index", "os_browser", "os_device", "os_type", "os_version", "path_endaction", "path_index", "path_orientation", "path_position", "path_positionprevious", "path_scale", "path_speed", "persistent", "phy_active", "phy_angular_damping", "phy_angular_velocity", "phy_bullet", "phy_col_normal_x", "phy_col_normal_y", "phy_collision_points", "phy_collision_x", "phy_collision_y", "phy_com_x", "phy_com_y", "phy_dynamic", "phy_fixed_rotation", "phy_inertia", "phy_kinematic", "phy_linear_damping", "phy_linear_velocity_x", "phy_linear_velocity_y", "phy_mass", "phy_position_x", "phy_position_xprevious", "phy_position_y", "phy_position_yprevious", "phy_rotation", "phy_sleeping", "phy_speed", "phy_speed_x", "phy_speed_y", "player_avatar_sprite", "player_avatar_url", "player_id", "player_local", "player_type", "player_user_id", "program_directory", "rollback_api_server", "rollback_confirmed_frame", "rollback_current_frame", "rollback_event_id", "rollback_event_param", "rollback_game_running", "room", "room_first", "room_height", "room_last", "room_persistent", "room_speed", "room_width", "score", "script", "sequence_instance", "solid", "speed", "sprite_height", "sprite_index", "sprite_width", "sprite_xoffset", "sprite_yoffset", "stacktrace", "temp_directory", "timeline_index", "timeline_loop", "timeline_position", "timeline_running", "timeline_speed", "view_camera", "view_current", "view_enabled", "view_hport", "view_surface_id", "view_visible", "view_wport", "view_xport", "view_yport", "visible", "vspeed", "webgl_enabled", "working_directory", "x", "xprevious", "xstart", "y", "yprevious", "ystart"]
             },
             contains: [e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE, e.APOS_STRING_MODE, e.QUOTE_STRING_MODE, e.C_NUMBER_MODE]
         }
-    }), Ya)), Cs.registerLanguage("go", (qa || (qa = 1, Va = function (e) {
+    }), Ya)), fs.registerLanguage("go", (qa || (qa = 1, Va = function (e) {
         const t = {
             keyword: ["break", "case", "chan", "const", "continue", "default", "defer", "else", "fallthrough", "for", "func", "go", "goto", "if", "import", "interface", "map", "package", "range", "return", "select", "struct", "switch", "type", "var"],
             type: ["bool", "byte", "complex64", "complex128", "error", "float32", "float64", "int8", "int16", "int32", "int64", "string", "uint8", "uint16", "uint32", "uint64", "int", "uint", "uintptr", "rune"],
@@ -3722,7 +3750,16 @@
                 variants: [e.QUOTE_STRING_MODE, e.APOS_STRING_MODE, {begin: "`", end: "`"}]
             }, {
                 className: "number",
-                variants: [{begin: e.C_NUMBER_RE + "[i]", relevance: 1}, e.C_NUMBER_MODE]
+                variants: [{
+                    match: /-?\b0[xX]\.[a-fA-F0-9](_?[a-fA-F0-9])*[pP][+-]?\d(_?\d)*i?/,
+                    relevance: 0
+                }, {
+                    match: /-?\b0[xX](_?[a-fA-F0-9])+((\.([a-fA-F0-9](_?[a-fA-F0-9])*)?)?[pP][+-]?\d(_?\d)*)?i?/,
+                    relevance: 0
+                }, {match: /-?\b0[oO](_?[0-7])*i?/, relevance: 0}, {
+                    match: /-?\.\d(_?\d)*([eE][+-]?\d(_?\d)*)?i?/,
+                    relevance: 0
+                }, {match: /-?\b\d(_?\d)*(\.(\d(_?\d)*)?)?([eE][+-]?\d(_?\d)*)?i?/, relevance: 0}]
             }, {begin: /:=/}, {
                 className: "function",
                 beginKeywords: "func",
@@ -3738,7 +3775,7 @@
                 }]
             }]
         }
-    }), Va)), Cs.registerLanguage("golo", ($a || ($a = 1, za = function (e) {
+    }), Va)), fs.registerLanguage("golo", ($a || ($a = 1, za = function (e) {
         return {
             name: "Golo",
             keywords: {
@@ -3750,14 +3787,14 @@
                 begin: "@[A-Za-z]+"
             }]
         }
-    }), za)), Cs.registerLanguage("gradle", (Qa || (Qa = 1, Wa = function (e) {
+    }), za)), fs.registerLanguage("gradle", (Qa || (Qa = 1, Wa = function (e) {
         return {
             name: "Gradle",
             case_insensitive: !0,
             keywords: ["task", "project", "allprojects", "subprojects", "artifacts", "buildscript", "configurations", "dependencies", "repositories", "sourceSets", "description", "delete", "from", "into", "include", "exclude", "source", "classpath", "destinationDir", "includes", "options", "sourceCompatibility", "targetCompatibility", "group", "flatDir", "doLast", "doFirst", "flatten", "todir", "fromdir", "ant", "def", "abstract", "break", "case", "catch", "continue", "default", "do", "else", "extends", "final", "finally", "for", "if", "implements", "instanceof", "native", "new", "private", "protected", "public", "return", "static", "switch", "synchronized", "throw", "throws", "transient", "try", "volatile", "while", "strictfp", "package", "import", "false", "null", "super", "this", "true", "antlrtask", "checkstyle", "codenarc", "copy", "boolean", "byte", "char", "class", "double", "float", "int", "interface", "long", "short", "void", "compile", "runTime", "file", "fileTree", "abs", "any", "append", "asList", "asWritable", "call", "collect", "compareTo", "count", "div", "dump", "each", "eachByte", "eachFile", "eachLine", "every", "find", "findAll", "flatten", "getAt", "getErr", "getIn", "getOut", "getText", "grep", "immutable", "inject", "inspect", "intersect", "invokeMethods", "isCase", "join", "leftShift", "minus", "multiply", "newInputStream", "newOutputStream", "newPrintWriter", "newReader", "newWriter", "next", "plus", "pop", "power", "previous", "print", "println", "push", "putAt", "read", "readBytes", "readLines", "reverse", "reverseEach", "round", "size", "sort", "splitEachLine", "step", "subMap", "times", "toInteger", "toList", "tokenize", "upto", "waitForOrKill", "withPrintWriter", "withReader", "withStream", "withWriter", "withWriterAppend", "write", "writeLine"],
             contains: [e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE, e.APOS_STRING_MODE, e.QUOTE_STRING_MODE, e.NUMBER_MODE, e.REGEXP_MODE]
         }
-    }), Wa)), Cs.registerLanguage("graphql", (ja || (ja = 1, Ka = function (e) {
+    }), Wa)), fs.registerLanguage("graphql", (ja || (ja = 1, Ka = function (e) {
         const t = e.regex;
         return {
             name: "GraphQL",
@@ -3785,7 +3822,7 @@
             }],
             illegal: [/[;<']/, /BEGIN/]
         }
-    }), Ka)), Cs.registerLanguage("groovy", function () {
+    }), Ka)), fs.registerLanguage("groovy", function () {
         if (Za) return Xa;
 
         function e(e, t = {}) {
@@ -3834,7 +3871,7 @@
                 illegal: /#|<\//
             }
         }, Xa
-    }()), Cs.registerLanguage("haml", (en || (en = 1, Ja = function (e) {
+    }()), fs.registerLanguage("haml", (en || (en = 1, Ja = function (e) {
         return {
             name: "HAML",
             case_insensitive: !0,
@@ -3891,7 +3928,7 @@
                 excludeEnd: !0
             }]
         }
-    }), Ja)), Cs.registerLanguage("handlebars", (an || (an = 1, tn = function (e) {
+    }), Ja)), fs.registerLanguage("handlebars", (an || (an = 1, tn = function (e) {
         const t = e.regex, a = {
                 $pattern: /[\w.\/]+/,
                 built_in: ["action", "bindattr", "collection", "component", "concat", "debugger", "each", "each-in", "get", "hash", "if", "in", "input", "link-to", "loc", "log", "lookup", "mut", "outlet", "partial", "query-params", "render", "template", "textarea", "unbound", "unless", "view", "with", "yield"]
@@ -3962,7 +3999,7 @@
                 contains: [E]
             }, {className: "template-variable", begin: /\{\{/, end: /\}\}/, contains: [E]}]
         }
-    }), tn)), Cs.registerLanguage("haskell", (rn || (rn = 1, nn = function (e) {
+    }), tn)), fs.registerLanguage("haskell", (rn || (rn = 1, nn = function (e) {
         const t = "([0-9]_*)+", a = "([0-9a-fA-F]_*)+",
             n = "([!#$%&*+.\\/<=>?@\\\\^~-]|(?!([(),;\\[\\]`|{}]|[_:\"']))(\\p{S}|\\p{P}))",
             i = {variants: [e.COMMENT("--+", "$"), e.COMMENT(/\{-/, /-\}/, {contains: ["self"]})]},
@@ -4025,7 +4062,7 @@
                 contains: [{scope: "char.escape", match: /\\./}]
             }, e.QUOTE_STRING_MODE, c, s, e.inherit(e.TITLE_MODE, {begin: "^[_a-z][\\w']*"}), {begin: `(?!-)${n}--+|--+(?!-)${n}`}, i, {begin: "->|<-"}]
         }
-    }), nn)), Cs.registerLanguage("haxe", (sn || (sn = 1, on = function (e) {
+    }), nn)), fs.registerLanguage("haxe", (sn || (sn = 1, on = function (e) {
         return {
             name: "Haxe",
             aliases: ["hx"],
@@ -4066,7 +4103,7 @@
                 relevance: 0
             }, {className: "type", begin: /:[ \t]*/, end: /\W/, excludeBegin: !0, excludeEnd: !0}, {
                 className: "type",
-                begin: /new */,
+                beginKeywords: "new",
                 end: /\W/,
                 excludeBegin: !0,
                 excludeEnd: !0
@@ -4115,7 +4152,7 @@
             }],
             illegal: /<\//
         }
-    }), on)), Cs.registerLanguage("hsp", (cn || (cn = 1, ln = function (e) {
+    }), on)), fs.registerLanguage("hsp", (cn || (cn = 1, ln = function (e) {
         return {
             name: "HSP",
             case_insensitive: !0,
@@ -4136,7 +4173,7 @@
                 contains: [e.inherit(e.QUOTE_STRING_MODE, {className: "string"}), e.NUMBER_MODE, e.C_NUMBER_MODE, e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE]
             }, {className: "symbol", begin: "^\\*(\\w+|@)"}, e.NUMBER_MODE, e.C_NUMBER_MODE]
         }
-    }), ln)), Cs.registerLanguage("http", (dn || (dn = 1, _n = function (e) {
+    }), ln)), fs.registerLanguage("http", (dn || (dn = 1, _n = function (e) {
         const t = "HTTP/([32]|1\\.[01])", a = {
             className: "attribute",
             begin: e.regex.concat("^", /[A-Za-z][A-Za-z0-9-]*/, "(?=\\:\\s)"),
@@ -4171,7 +4208,7 @@
                 starts: {end: /\b\B/, illegal: /\S/, contains: n}
             }, e.inherit(a, {relevance: 0})]
         }
-    }), _n)), Cs.registerLanguage("hy", (pn || (pn = 1, mn = function (e) {
+    }), _n)), fs.registerLanguage("hy", (pn || (pn = 1, mn = function (e) {
         const t = "a-zA-Z_\\-!.?+*=<>&#'", a = "[" + t + "][" + t + "0-9/;:]*", n = {
                 $pattern: a,
                 built_in: "!= % %= & &= * ** **= *= *map + += , --build-class-- --import-- -= . / // //= /= < << <<= <= = > >= >> >>= @ @= ^ ^= abs accumulate all and any ap-compose ap-dotimes ap-each ap-each-while ap-filter ap-first ap-if ap-last ap-map ap-map-when ap-pipe ap-reduce ap-reject apply as-> ascii assert assoc bin break butlast callable calling-module-name car case cdr chain chr coll? combinations compile compress cond cons cons? continue count curry cut cycle dec def default-method defclass defmacro defmacro-alias defmacro/g! defmain defmethod defmulti defn defn-alias defnc defnr defreader defseq del delattr delete-route dict-comp dir disassemble dispatch-reader-macro distinct divmod do doto drop drop-last drop-while empty? end-sequence eval eval-and-compile eval-when-compile even? every? except exec filter first flatten float? fn fnc fnr for for* format fraction genexpr gensym get getattr global globals group-by hasattr hash hex id identity if if* if-not if-python2 import in inc input instance? integer integer-char? integer? interleave interpose is is-coll is-cons is-empty is-even is-every is-float is-instance is-integer is-integer-char is-iterable is-iterator is-keyword is-neg is-none is-not is-numeric is-odd is-pos is-string is-symbol is-zero isinstance islice issubclass iter iterable? iterate iterator? keyword keyword? lambda last len let lif lif-not list* list-comp locals loop macro-error macroexpand macroexpand-1 macroexpand-all map max merge-with method-decorator min multi-decorator multicombinations name neg? next none? nonlocal not not-in not? nth numeric? oct odd? open or ord partition permutations pos? post-route postwalk pow prewalk print product profile/calls profile/cpu put-route quasiquote quote raise range read read-str recursive-replace reduce remove repeat repeatedly repr require rest round route route-with-methods rwm second seq set-comp setattr setv some sorted string string? sum switch symbol? take take-nth take-while tee try unless unquote unquote-splicing vars walk when while with with* with-decorator with-gensyms xi xor yield yield-from zero? zip zip-longest | |= ~"
@@ -4188,7 +4225,7 @@
             illegal: /\S/,
             contains: [e.SHEBANG(), p, o, _, d, s, m, c, r, l]
         }
-    }), mn)), Cs.registerLanguage("inform7", gn ? un : (gn = 1, un = function (e) {
+    }), mn)), fs.registerLanguage("inform7", gn ? un : (gn = 1, un = function (e) {
         return {
             name: "Inform 7",
             aliases: ["i7"],
@@ -4210,7 +4247,7 @@
                 contains: [{begin: "\\(This", end: "\\)"}]
             }, {className: "comment", begin: "\\[", end: "\\]", contains: ["self"]}]
         }
-    })), Cs.registerLanguage("ini", (Sn || (Sn = 1, En = function (e) {
+    })), fs.registerLanguage("ini", (Sn || (Sn = 1, En = function (e) {
         const t = e.regex,
             a = {className: "number", relevance: 0, variants: [{begin: /([+-]+)?[\d]+_[\d_]+/}, {begin: e.NUMBER_RE}]},
             n = e.COMMENT();
@@ -4241,7 +4278,7 @@
                 starts: {end: /$/, contains: [n, s, r, i, o, a]}
             }]
         }
-    }), En)), Cs.registerLanguage("irpf90", (Tn || (Tn = 1, bn = function (e) {
+    }), En)), fs.registerLanguage("irpf90", (Tn || (Tn = 1, bn = function (e) {
         const t = e.regex, a = /(_[a-z_\d]+)?/, n = /([de][+-]?\d+)?/, i = {
             className: "number",
             variants: [{begin: t.concat(/\b\d+/, /\.(\d*)/, n, a)}, {begin: t.concat(/\b\d+/, n, a)}, {begin: t.concat(/\.\d+/, n, a)}],
@@ -4266,7 +4303,7 @@
                 contains: [e.UNDERSCORE_TITLE_MODE, {className: "params", begin: "\\(", end: "\\)"}]
             }, e.COMMENT("!", "$", {relevance: 0}), e.COMMENT("begin_doc", "end_doc", {relevance: 10}), i]
         }
-    }), bn)), Cs.registerLanguage("isbl", (fn || (fn = 1, Cn = function (e) {
+    }), bn)), fs.registerLanguage("isbl", (Cn || (Cn = 1, fn = function (e) {
         const t = "[A-Za-zА-Яа-яёЁ_!][A-Za-zА-Яа-яёЁ_0-9]*",
             a = {className: "number", begin: e.NUMBER_RE, relevance: 0},
             n = {className: "string", variants: [{begin: '"', end: '"'}, {begin: "'", end: "'"}]},
@@ -4319,7 +4356,7 @@
                 }, s, c, n, a, r]
             }, l, s, c, n, a, r]
         }
-    }), Cn)), Cs.registerLanguage("java", function () {
+    }), fn)), fs.registerLanguage("java", function () {
         if (Nn) return Rn;
         Nn = 1;
         var e = "[0-9](_*[0-9])*", t = `\\.(${e})`, a = "[0-9a-fA-F](_*[0-9a-fA-F])*", n = {
@@ -4335,7 +4372,7 @@
         return Rn = function (e) {
             const t = e.regex, a = "[À-ʸa-zA-Z_$][À-ʸa-zA-Z_$0-9]*",
                 r = a + i("(?:<" + a + "~~~(?:\\s*,\\s*" + a + "~~~)*>)?", /~~~/g, 2), o = {
-                    keyword: ["synchronized", "abstract", "private", "var", "static", "if", "const ", "for", "while", "strictfp", "finally", "protected", "import", "native", "final", "void", "enum", "else", "break", "transient", "catch", "instanceof", "volatile", "case", "assert", "package", "default", "public", "try", "switch", "continue", "throws", "protected", "public", "private", "module", "requires", "exports", "do", "sealed", "yield", "permits"],
+                    keyword: ["synchronized", "abstract", "private", "var", "static", "if", "const ", "for", "while", "strictfp", "finally", "protected", "import", "native", "final", "void", "enum", "else", "break", "transient", "catch", "instanceof", "volatile", "case", "assert", "package", "default", "public", "try", "switch", "continue", "throws", "protected", "public", "private", "module", "requires", "exports", "do", "sealed", "yield", "permits", "goto", "when"],
                     literal: ["false", "true", "null"],
                     type: ["char", "boolean", "long", "float", "int", "byte", "short", "double"],
                     built_in: ["super", "this"]
@@ -4396,9 +4433,9 @@
                 }, n, s]
             }
         }, Rn
-    }()), Cs.registerLanguage("javascript", function () {
-        if (hn) return On;
-        hn = 1;
+    }()), fs.registerLanguage("javascript", function () {
+        if (On) return hn;
+        On = 1;
         const e = "[A-Za-z$_][0-9A-Za-z$_]*",
             t = ["as", "in", "of", "if", "for", "while", "finally", "var", "new", "function", "do", "return", "void", "else", "break", "catch", "instanceof", "with", "throw", "case", "default", "try", "switch", "continue", "typeof", "delete", "let", "yield", "const", "class", "debugger", "async", "await", "static", "import", "from", "export", "extends"],
             a = ["true", "false", "null", "undefined", "NaN", "Infinity"],
@@ -4407,7 +4444,7 @@
             r = ["setInterval", "setTimeout", "clearInterval", "clearTimeout", "require", "exports", "eval", "isFinite", "isNaN", "parseFloat", "parseInt", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "escape", "unescape"],
             o = ["arguments", "this", "super", "console", "window", "document", "localStorage", "sessionStorage", "module", "global"],
             s = [].concat(r, n, i);
-        return On = function (l) {
+        return hn = function (l) {
             const c = l.regex, _ = e, d = "<>", m = "</>", p = {
                     begin: /<[A-Za-z0-9\\._:-]+/, end: /\/[A-Za-z0-9\\._:-]+>|\/>/, isTrulyOpeningTag: (e, t) => {
                         const a = e[0].length + e.index, n = e.input[a];
@@ -4425,19 +4462,19 @@
                     className: "number",
                     variants: [{begin: `(\\b(${S})((${E})|\\.)?|(${E}))[eE][+-]?(${g})\\b`}, {begin: `\\b(${S})\\b((${E})\\b|\\.)?|(${E})\\b`}, {begin: "\\b(0|[1-9](_?[0-9])*)n\\b"}, {begin: "\\b0[xX][0-9a-fA-F](_?[0-9a-fA-F])*n?\\b"}, {begin: "\\b0[bB][0-1](_?[0-1])*n?\\b"}, {begin: "\\b0[oO][0-7](_?[0-7])*n?\\b"}, {begin: "\\b0[0-7]+n?\\b"}],
                     relevance: 0
-                }, T = {className: "subst", begin: "\\$\\{", end: "\\}", keywords: u, contains: []}, C = {
-                    begin: "html`",
+                }, T = {className: "subst", begin: "\\$\\{", end: "\\}", keywords: u, contains: []}, f = {
+                    begin: ".?html`",
                     end: "",
                     starts: {end: "`", returnEnd: !1, contains: [l.BACKSLASH_ESCAPE, T], subLanguage: "xml"}
-                }, f = {
-                    begin: "css`",
+                }, C = {
+                    begin: ".?css`",
                     end: "",
                     starts: {end: "`", returnEnd: !1, contains: [l.BACKSLASH_ESCAPE, T], subLanguage: "css"}
                 }, R = {
-                    begin: "gql`",
+                    begin: ".?gql`",
                     end: "",
                     starts: {end: "`", returnEnd: !1, contains: [l.BACKSLASH_ESCAPE, T], subLanguage: "graphql"}
-                }, N = {className: "string", begin: "`", end: "`", contains: [l.BACKSLASH_ESCAPE, T]}, O = {
+                }, N = {className: "string", begin: "`", end: "`", contains: [l.BACKSLASH_ESCAPE, T]}, h = {
                     className: "comment",
                     variants: [l.COMMENT(/\/\*\*(?!\/)/, "\\*/", {
                         relevance: 0,
@@ -4459,18 +4496,18 @@
                             }, {begin: /(?=[^\n])\s/, relevance: 0}]
                         }]
                     }), l.C_BLOCK_COMMENT_MODE, l.C_LINE_COMMENT_MODE]
-                }, h = [l.APOS_STRING_MODE, l.QUOTE_STRING_MODE, C, f, R, N, {match: /\$\d+/}, b];
-            T.contains = h.concat({begin: /\{/, end: /\}/, keywords: u, contains: ["self"].concat(h)});
-            const v = [].concat(O, T.contains),
-                I = v.concat([{begin: /\(/, end: /\)/, keywords: u, contains: ["self"].concat(v)}]), A = {
+                }, O = [l.APOS_STRING_MODE, l.QUOTE_STRING_MODE, f, C, R, N, {match: /\$\d+/}, b];
+            T.contains = O.concat({begin: /\{/, end: /\}/, keywords: u, contains: ["self"].concat(O)});
+            const v = [].concat(h, T.contains),
+                y = v.concat([{begin: /(\s*)\(/, end: /\)/, keywords: u, contains: ["self"].concat(v)}]), I = {
                     className: "params",
-                    begin: /\(/,
+                    begin: /(\s*)\(/,
                     end: /\)/,
                     excludeBegin: !0,
                     excludeEnd: !0,
                     keywords: u,
-                    contains: I
-                }, y = {
+                    contains: y
+                }, A = {
                     variants: [{
                         match: [/class/, /\s+/, _, /\s+/, /extends/, /\s+/, c.concat(_, "(", c.concat(/\./, _), ")*")],
                         scope: {1: "keyword", 3: "title.class", 5: "keyword", 7: "title.class.inherited"}
@@ -4480,18 +4517,18 @@
                     match: c.either(/\bJSON/, /\b[A-Z][a-z]+([A-Z][a-z]*|\d)*/, /\b[A-Z]{2,}([A-Z][a-z]+|\d)+([A-Z][a-z]*)*/, /\b[A-Z]{2,}[a-z]+([A-Z][a-z]+|\d)*([A-Z][a-z]*)*/),
                     className: "title.class",
                     keywords: {_: [...n, ...i]}
-                }, M = {
+                }, x = {
                     variants: [{match: [/function/, /\s+/, _, /(?=\s*\()/]}, {match: [/function/, /\s*(?=\()/]}],
                     className: {1: "keyword", 3: "title.function"},
                     label: "func.def",
-                    contains: [A],
+                    contains: [I],
                     illegal: /%/
-                }, L = {
-                    match: c.concat(/\b/, (x = [...r, "super", "import"], c.concat("(?!", x.join("|"), ")")), _, c.lookahead(/\(/)),
+                }, M = {
+                    match: c.concat(/\b/, (L = [...r, "super", "import"].map((e => `${e}\\s*\\(`)), c.concat("(?!", L.join("|"), ")")), _, c.lookahead(/\s*\(/)),
                     className: "title.function",
                     relevance: 0
                 };
-            var x;
+            var L;
             const w = {
                 begin: c.concat(/\./, c.lookahead(c.concat(_, /(?![0-9A-Za-z$_(])/))),
                 end: _,
@@ -4502,33 +4539,33 @@
             }, P = {
                 match: [/get|set/, /\s+/, _, /(?=\()/],
                 className: {1: "keyword", 3: "title.function"},
-                contains: [{begin: /\(\)/}, A]
-            }, k = "(\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)|" + l.UNDERSCORE_IDENT_RE + ")\\s*=>", U = {
+                contains: [{begin: /\(\)/}, I]
+            }, k = "(\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)|" + l.UNDERSCORE_IDENT_RE + ")\\s*=>", F = {
                 match: [/const|var|let/, /\s+/, _, /\s*/, /=\s*/, /(async\s*)?/, c.lookahead(k)],
                 keywords: "async",
                 className: {1: "keyword", 3: "title.function"},
-                contains: [A]
+                contains: [I]
             };
             return {
                 name: "JavaScript",
                 aliases: ["js", "jsx", "mjs", "cjs"],
                 keywords: u,
-                exports: {PARAMS_CONTAINS: I, CLASS_REFERENCE: D},
+                exports: {PARAMS_CONTAINS: y, CLASS_REFERENCE: D},
                 illegal: /#(?![$_A-z])/,
                 contains: [l.SHEBANG({label: "shebang", binary: "node", relevance: 5}), {
                     label: "use_strict",
                     className: "meta",
                     relevance: 10,
                     begin: /^\s*['"]use (strict|asm)['"]/
-                }, l.APOS_STRING_MODE, l.QUOTE_STRING_MODE, C, f, R, N, O, {match: /\$\d+/}, b, D, {
+                }, l.APOS_STRING_MODE, l.QUOTE_STRING_MODE, f, C, R, N, h, {match: /\$\d+/}, b, D, {
                     className: "attr",
                     begin: _ + c.lookahead(":"),
                     relevance: 0
-                }, U, {
+                }, F, {
                     begin: "(" + l.RE_STARTERS_RE + "|\\b(case|return|throw)\\b)\\s*",
                     keywords: "return throw case",
                     relevance: 0,
-                    contains: [O, l.REGEXP_MODE, {
+                    contains: [h, l.REGEXP_MODE, {
                         className: "function",
                         begin: k,
                         returnBegin: !0,
@@ -4539,7 +4576,14 @@
                                 className: null,
                                 begin: /\(\s*\)/,
                                 skip: !0
-                            }, {begin: /\(/, end: /\)/, excludeBegin: !0, excludeEnd: !0, keywords: u, contains: I}]
+                            }, {
+                                begin: /(\s*)\(/,
+                                end: /\)/,
+                                excludeBegin: !0,
+                                excludeEnd: !0,
+                                keywords: u,
+                                contains: y
+                            }]
                         }]
                     }, {begin: /,/, relevance: 0}, {match: /\s+/, relevance: 0}, {
                         variants: [{
@@ -4551,26 +4595,26 @@
                             end: p.end
                         }], subLanguage: "xml", contains: [{begin: p.begin, end: p.end, skip: !0, contains: ["self"]}]
                     }]
-                }, M, {beginKeywords: "while if switch catch for"}, {
+                }, x, {beginKeywords: "while if switch catch for"}, {
                     begin: "\\b(?!function)" + l.UNDERSCORE_IDENT_RE + "\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)\\s*\\{",
                     returnBegin: !0,
                     label: "func.def",
-                    contains: [A, l.inherit(l.TITLE_MODE, {begin: _, className: "title.function"})]
+                    contains: [I, l.inherit(l.TITLE_MODE, {begin: _, className: "title.function"})]
                 }, {match: /\.\.\./, relevance: 0}, w, {
                     match: "\\$" + _,
                     relevance: 0
                 }, {
                     match: [/\bconstructor(?=\s*\()/],
                     className: {1: "title.function"},
-                    contains: [A]
-                }, L, {
+                    contains: [I]
+                }, M, {
                     relevance: 0,
                     match: /\b[A-Z][A-Z_0-9]+\b/,
                     className: "variable.constant"
-                }, y, P, {match: /\$[(.]/}]
+                }, A, P, {match: /\$[(.]/}]
             }
-        }, On
-    }()), Cs.registerLanguage("jboss-cli", (In || (In = 1, vn = function (e) {
+        }, hn
+    }()), fs.registerLanguage("jboss-cli", (yn || (yn = 1, vn = function (e) {
         const t = {
             className: "params",
             begin: /\(/,
@@ -4599,10 +4643,11 @@
                 begin: /\B([\/.])[\w\-.\/=]+/
             }, t]
         }
-    }), vn)), Cs.registerLanguage("json", (yn || (yn = 1, An = function (e) {
+    }), vn)), fs.registerLanguage("json", (An || (An = 1, In = function (e) {
         const t = ["true", "false", "null"], a = {scope: "literal", beginKeywords: t.join(" ")};
         return {
             name: "JSON",
+            aliases: ["jsonc"],
             keywords: {literal: t},
             contains: [{className: "attr", begin: /"(\\.|[^\\"\r\n])*"(?=\s*:)/, relevance: 1.01}, {
                 match: /[{}[\],:]/,
@@ -4611,7 +4656,7 @@
             }, e.QUOTE_STRING_MODE, a, e.C_NUMBER_MODE, e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE],
             illegal: "\\S"
         }
-    }), An)), Cs.registerLanguage("julia", (Mn || (Mn = 1, Dn = function (e) {
+    }), In)), fs.registerLanguage("julia", (xn || (xn = 1, Dn = function (e) {
         const t = "[A-Za-z_\\u00A1-\\uFFFF][A-Za-z_0-9\\u00A1-\\uFFFF]*", a = {
                 $pattern: t,
                 keyword: ["baremodule", "begin", "break", "catch", "ccall", "const", "continue", "do", "else", "elseif", "end", "export", "false", "finally", "for", "function", "global", "if", "import", "in", "isa", "let", "local", "macro", "module", "quote", "return", "true", "try", "using", "where", "while"],
@@ -4635,7 +4680,7 @@
             className: "keyword",
             begin: "\\b(((abstract|primitive)\\s+)type|(mutable\\s+)?struct)\\b"
         }, {begin: /<:/}], i.contains = n.contains, n
-    }), Dn)), Cs.registerLanguage("julia-repl", xn ? Ln : (xn = 1, Ln = function (e) {
+    }), Dn)), fs.registerLanguage("julia-repl", Ln ? Mn : (Ln = 1, Mn = function (e) {
         return {
             name: "Julia REPL",
             contains: [{
@@ -4646,7 +4691,7 @@
             }],
             aliases: ["jldoctest"]
         }
-    })), Cs.registerLanguage("kotlin", function () {
+    })), fs.registerLanguage("kotlin", function () {
         if (Pn) return wn;
         Pn = 1;
         var e = "[0-9](_*[0-9])*", t = `\\.(${e})`, a = "[0-9a-fA-F](_*[0-9a-fA-F])*", n = {
@@ -4754,7 +4799,7 @@
                 }, o, {className: "meta", begin: "^#!/usr/bin/env", end: "$", illegal: "\n"}, c]
             }
         }, wn
-    }()), Cs.registerLanguage("lasso", (Un || (Un = 1, kn = function (e) {
+    }()), fs.registerLanguage("lasso", (Fn || (Fn = 1, kn = function (e) {
         const t = "[a-zA-Z_][\\w.]*", a = "<\\?(lasso(script)?|=)", n = "\\]|\\?>", i = {
                 $pattern: t + "|&[lg]t;",
                 literal: "true false none minimal full all void and or not bw nbw ew new cn ncn lt lte gt gte eq neq rx nrx ft",
@@ -4814,7 +4859,7 @@
                 relevance: 10
             }].concat(c)
         }
-    }), kn)), Cs.registerLanguage("latex", (Bn || (Bn = 1, Fn = function (e) {
+    }), kn)), fs.registerLanguage("latex", (Bn || (Bn = 1, Un = function (e) {
         const t = [{begin: /\^{6}[0-9a-f]{6}/}, {begin: /\^{5}[0-9a-f]{5}/}, {begin: /\^{4}[0-9a-f]{4}/}, {begin: /\^{3}[0-9a-f]{3}/}, {begin: /\^{2}[0-9a-f]{2}/}, {begin: /\^{2}[\u0000-\u007f]/}],
             a = [{
                 className: "keyword",
@@ -4887,7 +4932,7 @@
             aliases: ["tex"],
             contains: [...["verb", "lstinline"].map((e => _(e, {contains: [m()]}))), _("mint", c(s, {contains: [m()]})), _("mintinline", c(s, {contains: [u(), m()]})), _("url", {contains: [u("link"), u("link")]}), _("hyperref", {contains: [u("link")]}), _("href", c(l, {contains: [u("link")]})), ...[].concat(...["", "\\*"].map((e => [d("verbatim" + e, p("verbatim" + e)), d("filecontents" + e, c(s, p("filecontents" + e))), ...["", "B", "L"].map((t => d(t + "Verbatim" + e, c(l, p(t + "Verbatim" + e)))))]))), d("minted", c(l, c(s, p("minted")))), ...a]
         }
-    }), Fn)), Cs.registerLanguage("ldif", (Yn || (Yn = 1, Gn = function (e) {
+    }), Un)), fs.registerLanguage("ldif", (Yn || (Yn = 1, Gn = function (e) {
         return {
             name: "LDIF",
             contains: [{className: "attribute", match: "^dn(?=:)", relevance: 10}, {
@@ -4895,7 +4940,7 @@
                 match: "^\\w+(?=:)"
             }, {className: "literal", match: "^-"}, e.HASH_COMMENT_MODE]
         }
-    }), Gn)), Cs.registerLanguage("leaf", Vn ? Hn : (Vn = 1, Hn = function (e) {
+    }), Gn)), fs.registerLanguage("leaf", Vn ? Hn : (Vn = 1, Hn = function (e) {
         const t = /([A-Za-z_][A-Za-z_0-9]*)?/, a = {
             scope: "params",
             begin: /\(/,
@@ -4919,15 +4964,15 @@
                 contains: [a]
             }, {match: [/#+/, t, /:?/], scope: {1: "punctuation", 2: "keyword", 3: "punctuation"}}]
         }
-    })), Cs.registerLanguage("less", function () {
+    })), fs.registerLanguage("less", function () {
         if (zn) return qn;
         zn = 1;
-        const e = ["a", "abbr", "address", "article", "aside", "audio", "b", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "p", "q", "quote", "samp", "section", "span", "strong", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "ul", "var", "video"],
-            t = ["any-hover", "any-pointer", "aspect-ratio", "color", "color-gamut", "color-index", "device-aspect-ratio", "device-height", "device-width", "display-mode", "forced-colors", "grid", "height", "hover", "inverted-colors", "monochrome", "orientation", "overflow-block", "overflow-inline", "pointer", "prefers-color-scheme", "prefers-contrast", "prefers-reduced-motion", "prefers-reduced-transparency", "resolution", "scan", "scripting", "update", "width", "min-width", "max-width", "min-height", "max-height"],
-            a = ["active", "any-link", "blank", "checked", "current", "default", "defined", "dir", "disabled", "drop", "empty", "enabled", "first", "first-child", "first-of-type", "fullscreen", "future", "focus", "focus-visible", "focus-within", "has", "host", "host-context", "hover", "indeterminate", "in-range", "invalid", "is", "lang", "last-child", "last-of-type", "left", "link", "local-link", "not", "nth-child", "nth-col", "nth-last-child", "nth-last-col", "nth-last-of-type", "nth-of-type", "only-child", "only-of-type", "optional", "out-of-range", "past", "placeholder-shown", "read-only", "read-write", "required", "right", "root", "scope", "target", "target-within", "user-invalid", "valid", "visited", "where"],
-            n = ["after", "backdrop", "before", "cue", "cue-region", "first-letter", "first-line", "grammar-error", "marker", "part", "placeholder", "selection", "slotted", "spelling-error"],
-            i = ["align-content", "align-items", "align-self", "all", "animation", "animation-delay", "animation-direction", "animation-duration", "animation-fill-mode", "animation-iteration-count", "animation-name", "animation-play-state", "animation-timing-function", "backface-visibility", "background", "background-attachment", "background-blend-mode", "background-clip", "background-color", "background-image", "background-origin", "background-position", "background-repeat", "background-size", "block-size", "border", "border-block", "border-block-color", "border-block-end", "border-block-end-color", "border-block-end-style", "border-block-end-width", "border-block-start", "border-block-start-color", "border-block-start-style", "border-block-start-width", "border-block-style", "border-block-width", "border-bottom", "border-bottom-color", "border-bottom-left-radius", "border-bottom-right-radius", "border-bottom-style", "border-bottom-width", "border-collapse", "border-color", "border-image", "border-image-outset", "border-image-repeat", "border-image-slice", "border-image-source", "border-image-width", "border-inline", "border-inline-color", "border-inline-end", "border-inline-end-color", "border-inline-end-style", "border-inline-end-width", "border-inline-start", "border-inline-start-color", "border-inline-start-style", "border-inline-start-width", "border-inline-style", "border-inline-width", "border-left", "border-left-color", "border-left-style", "border-left-width", "border-radius", "border-right", "border-right-color", "border-right-style", "border-right-width", "border-spacing", "border-style", "border-top", "border-top-color", "border-top-left-radius", "border-top-right-radius", "border-top-style", "border-top-width", "border-width", "bottom", "box-decoration-break", "box-shadow", "box-sizing", "break-after", "break-before", "break-inside", "caption-side", "caret-color", "clear", "clip", "clip-path", "clip-rule", "color", "column-count", "column-fill", "column-gap", "column-rule", "column-rule-color", "column-rule-style", "column-rule-width", "column-span", "column-width", "columns", "contain", "content", "content-visibility", "counter-increment", "counter-reset", "cue", "cue-after", "cue-before", "cursor", "direction", "display", "empty-cells", "filter", "flex", "flex-basis", "flex-direction", "flex-flow", "flex-grow", "flex-shrink", "flex-wrap", "float", "flow", "font", "font-display", "font-family", "font-feature-settings", "font-kerning", "font-language-override", "font-size", "font-size-adjust", "font-smoothing", "font-stretch", "font-style", "font-synthesis", "font-variant", "font-variant-caps", "font-variant-east-asian", "font-variant-ligatures", "font-variant-numeric", "font-variant-position", "font-variation-settings", "font-weight", "gap", "glyph-orientation-vertical", "grid", "grid-area", "grid-auto-columns", "grid-auto-flow", "grid-auto-rows", "grid-column", "grid-column-end", "grid-column-start", "grid-gap", "grid-row", "grid-row-end", "grid-row-start", "grid-template", "grid-template-areas", "grid-template-columns", "grid-template-rows", "hanging-punctuation", "height", "hyphens", "icon", "image-orientation", "image-rendering", "image-resolution", "ime-mode", "inline-size", "isolation", "justify-content", "left", "letter-spacing", "line-break", "line-height", "list-style", "list-style-image", "list-style-position", "list-style-type", "margin", "margin-block", "margin-block-end", "margin-block-start", "margin-bottom", "margin-inline", "margin-inline-end", "margin-inline-start", "margin-left", "margin-right", "margin-top", "marks", "mask", "mask-border", "mask-border-mode", "mask-border-outset", "mask-border-repeat", "mask-border-slice", "mask-border-source", "mask-border-width", "mask-clip", "mask-composite", "mask-image", "mask-mode", "mask-origin", "mask-position", "mask-repeat", "mask-size", "mask-type", "max-block-size", "max-height", "max-inline-size", "max-width", "min-block-size", "min-height", "min-inline-size", "min-width", "mix-blend-mode", "nav-down", "nav-index", "nav-left", "nav-right", "nav-up", "none", "normal", "object-fit", "object-position", "opacity", "order", "orphans", "outline", "outline-color", "outline-offset", "outline-style", "outline-width", "overflow", "overflow-wrap", "overflow-x", "overflow-y", "padding", "padding-block", "padding-block-end", "padding-block-start", "padding-bottom", "padding-inline", "padding-inline-end", "padding-inline-start", "padding-left", "padding-right", "padding-top", "page-break-after", "page-break-before", "page-break-inside", "pause", "pause-after", "pause-before", "perspective", "perspective-origin", "pointer-events", "position", "quotes", "resize", "rest", "rest-after", "rest-before", "right", "row-gap", "scroll-margin", "scroll-margin-block", "scroll-margin-block-end", "scroll-margin-block-start", "scroll-margin-bottom", "scroll-margin-inline", "scroll-margin-inline-end", "scroll-margin-inline-start", "scroll-margin-left", "scroll-margin-right", "scroll-margin-top", "scroll-padding", "scroll-padding-block", "scroll-padding-block-end", "scroll-padding-block-start", "scroll-padding-bottom", "scroll-padding-inline", "scroll-padding-inline-end", "scroll-padding-inline-start", "scroll-padding-left", "scroll-padding-right", "scroll-padding-top", "scroll-snap-align", "scroll-snap-stop", "scroll-snap-type", "scrollbar-color", "scrollbar-gutter", "scrollbar-width", "shape-image-threshold", "shape-margin", "shape-outside", "speak", "speak-as", "src", "tab-size", "table-layout", "text-align", "text-align-all", "text-align-last", "text-combine-upright", "text-decoration", "text-decoration-color", "text-decoration-line", "text-decoration-style", "text-emphasis", "text-emphasis-color", "text-emphasis-position", "text-emphasis-style", "text-indent", "text-justify", "text-orientation", "text-overflow", "text-rendering", "text-shadow", "text-transform", "text-underline-position", "top", "transform", "transform-box", "transform-origin", "transform-style", "transition", "transition-delay", "transition-duration", "transition-property", "transition-timing-function", "unicode-bidi", "vertical-align", "visibility", "voice-balance", "voice-duration", "voice-family", "voice-pitch", "voice-range", "voice-rate", "voice-stress", "voice-volume", "white-space", "widows", "width", "will-change", "word-break", "word-spacing", "word-wrap", "writing-mode", "z-index"].reverse(),
-            r = a.concat(n);
+        const e = ["a", "abbr", "address", "article", "aside", "audio", "b", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "optgroup", "option", "p", "picture", "q", "quote", "samp", "section", "select", "source", "span", "strong", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "ul", "var", "video", "defs", "g", "marker", "mask", "pattern", "svg", "switch", "symbol", "feBlend", "feColorMatrix", "feComponentTransfer", "feComposite", "feConvolveMatrix", "feDiffuseLighting", "feDisplacementMap", "feFlood", "feGaussianBlur", "feImage", "feMerge", "feMorphology", "feOffset", "feSpecularLighting", "feTile", "feTurbulence", "linearGradient", "radialGradient", "stop", "circle", "ellipse", "image", "line", "path", "polygon", "polyline", "rect", "text", "use", "textPath", "tspan", "foreignObject", "clipPath"],
+            t = ["any-hover", "any-pointer", "aspect-ratio", "color", "color-gamut", "color-index", "device-aspect-ratio", "device-height", "device-width", "display-mode", "forced-colors", "grid", "height", "hover", "inverted-colors", "monochrome", "orientation", "overflow-block", "overflow-inline", "pointer", "prefers-color-scheme", "prefers-contrast", "prefers-reduced-motion", "prefers-reduced-transparency", "resolution", "scan", "scripting", "update", "width", "min-width", "max-width", "min-height", "max-height"].sort().reverse(),
+            a = ["active", "any-link", "blank", "checked", "current", "default", "defined", "dir", "disabled", "drop", "empty", "enabled", "first", "first-child", "first-of-type", "fullscreen", "future", "focus", "focus-visible", "focus-within", "has", "host", "host-context", "hover", "indeterminate", "in-range", "invalid", "is", "lang", "last-child", "last-of-type", "left", "link", "local-link", "not", "nth-child", "nth-col", "nth-last-child", "nth-last-col", "nth-last-of-type", "nth-of-type", "only-child", "only-of-type", "optional", "out-of-range", "past", "placeholder-shown", "read-only", "read-write", "required", "right", "root", "scope", "target", "target-within", "user-invalid", "valid", "visited", "where"].sort().reverse(),
+            n = ["after", "backdrop", "before", "cue", "cue-region", "first-letter", "first-line", "grammar-error", "marker", "part", "placeholder", "selection", "slotted", "spelling-error"].sort().reverse(),
+            i = ["accent-color", "align-content", "align-items", "align-self", "alignment-baseline", "all", "anchor-name", "animation", "animation-composition", "animation-delay", "animation-direction", "animation-duration", "animation-fill-mode", "animation-iteration-count", "animation-name", "animation-play-state", "animation-range", "animation-range-end", "animation-range-start", "animation-timeline", "animation-timing-function", "appearance", "aspect-ratio", "backdrop-filter", "backface-visibility", "background", "background-attachment", "background-blend-mode", "background-clip", "background-color", "background-image", "background-origin", "background-position", "background-position-x", "background-position-y", "background-repeat", "background-size", "baseline-shift", "block-size", "border", "border-block", "border-block-color", "border-block-end", "border-block-end-color", "border-block-end-style", "border-block-end-width", "border-block-start", "border-block-start-color", "border-block-start-style", "border-block-start-width", "border-block-style", "border-block-width", "border-bottom", "border-bottom-color", "border-bottom-left-radius", "border-bottom-right-radius", "border-bottom-style", "border-bottom-width", "border-collapse", "border-color", "border-end-end-radius", "border-end-start-radius", "border-image", "border-image-outset", "border-image-repeat", "border-image-slice", "border-image-source", "border-image-width", "border-inline", "border-inline-color", "border-inline-end", "border-inline-end-color", "border-inline-end-style", "border-inline-end-width", "border-inline-start", "border-inline-start-color", "border-inline-start-style", "border-inline-start-width", "border-inline-style", "border-inline-width", "border-left", "border-left-color", "border-left-style", "border-left-width", "border-radius", "border-right", "border-right-color", "border-right-style", "border-right-width", "border-spacing", "border-start-end-radius", "border-start-start-radius", "border-style", "border-top", "border-top-color", "border-top-left-radius", "border-top-right-radius", "border-top-style", "border-top-width", "border-width", "bottom", "box-align", "box-decoration-break", "box-direction", "box-flex", "box-flex-group", "box-lines", "box-ordinal-group", "box-orient", "box-pack", "box-shadow", "box-sizing", "break-after", "break-before", "break-inside", "caption-side", "caret-color", "clear", "clip", "clip-path", "clip-rule", "color", "color-interpolation", "color-interpolation-filters", "color-profile", "color-rendering", "color-scheme", "column-count", "column-fill", "column-gap", "column-rule", "column-rule-color", "column-rule-style", "column-rule-width", "column-span", "column-width", "columns", "contain", "contain-intrinsic-block-size", "contain-intrinsic-height", "contain-intrinsic-inline-size", "contain-intrinsic-size", "contain-intrinsic-width", "container", "container-name", "container-type", "content", "content-visibility", "counter-increment", "counter-reset", "counter-set", "cue", "cue-after", "cue-before", "cursor", "cx", "cy", "direction", "display", "dominant-baseline", "empty-cells", "enable-background", "field-sizing", "fill", "fill-opacity", "fill-rule", "filter", "flex", "flex-basis", "flex-direction", "flex-flow", "flex-grow", "flex-shrink", "flex-wrap", "float", "flood-color", "flood-opacity", "flow", "font", "font-display", "font-family", "font-feature-settings", "font-kerning", "font-language-override", "font-optical-sizing", "font-palette", "font-size", "font-size-adjust", "font-smooth", "font-smoothing", "font-stretch", "font-style", "font-synthesis", "font-synthesis-position", "font-synthesis-small-caps", "font-synthesis-style", "font-synthesis-weight", "font-variant", "font-variant-alternates", "font-variant-caps", "font-variant-east-asian", "font-variant-emoji", "font-variant-ligatures", "font-variant-numeric", "font-variant-position", "font-variation-settings", "font-weight", "forced-color-adjust", "gap", "glyph-orientation-horizontal", "glyph-orientation-vertical", "grid", "grid-area", "grid-auto-columns", "grid-auto-flow", "grid-auto-rows", "grid-column", "grid-column-end", "grid-column-start", "grid-gap", "grid-row", "grid-row-end", "grid-row-start", "grid-template", "grid-template-areas", "grid-template-columns", "grid-template-rows", "hanging-punctuation", "height", "hyphenate-character", "hyphenate-limit-chars", "hyphens", "icon", "image-orientation", "image-rendering", "image-resolution", "ime-mode", "initial-letter", "initial-letter-align", "inline-size", "inset", "inset-area", "inset-block", "inset-block-end", "inset-block-start", "inset-inline", "inset-inline-end", "inset-inline-start", "isolation", "justify-content", "justify-items", "justify-self", "kerning", "left", "letter-spacing", "lighting-color", "line-break", "line-height", "line-height-step", "list-style", "list-style-image", "list-style-position", "list-style-type", "margin", "margin-block", "margin-block-end", "margin-block-start", "margin-bottom", "margin-inline", "margin-inline-end", "margin-inline-start", "margin-left", "margin-right", "margin-top", "margin-trim", "marker", "marker-end", "marker-mid", "marker-start", "marks", "mask", "mask-border", "mask-border-mode", "mask-border-outset", "mask-border-repeat", "mask-border-slice", "mask-border-source", "mask-border-width", "mask-clip", "mask-composite", "mask-image", "mask-mode", "mask-origin", "mask-position", "mask-repeat", "mask-size", "mask-type", "masonry-auto-flow", "math-depth", "math-shift", "math-style", "max-block-size", "max-height", "max-inline-size", "max-width", "min-block-size", "min-height", "min-inline-size", "min-width", "mix-blend-mode", "nav-down", "nav-index", "nav-left", "nav-right", "nav-up", "none", "normal", "object-fit", "object-position", "offset", "offset-anchor", "offset-distance", "offset-path", "offset-position", "offset-rotate", "opacity", "order", "orphans", "outline", "outline-color", "outline-offset", "outline-style", "outline-width", "overflow", "overflow-anchor", "overflow-block", "overflow-clip-margin", "overflow-inline", "overflow-wrap", "overflow-x", "overflow-y", "overlay", "overscroll-behavior", "overscroll-behavior-block", "overscroll-behavior-inline", "overscroll-behavior-x", "overscroll-behavior-y", "padding", "padding-block", "padding-block-end", "padding-block-start", "padding-bottom", "padding-inline", "padding-inline-end", "padding-inline-start", "padding-left", "padding-right", "padding-top", "page", "page-break-after", "page-break-before", "page-break-inside", "paint-order", "pause", "pause-after", "pause-before", "perspective", "perspective-origin", "place-content", "place-items", "place-self", "pointer-events", "position", "position-anchor", "position-visibility", "print-color-adjust", "quotes", "r", "resize", "rest", "rest-after", "rest-before", "right", "rotate", "row-gap", "ruby-align", "ruby-position", "scale", "scroll-behavior", "scroll-margin", "scroll-margin-block", "scroll-margin-block-end", "scroll-margin-block-start", "scroll-margin-bottom", "scroll-margin-inline", "scroll-margin-inline-end", "scroll-margin-inline-start", "scroll-margin-left", "scroll-margin-right", "scroll-margin-top", "scroll-padding", "scroll-padding-block", "scroll-padding-block-end", "scroll-padding-block-start", "scroll-padding-bottom", "scroll-padding-inline", "scroll-padding-inline-end", "scroll-padding-inline-start", "scroll-padding-left", "scroll-padding-right", "scroll-padding-top", "scroll-snap-align", "scroll-snap-stop", "scroll-snap-type", "scroll-timeline", "scroll-timeline-axis", "scroll-timeline-name", "scrollbar-color", "scrollbar-gutter", "scrollbar-width", "shape-image-threshold", "shape-margin", "shape-outside", "shape-rendering", "speak", "speak-as", "src", "stop-color", "stop-opacity", "stroke", "stroke-dasharray", "stroke-dashoffset", "stroke-linecap", "stroke-linejoin", "stroke-miterlimit", "stroke-opacity", "stroke-width", "tab-size", "table-layout", "text-align", "text-align-all", "text-align-last", "text-anchor", "text-combine-upright", "text-decoration", "text-decoration-color", "text-decoration-line", "text-decoration-skip", "text-decoration-skip-ink", "text-decoration-style", "text-decoration-thickness", "text-emphasis", "text-emphasis-color", "text-emphasis-position", "text-emphasis-style", "text-indent", "text-justify", "text-orientation", "text-overflow", "text-rendering", "text-shadow", "text-size-adjust", "text-transform", "text-underline-offset", "text-underline-position", "text-wrap", "text-wrap-mode", "text-wrap-style", "timeline-scope", "top", "touch-action", "transform", "transform-box", "transform-origin", "transform-style", "transition", "transition-behavior", "transition-delay", "transition-duration", "transition-property", "transition-timing-function", "translate", "unicode-bidi", "user-modify", "user-select", "vector-effect", "vertical-align", "view-timeline", "view-timeline-axis", "view-timeline-inset", "view-timeline-name", "view-transition-name", "visibility", "voice-balance", "voice-duration", "voice-family", "voice-pitch", "voice-range", "voice-rate", "voice-stress", "voice-volume", "white-space", "white-space-collapse", "widows", "width", "will-change", "word-break", "word-spacing", "word-wrap", "writing-mode", "x", "y", "z-index", "zoom"].sort().reverse(),
+            r = a.concat(n).sort().reverse();
         return qn = function (o) {
             const s = (e => ({
                     IMPORTANT: {scope: "meta", begin: "!important"},
@@ -4975,11 +5020,11 @@
                         end: /(?=:)/,
                         starts: {endsWithParent: !0, illegal: "[<=$]", relevance: 0, contains: m}
                     }]
-                }, C = {
+                }, f = {
                     className: "keyword",
                     begin: "@(import|media|charset|font-face|(-[a-z]+-)?keyframes|supports|document|namespace|page|viewport|host)\\b",
                     starts: {end: "[;{}]", keywords: g, returnEnd: !0, contains: m, relevance: 0}
-                }, f = {
+                }, C = {
                     className: "variable",
                     variants: [{begin: "@" + c + "\\s*:", relevance: 15}, {begin: "@" + c}],
                     starts: {end: "[;}]", returnEnd: !0, contains: S}
@@ -5002,14 +5047,14 @@
                         contains: S
                     }, {begin: "!important"}, s.FUNCTION_DISPATCH]
                 }, N = {begin: c + ":(:)?" + `(${l.join("|")})`, returnBegin: !0, contains: [R]};
-            return d.push(o.C_LINE_COMMENT_MODE, o.C_BLOCK_COMMENT_MODE, C, f, N, T, R, b, s.FUNCTION_DISPATCH), {
+            return d.push(o.C_LINE_COMMENT_MODE, o.C_BLOCK_COMMENT_MODE, f, C, N, T, R, b, s.FUNCTION_DISPATCH), {
                 name: "Less",
                 case_insensitive: !0,
                 illegal: "[=>'/<($\"]",
                 contains: d
             }
         }, qn
-    }()), Cs.registerLanguage("lisp", (Wn || (Wn = 1, $n = function (e) {
+    }()), fs.registerLanguage("lisp", (Wn || (Wn = 1, $n = function (e) {
         const t = "[a-zA-Z_\\-+\\*\\/<=>&#][a-zA-Z0-9_\\-+*\\/<=>&#!]*", a = "\\|[^]*?\\|",
             n = "(-|\\+)?\\d+(\\.\\d+|\\/\\d+)?((d|e|f|l|s|D|E|F|L|S)(\\+|-)?\\d+)?",
             i = {className: "literal", begin: "\\b(t{1}|nil)\\b"}, r = {
@@ -5040,7 +5085,7 @@
             illegal: /\S/,
             contains: [r, e.SHEBANG(), i, o, s, m, p, u, _]
         }
-    }), $n)), Cs.registerLanguage("livecodeserver", (Kn || (Kn = 1, Qn = function (e) {
+    }), $n)), fs.registerLanguage("livecodeserver", (Kn || (Kn = 1, Qn = function (e) {
         const t = {
                 className: "variable",
                 variants: [{begin: "\\b([gtps][A-Z]{1}[a-zA-Z0-9]*)(\\[.+\\])?(?:\\s*?)"}, {begin: "\\$_[A-Z]+"}],
@@ -5078,7 +5123,7 @@
             }, e.APOS_STRING_MODE, e.QUOTE_STRING_MODE, e.BINARY_NUMBER_MODE, e.C_NUMBER_MODE, n].concat(a),
             illegal: ";$|^\\[|^=|&|\\{"
         }
-    }), Qn)), Cs.registerLanguage("livescript", function () {
+    }), Qn)), fs.registerLanguage("livescript", function () {
         if (Xn) return jn;
         Xn = 1;
         const e = ["as", "in", "of", "if", "for", "while", "finally", "var", "new", "function", "do", "return", "void", "else", "break", "catch", "instanceof", "with", "throw", "case", "default", "try", "switch", "continue", "typeof", "delete", "let", "yield", "const", "class", "debugger", "async", "await", "static", "import", "from", "export", "extends"],
@@ -5155,7 +5200,7 @@
                 }, d, {begin: r + ":", end: ":", returnBegin: !0, returnEnd: !0, relevance: 0}])
             }
         }, jn
-    }()),Cs.registerLanguage("llvm", (Jn || (Jn = 1, Zn = function (e) {
+    }()),fs.registerLanguage("llvm", (Jn || (Jn = 1, Zn = function (e) {
         const t = e.regex, a = /([-a-zA-Z$._][\w$.-]*)/,
             n = {className: "variable", variants: [{begin: t.concat(/%/, a)}, {begin: /%\d+/}, {begin: /#\d+/}]}, i = {
                 className: "title",
@@ -5163,7 +5208,10 @@
             };
         return {
             name: "LLVM IR",
-            keywords: "begin end true false declare define global constant private linker_private internal available_externally linkonce linkonce_odr weak weak_odr appending dllimport dllexport common default hidden protected extern_weak external thread_local zeroinitializer undef null to tail target triple datalayout volatile nuw nsw nnan ninf nsz arcp fast exact inbounds align addrspace section alias module asm sideeffect gc dbg linker_private_weak attributes blockaddress initialexec localdynamic localexec prefix unnamed_addr ccc fastcc coldcc x86_stdcallcc x86_fastcallcc arm_apcscc arm_aapcscc arm_aapcs_vfpcc ptx_device ptx_kernel intel_ocl_bicc msp430_intrcc spir_func spir_kernel x86_64_sysvcc x86_64_win64cc x86_thiscallcc cc c signext zeroext inreg sret nounwind noreturn noalias nocapture byval nest readnone readonly inlinehint noinline alwaysinline optsize ssp sspreq noredzone noimplicitfloat naked builtin cold nobuiltin noduplicate nonlazybind optnone returns_twice sanitize_address sanitize_memory sanitize_thread sspstrong uwtable returned type opaque eq ne slt sgt sle sge ult ugt ule uge oeq one olt ogt ole oge ord uno ueq une x acq_rel acquire alignstack atomic catch cleanup filter inteldialect max min monotonic nand personality release seq_cst singlethread umax umin unordered xchg add fadd sub fsub mul fmul udiv sdiv fdiv urem srem frem shl lshr ashr and or xor icmp fcmp phi call trunc zext sext fptrunc fpext uitofp sitofp fptoui fptosi inttoptr ptrtoint bitcast addrspacecast select va_arg ret br switch invoke unwind unreachable indirectbr landingpad resume malloc alloca free load store getelementptr extractelement insertelement shufflevector getresult extractvalue insertvalue atomicrmw cmpxchg fence argmemonly double",
+            keywords: {
+                keyword: "begin end true false declare define global constant private linker_private internal available_externally linkonce linkonce_odr weak weak_odr appending dllimport dllexport common default hidden protected extern_weak external thread_local zeroinitializer undef null to tail target triple datalayout volatile nuw nsw nnan ninf nsz arcp fast exact inbounds align addrspace section alias module asm sideeffect gc dbg linker_private_weak attributes blockaddress initialexec localdynamic localexec prefix unnamed_addr ccc fastcc coldcc x86_stdcallcc x86_fastcallcc arm_apcscc arm_aapcscc arm_aapcs_vfpcc ptx_device ptx_kernel intel_ocl_bicc msp430_intrcc spir_func spir_kernel x86_64_sysvcc x86_64_win64cc x86_thiscallcc cc c signext zeroext inreg sret nounwind noreturn noalias nocapture byval nest readnone readonly inlinehint noinline alwaysinline optsize ssp sspreq noredzone noimplicitfloat naked builtin cold nobuiltin noduplicate nonlazybind optnone returns_twice sanitize_address sanitize_memory sanitize_thread sspstrong uwtable returned type opaque eq ne slt sgt sle sge ult ugt ule uge oeq one olt ogt ole oge ord uno ueq une x acq_rel acquire alignstack atomic catch cleanup filter inteldialect max min monotonic nand personality release seq_cst singlethread umax umin unordered xchg add fadd sub fsub mul fmul udiv sdiv fdiv urem srem frem shl lshr ashr and or xor icmp fcmp phi call trunc zext sext fptrunc fpext uitofp sitofp fptoui fptosi inttoptr ptrtoint bitcast addrspacecast select va_arg ret br switch invoke unwind unreachable indirectbr landingpad resume malloc alloca free load store getelementptr extractelement insertelement shufflevector getresult extractvalue insertvalue atomicrmw cmpxchg fence argmemonly",
+                type: "void half bfloat float double fp128 x86_fp80 ppc_fp128 x86_amx x86_mmx ptr label token metadata opaque"
+            },
             contains: [{
                 className: "type",
                 begin: /\bi\d+(?=\s|\b)/
@@ -5182,7 +5230,7 @@
                 relevance: 0
             }]
         }
-    }), Zn)),Cs.registerLanguage("lsl", (ti || (ti = 1, ei = function (e) {
+    }), Zn)),fs.registerLanguage("lsl", (ti || (ti = 1, ei = function (e) {
         const t = {className: "string", begin: '"', end: '"', contains: [{className: "subst", begin: /\\[tn"\\]/}]},
             a = {className: "number", relevance: 0, begin: e.C_NUMBER_RE};
         return {
@@ -5203,7 +5251,7 @@
                 variants: [{begin: "\\b(PI|TWO_PI|PI_BY_TWO|DEG_TO_RAD|RAD_TO_DEG|SQRT2)\\b"}, {begin: "\\b(XP_ERROR_(EXPERIENCES_DISABLED|EXPERIENCE_(DISABLED|SUSPENDED)|INVALID_(EXPERIENCE|PARAMETERS)|KEY_NOT_FOUND|MATURITY_EXCEEDED|NONE|NOT_(FOUND|PERMITTED(_LAND)?)|NO_EXPERIENCE|QUOTA_EXCEEDED|RETRY_UPDATE|STORAGE_EXCEPTION|STORE_DISABLED|THROTTLED|UNKNOWN_ERROR)|JSON_APPEND|STATUS_(PHYSICS|ROTATE_[XYZ]|PHANTOM|SANDBOX|BLOCK_GRAB(_OBJECT)?|(DIE|RETURN)_AT_EDGE|CAST_SHADOWS|OK|MALFORMED_PARAMS|TYPE_MISMATCH|BOUNDS_ERROR|NOT_(FOUND|SUPPORTED)|INTERNAL_ERROR|WHITELIST_FAILED)|AGENT(_(BY_(LEGACY_|USER)NAME|FLYING|ATTACHMENTS|SCRIPTED|MOUSELOOK|SITTING|ON_OBJECT|AWAY|WALKING|IN_AIR|TYPING|CROUCHING|BUSY|ALWAYS_RUN|AUTOPILOT|LIST_(PARCEL(_OWNER)?|REGION)))?|CAMERA_(PITCH|DISTANCE|BEHINDNESS_(ANGLE|LAG)|(FOCUS|POSITION)(_(THRESHOLD|LOCKED|LAG))?|FOCUS_OFFSET|ACTIVE)|ANIM_ON|LOOP|REVERSE|PING_PONG|SMOOTH|ROTATE|SCALE|ALL_SIDES|LINK_(ROOT|SET|ALL_(OTHERS|CHILDREN)|THIS)|ACTIVE|PASS(IVE|_(ALWAYS|IF_NOT_HANDLED|NEVER))|SCRIPTED|CONTROL_(FWD|BACK|(ROT_)?(LEFT|RIGHT)|UP|DOWN|(ML_)?LBUTTON)|PERMISSION_(RETURN_OBJECTS|DEBIT|OVERRIDE_ANIMATIONS|SILENT_ESTATE_MANAGEMENT|TAKE_CONTROLS|TRIGGER_ANIMATION|ATTACH|CHANGE_LINKS|(CONTROL|TRACK)_CAMERA|TELEPORT)|INVENTORY_(TEXTURE|SOUND|OBJECT|SCRIPT|LANDMARK|CLOTHING|NOTECARD|BODYPART|ANIMATION|GESTURE|ALL|NONE)|CHANGED_(INVENTORY|COLOR|SHAPE|SCALE|TEXTURE|LINK|ALLOWED_DROP|OWNER|REGION(_START)?|TELEPORT|MEDIA)|OBJECT_(CLICK_ACTION|HOVER_HEIGHT|LAST_OWNER_ID|(PHYSICS|SERVER|STREAMING)_COST|UNKNOWN_DETAIL|CHARACTER_TIME|PHANTOM|PHYSICS|TEMP_(ATTACHED|ON_REZ)|NAME|DESC|POS|PRIM_(COUNT|EQUIVALENCE)|RETURN_(PARCEL(_OWNER)?|REGION)|REZZER_KEY|ROO?T|VELOCITY|OMEGA|OWNER|GROUP(_TAG)?|CREATOR|ATTACHED_(POINT|SLOTS_AVAILABLE)|RENDER_WEIGHT|(BODY_SHAPE|PATHFINDING)_TYPE|(RUNNING|TOTAL)_SCRIPT_COUNT|TOTAL_INVENTORY_COUNT|SCRIPT_(MEMORY|TIME))|TYPE_(INTEGER|FLOAT|STRING|KEY|VECTOR|ROTATION|INVALID)|(DEBUG|PUBLIC)_CHANNEL|ATTACH_(AVATAR_CENTER|CHEST|HEAD|BACK|PELVIS|MOUTH|CHIN|NECK|NOSE|BELLY|[LR](SHOULDER|HAND|FOOT|EAR|EYE|[UL](ARM|LEG)|HIP)|(LEFT|RIGHT)_PEC|HUD_(CENTER_[12]|TOP_(RIGHT|CENTER|LEFT)|BOTTOM(_(RIGHT|LEFT))?)|[LR]HAND_RING1|TAIL_(BASE|TIP)|[LR]WING|FACE_(JAW|[LR]EAR|[LR]EYE|TOUNGE)|GROIN|HIND_[LR]FOOT)|LAND_(LEVEL|RAISE|LOWER|SMOOTH|NOISE|REVERT)|DATA_(ONLINE|NAME|BORN|SIM_(POS|STATUS|RATING)|PAYINFO)|PAYMENT_INFO_(ON_FILE|USED)|REMOTE_DATA_(CHANNEL|REQUEST|REPLY)|PSYS_(PART_(BF_(ZERO|ONE(_MINUS_(DEST_COLOR|SOURCE_(ALPHA|COLOR)))?|DEST_COLOR|SOURCE_(ALPHA|COLOR))|BLEND_FUNC_(DEST|SOURCE)|FLAGS|(START|END)_(COLOR|ALPHA|SCALE|GLOW)|MAX_AGE|(RIBBON|WIND|INTERP_(COLOR|SCALE)|BOUNCE|FOLLOW_(SRC|VELOCITY)|TARGET_(POS|LINEAR)|EMISSIVE)_MASK)|SRC_(MAX_AGE|PATTERN|ANGLE_(BEGIN|END)|BURST_(RATE|PART_COUNT|RADIUS|SPEED_(MIN|MAX))|ACCEL|TEXTURE|TARGET_KEY|OMEGA|PATTERN_(DROP|EXPLODE|ANGLE(_CONE(_EMPTY)?)?)))|VEHICLE_(REFERENCE_FRAME|TYPE_(NONE|SLED|CAR|BOAT|AIRPLANE|BALLOON)|(LINEAR|ANGULAR)_(FRICTION_TIMESCALE|MOTOR_DIRECTION)|LINEAR_MOTOR_OFFSET|HOVER_(HEIGHT|EFFICIENCY|TIMESCALE)|BUOYANCY|(LINEAR|ANGULAR)_(DEFLECTION_(EFFICIENCY|TIMESCALE)|MOTOR_(DECAY_)?TIMESCALE)|VERTICAL_ATTRACTION_(EFFICIENCY|TIMESCALE)|BANKING_(EFFICIENCY|MIX|TIMESCALE)|FLAG_(NO_DEFLECTION_UP|LIMIT_(ROLL_ONLY|MOTOR_UP)|HOVER_((WATER|TERRAIN|UP)_ONLY|GLOBAL_HEIGHT)|MOUSELOOK_(STEER|BANK)|CAMERA_DECOUPLED))|PRIM_(ALLOW_UNSIT|ALPHA_MODE(_(BLEND|EMISSIVE|MASK|NONE))?|NORMAL|SPECULAR|TYPE(_(BOX|CYLINDER|PRISM|SPHERE|TORUS|TUBE|RING|SCULPT))?|HOLE_(DEFAULT|CIRCLE|SQUARE|TRIANGLE)|MATERIAL(_(STONE|METAL|GLASS|WOOD|FLESH|PLASTIC|RUBBER))?|SHINY_(NONE|LOW|MEDIUM|HIGH)|BUMP_(NONE|BRIGHT|DARK|WOOD|BARK|BRICKS|CHECKER|CONCRETE|TILE|STONE|DISKS|GRAVEL|BLOBS|SIDING|LARGETILE|STUCCO|SUCTION|WEAVE)|TEXGEN_(DEFAULT|PLANAR)|SCRIPTED_SIT_ONLY|SCULPT_(TYPE_(SPHERE|TORUS|PLANE|CYLINDER|MASK)|FLAG_(MIRROR|INVERT))|PHYSICS(_(SHAPE_(CONVEX|NONE|PRIM|TYPE)))?|(POS|ROT)_LOCAL|SLICE|TEXT|FLEXIBLE|POINT_LIGHT|TEMP_ON_REZ|PHANTOM|POSITION|SIT_TARGET|SIZE|ROTATION|TEXTURE|NAME|OMEGA|DESC|LINK_TARGET|COLOR|BUMP_SHINY|FULLBRIGHT|TEXGEN|GLOW|MEDIA_(ALT_IMAGE_ENABLE|CONTROLS|(CURRENT|HOME)_URL|AUTO_(LOOP|PLAY|SCALE|ZOOM)|FIRST_CLICK_INTERACT|(WIDTH|HEIGHT)_PIXELS|WHITELIST(_ENABLE)?|PERMS_(INTERACT|CONTROL)|PARAM_MAX|CONTROLS_(STANDARD|MINI)|PERM_(NONE|OWNER|GROUP|ANYONE)|MAX_(URL_LENGTH|WHITELIST_(SIZE|COUNT)|(WIDTH|HEIGHT)_PIXELS)))|MASK_(BASE|OWNER|GROUP|EVERYONE|NEXT)|PERM_(TRANSFER|MODIFY|COPY|MOVE|ALL)|PARCEL_(MEDIA_COMMAND_(STOP|PAUSE|PLAY|LOOP|TEXTURE|URL|TIME|AGENT|UNLOAD|AUTO_ALIGN|TYPE|SIZE|DESC|LOOP_SET)|FLAG_(ALLOW_(FLY|(GROUP_)?SCRIPTS|LANDMARK|TERRAFORM|DAMAGE|CREATE_(GROUP_)?OBJECTS)|USE_(ACCESS_(GROUP|LIST)|BAN_LIST|LAND_PASS_LIST)|LOCAL_SOUND_ONLY|RESTRICT_PUSHOBJECT|ALLOW_(GROUP|ALL)_OBJECT_ENTRY)|COUNT_(TOTAL|OWNER|GROUP|OTHER|SELECTED|TEMP)|DETAILS_(NAME|DESC|OWNER|GROUP|AREA|ID|SEE_AVATARS))|LIST_STAT_(MAX|MIN|MEAN|MEDIAN|STD_DEV|SUM(_SQUARES)?|NUM_COUNT|GEOMETRIC_MEAN|RANGE)|PAY_(HIDE|DEFAULT)|REGION_FLAG_(ALLOW_DAMAGE|FIXED_SUN|BLOCK_TERRAFORM|SANDBOX|DISABLE_(COLLISIONS|PHYSICS)|BLOCK_FLY|ALLOW_DIRECT_TELEPORT|RESTRICT_PUSHOBJECT)|HTTP_(METHOD|MIMETYPE|BODY_(MAXLENGTH|TRUNCATED)|CUSTOM_HEADER|PRAGMA_NO_CACHE|VERBOSE_THROTTLE|VERIFY_CERT)|SIT_(INVALID_(AGENT|LINK_OBJECT)|NO(T_EXPERIENCE|_(ACCESS|EXPERIENCE_PERMISSION|SIT_TARGET)))|STRING_(TRIM(_(HEAD|TAIL))?)|CLICK_ACTION_(NONE|TOUCH|SIT|BUY|PAY|OPEN(_MEDIA)?|PLAY|ZOOM)|TOUCH_INVALID_FACE|PROFILE_(NONE|SCRIPT_MEMORY)|RC_(DATA_FLAGS|DETECT_PHANTOM|GET_(LINK_NUM|NORMAL|ROOT_KEY)|MAX_HITS|REJECT_(TYPES|AGENTS|(NON)?PHYSICAL|LAND))|RCERR_(CAST_TIME_EXCEEDED|SIM_PERF_LOW|UNKNOWN)|ESTATE_ACCESS_(ALLOWED_(AGENT|GROUP)_(ADD|REMOVE)|BANNED_AGENT_(ADD|REMOVE))|DENSITY|FRICTION|RESTITUTION|GRAVITY_MULTIPLIER|KFM_(COMMAND|CMD_(PLAY|STOP|PAUSE)|MODE|FORWARD|LOOP|PING_PONG|REVERSE|DATA|ROTATION|TRANSLATION)|ERR_(GENERIC|PARCEL_PERMISSIONS|MALFORMED_PARAMS|RUNTIME_PERMISSIONS|THROTTLED)|CHARACTER_(CMD_((SMOOTH_)?STOP|JUMP)|DESIRED_(TURN_)?SPEED|RADIUS|STAY_WITHIN_PARCEL|LENGTH|ORIENTATION|ACCOUNT_FOR_SKIPPED_FRAMES|AVOIDANCE_MODE|TYPE(_([ABCD]|NONE))?|MAX_(DECEL|TURN_RADIUS|(ACCEL|SPEED)))|PURSUIT_(OFFSET|FUZZ_FACTOR|GOAL_TOLERANCE|INTERCEPT)|REQUIRE_LINE_OF_SIGHT|FORCE_DIRECT_PATH|VERTICAL|HORIZONTAL|AVOID_(CHARACTERS|DYNAMIC_OBSTACLES|NONE)|PU_(EVADE_(HIDDEN|SPOTTED)|FAILURE_(DYNAMIC_PATHFINDING_DISABLED|INVALID_(GOAL|START)|NO_(NAVMESH|VALID_DESTINATION)|OTHER|TARGET_GONE|(PARCEL_)?UNREACHABLE)|(GOAL|SLOWDOWN_DISTANCE)_REACHED)|TRAVERSAL_TYPE(_(FAST|NONE|SLOW))?|CONTENT_TYPE_(ATOM|FORM|HTML|JSON|LLSD|RSS|TEXT|XHTML|XML)|GCNP_(RADIUS|STATIC)|(PATROL|WANDER)_PAUSE_AT_WAYPOINTS|OPT_(AVATAR|CHARACTER|EXCLUSION_VOLUME|LEGACY_LINKSET|MATERIAL_VOLUME|OTHER|STATIC_OBSTACLE|WALKABLE)|SIM_STAT_PCT_CHARS_STEPPED)\\b"}, {begin: "\\b(FALSE|TRUE)\\b"}, {begin: "\\b(ZERO_ROTATION)\\b"}, {begin: "\\b(EOF|JSON_(ARRAY|DELETE|FALSE|INVALID|NULL|NUMBER|OBJECT|STRING|TRUE)|NULL_KEY|TEXTURE_(BLANK|DEFAULT|MEDIA|PLYWOOD|TRANSPARENT)|URL_REQUEST_(GRANTED|DENIED))\\b"}, {begin: "\\b(ZERO_VECTOR|TOUCH_INVALID_(TEXCOORD|VECTOR))\\b"}]
             }, {className: "type", begin: "\\b(integer|float|string|key|vector|quaternion|rotation|list)\\b"}]
         }
-    }), ei)),Cs.registerLanguage("lua", (ni || (ni = 1, ai = function (e) {
+    }), ei)),fs.registerLanguage("lua", (ni || (ni = 1, ai = function (e) {
         const t = "\\[=*\\[", a = "\\]=*\\]", n = {begin: t, end: a, contains: ["self"]},
             i = [e.COMMENT("--(?!" + t + ")", "$"), e.COMMENT("--" + t, a, {contains: [n], relevance: 10})];
         return {
@@ -5232,7 +5280,7 @@
                 relevance: 5
             }])
         }
-    }), ai)),Cs.registerLanguage("makefile", (ri || (ri = 1, ii = function (e) {
+    }), ai)),fs.registerLanguage("makefile", (ri || (ri = 1, ii = function (e) {
         const t = {
                 className: "variable",
                 variants: [{
@@ -5244,7 +5292,7 @@
                 begin: /\$\([\w-]+\s/,
                 end: /\)/,
                 keywords: {built_in: "subst patsubst strip findstring filter filter-out sort word wordlist firstword lastword dir notdir suffix basename addsuffix addprefix join wildcard realpath abspath error warning shell origin flavor foreach if or and call eval file value"},
-                contains: [t]
+                contains: [t, a]
             }, i = {begin: "^" + e.UNDERSCORE_IDENT_RE + "\\s*(?=[:+?]?=)"},
             r = {className: "section", begin: /^[^\s]+:/, end: /$/, contains: [t]};
         return {
@@ -5261,7 +5309,7 @@
                 keywords: {$pattern: /[\.\w]+/, keyword: ".PHONY"}
             }, r]
         }
-    }), ii)),Cs.registerLanguage("mathematica", function () {
+    }), ii)),fs.registerLanguage("mathematica", function () {
         if (si) return oi;
         si = 1;
         const e = ["AASTriangle", "AbelianGroup", "Abort", "AbortKernels", "AbortProtect", "AbortScheduledTask", "Above", "Abs", "AbsArg", "AbsArgPlot", "Absolute", "AbsoluteCorrelation", "AbsoluteCorrelationFunction", "AbsoluteCurrentValue", "AbsoluteDashing", "AbsoluteFileName", "AbsoluteOptions", "AbsolutePointSize", "AbsoluteThickness", "AbsoluteTime", "AbsoluteTiming", "AcceptanceThreshold", "AccountingForm", "Accumulate", "Accuracy", "AccuracyGoal", "AcousticAbsorbingValue", "AcousticImpedanceValue", "AcousticNormalVelocityValue", "AcousticPDEComponent", "AcousticPressureCondition", "AcousticRadiationValue", "AcousticSoundHardValue", "AcousticSoundSoftCondition", "ActionDelay", "ActionMenu", "ActionMenuBox", "ActionMenuBoxOptions", "Activate", "Active", "ActiveClassification", "ActiveClassificationObject", "ActiveItem", "ActivePrediction", "ActivePredictionObject", "ActiveStyle", "AcyclicGraphQ", "AddOnHelpPath", "AddSides", "AddTo", "AddToSearchIndex", "AddUsers", "AdjacencyGraph", "AdjacencyList", "AdjacencyMatrix", "AdjacentMeshCells", "Adjugate", "AdjustmentBox", "AdjustmentBoxOptions", "AdjustTimeSeriesForecast", "AdministrativeDivisionData", "AffineHalfSpace", "AffineSpace", "AffineStateSpaceModel", "AffineTransform", "After", "AggregatedEntityClass", "AggregationLayer", "AircraftData", "AirportData", "AirPressureData", "AirSoundAttenuation", "AirTemperatureData", "AiryAi", "AiryAiPrime", "AiryAiZero", "AiryBi", "AiryBiPrime", "AiryBiZero", "AlgebraicIntegerQ", "AlgebraicNumber", "AlgebraicNumberDenominator", "AlgebraicNumberNorm", "AlgebraicNumberPolynomial", "AlgebraicNumberTrace", "AlgebraicRules", "AlgebraicRulesData", "Algebraics", "AlgebraicUnitQ", "Alignment", "AlignmentMarker", "AlignmentPoint", "All", "AllowAdultContent", "AllowChatServices", "AllowedCloudExtraParameters", "AllowedCloudParameterExtensions", "AllowedDimensions", "AllowedFrequencyRange", "AllowedHeads", "AllowGroupClose", "AllowIncomplete", "AllowInlineCells", "AllowKernelInitialization", "AllowLooseGrammar", "AllowReverseGroupClose", "AllowScriptLevelChange", "AllowVersionUpdate", "AllTrue", "Alphabet", "AlphabeticOrder", "AlphabeticSort", "AlphaChannel", "AlternateImage", "AlternatingFactorial", "AlternatingGroup", "AlternativeHypothesis", "Alternatives", "AltitudeMethod", "AmbientLight", "AmbiguityFunction", "AmbiguityList", "Analytic", "AnatomyData", "AnatomyForm", "AnatomyPlot3D", "AnatomySkinStyle", "AnatomyStyling", "AnchoredSearch", "And", "AndersonDarlingTest", "AngerJ", "AngleBisector", "AngleBracket", "AnglePath", "AnglePath3D", "AngleVector", "AngularGauge", "Animate", "AnimatedImage", "AnimationCycleOffset", "AnimationCycleRepetitions", "AnimationDirection", "AnimationDisplayTime", "AnimationRate", "AnimationRepetitions", "AnimationRunning", "AnimationRunTime", "AnimationTimeIndex", "AnimationVideo", "Animator", "AnimatorBox", "AnimatorBoxOptions", "AnimatorElements", "Annotate", "Annotation", "AnnotationDelete", "AnnotationKeys", "AnnotationRules", "AnnotationValue", "Annuity", "AnnuityDue", "Annulus", "AnomalyDetection", "AnomalyDetector", "AnomalyDetectorFunction", "Anonymous", "Antialiasing", "Antihermitian", "AntihermitianMatrixQ", "Antisymmetric", "AntisymmetricMatrixQ", "Antonyms", "AnyOrder", "AnySubset", "AnyTrue", "Apart", "ApartSquareFree", "APIFunction", "Appearance", "AppearanceElements", "AppearanceRules", "AppellF1", "Append", "AppendCheck", "AppendLayer", "AppendTo", "Application", "Apply", "ApplyReaction", "ApplySides", "ApplyTo", "ArcCos", "ArcCosh", "ArcCot", "ArcCoth", "ArcCsc", "ArcCsch", "ArcCurvature", "ARCHProcess", "ArcLength", "ArcSec", "ArcSech", "ArcSin", "ArcSinDistribution", "ArcSinh", "ArcTan", "ArcTanh", "Area", "Arg", "ArgMax", "ArgMin", "ArgumentCountQ", "ArgumentsOptions", "ARIMAProcess", "ArithmeticGeometricMean", "ARMAProcess", "Around", "AroundReplace", "ARProcess", "Array", "ArrayComponents", "ArrayDepth", "ArrayFilter", "ArrayFlatten", "ArrayMesh", "ArrayPad", "ArrayPlot", "ArrayPlot3D", "ArrayQ", "ArrayReduce", "ArrayResample", "ArrayReshape", "ArrayRules", "Arrays", "Arrow", "Arrow3DBox", "ArrowBox", "Arrowheads", "ASATriangle", "Ask", "AskAppend", "AskConfirm", "AskDisplay", "AskedQ", "AskedValue", "AskFunction", "AskState", "AskTemplateDisplay", "AspectRatio", "AspectRatioFixed", "Assert", "AssessmentFunction", "AssessmentResultObject", "AssociateTo", "Association", "AssociationFormat", "AssociationMap", "AssociationQ", "AssociationThread", "AssumeDeterministic", "Assuming", "Assumptions", "AstroAngularSeparation", "AstroBackground", "AstroCenter", "AstroDistance", "AstroGraphics", "AstroGridLines", "AstroGridLinesStyle", "AstronomicalData", "AstroPosition", "AstroProjection", "AstroRange", "AstroRangePadding", "AstroReferenceFrame", "AstroStyling", "AstroZoomLevel", "Asymptotic", "AsymptoticDSolveValue", "AsymptoticEqual", "AsymptoticEquivalent", "AsymptoticExpectation", "AsymptoticGreater", "AsymptoticGreaterEqual", "AsymptoticIntegrate", "AsymptoticLess", "AsymptoticLessEqual", "AsymptoticOutputTracker", "AsymptoticProbability", "AsymptoticProduct", "AsymptoticRSolveValue", "AsymptoticSolve", "AsymptoticSum", "Asynchronous", "AsynchronousTaskObject", "AsynchronousTasks", "Atom", "AtomCoordinates", "AtomCount", "AtomDiagramCoordinates", "AtomLabels", "AtomLabelStyle", "AtomList", "AtomQ", "AttachCell", "AttachedCell", "AttentionLayer", "Attributes", "Audio", "AudioAmplify", "AudioAnnotate", "AudioAnnotationLookup", "AudioBlockMap", "AudioCapture", "AudioChannelAssignment", "AudioChannelCombine", "AudioChannelMix", "AudioChannels", "AudioChannelSeparate", "AudioData", "AudioDelay", "AudioDelete", "AudioDevice", "AudioDistance", "AudioEncoding", "AudioFade", "AudioFrequencyShift", "AudioGenerator", "AudioIdentify", "AudioInputDevice", "AudioInsert", "AudioInstanceQ", "AudioIntervals", "AudioJoin", "AudioLabel", "AudioLength", "AudioLocalMeasurements", "AudioLooping", "AudioLoudness", "AudioMeasurements", "AudioNormalize", "AudioOutputDevice", "AudioOverlay", "AudioPad", "AudioPan", "AudioPartition", "AudioPause", "AudioPitchShift", "AudioPlay", "AudioPlot", "AudioQ", "AudioRecord", "AudioReplace", "AudioResample", "AudioReverb", "AudioReverse", "AudioSampleRate", "AudioSpectralMap", "AudioSpectralTransformation", "AudioSplit", "AudioStop", "AudioStream", "AudioStreams", "AudioTimeStretch", "AudioTrackApply", "AudioTrackSelection", "AudioTrim", "AudioType", "AugmentedPolyhedron", "AugmentedSymmetricPolynomial", "Authenticate", "Authentication", "AuthenticationDialog", "AutoAction", "Autocomplete", "AutocompletionFunction", "AutoCopy", "AutocorrelationTest", "AutoDelete", "AutoEvaluateEvents", "AutoGeneratedPackage", "AutoIndent", "AutoIndentSpacings", "AutoItalicWords", "AutoloadPath", "AutoMatch", "Automatic", "AutomaticImageSize", "AutoMultiplicationSymbol", "AutoNumberFormatting", "AutoOpenNotebooks", "AutoOpenPalettes", "AutoOperatorRenderings", "AutoQuoteCharacters", "AutoRefreshed", "AutoRemove", "AutorunSequencing", "AutoScaling", "AutoScroll", "AutoSpacing", "AutoStyleOptions", "AutoStyleWords", "AutoSubmitting", "Axes", "AxesEdge", "AxesLabel", "AxesOrigin", "AxesStyle", "AxiomaticTheory", "Axis", "Axis3DBox", "Axis3DBoxOptions", "AxisBox", "AxisBoxOptions", "AxisLabel", "AxisObject", "AxisStyle", "BabyMonsterGroupB", "Back", "BackFaceColor", "BackFaceGlowColor", "BackFaceOpacity", "BackFaceSpecularColor", "BackFaceSpecularExponent", "BackFaceSurfaceAppearance", "BackFaceTexture", "Background", "BackgroundAppearance", "BackgroundTasksSettings", "Backslash", "Backsubstitution", "Backward", "Ball", "Band", "BandpassFilter", "BandstopFilter", "BarabasiAlbertGraphDistribution", "BarChart", "BarChart3D", "BarcodeImage", "BarcodeRecognize", "BaringhausHenzeTest", "BarLegend", "BarlowProschanImportance", "BarnesG", "BarOrigin", "BarSpacing", "BartlettHannWindow", "BartlettWindow", "BaseDecode", "BaseEncode", "BaseForm", "Baseline", "BaselinePosition", "BaseStyle", "BasicRecurrentLayer", "BatchNormalizationLayer", "BatchSize", "BatesDistribution", "BattleLemarieWavelet", "BayesianMaximization", "BayesianMaximizationObject", "BayesianMinimization", "BayesianMinimizationObject", "Because", "BeckmannDistribution", "Beep", "Before", "Begin", "BeginDialogPacket", "BeginPackage", "BellB", "BellY", "Below", "BenfordDistribution", "BeniniDistribution", "BenktanderGibratDistribution", "BenktanderWeibullDistribution", "BernoulliB", "BernoulliDistribution", "BernoulliGraphDistribution", "BernoulliProcess", "BernsteinBasis", "BesagL", "BesselFilterModel", "BesselI", "BesselJ", "BesselJZero", "BesselK", "BesselY", "BesselYZero", "Beta", "BetaBinomialDistribution", "BetaDistribution", "BetaNegativeBinomialDistribution", "BetaPrimeDistribution", "BetaRegularized", "Between", "BetweennessCentrality", "Beveled", "BeveledPolyhedron", "BezierCurve", "BezierCurve3DBox", "BezierCurve3DBoxOptions", "BezierCurveBox", "BezierCurveBoxOptions", "BezierFunction", "BilateralFilter", "BilateralLaplaceTransform", "BilateralZTransform", "Binarize", "BinaryDeserialize", "BinaryDistance", "BinaryFormat", "BinaryImageQ", "BinaryRead", "BinaryReadList", "BinarySerialize", "BinaryWrite", "BinCounts", "BinLists", "BinnedVariogramList", "Binomial", "BinomialDistribution", "BinomialPointProcess", "BinomialProcess", "BinormalDistribution", "BiorthogonalSplineWavelet", "BioSequence", "BioSequenceBackTranslateList", "BioSequenceComplement", "BioSequenceInstances", "BioSequenceModify", "BioSequencePlot", "BioSequenceQ", "BioSequenceReverseComplement", "BioSequenceTranscribe", "BioSequenceTranslate", "BipartiteGraphQ", "BiquadraticFilterModel", "BirnbaumImportance", "BirnbaumSaundersDistribution", "BitAnd", "BitClear", "BitGet", "BitLength", "BitNot", "BitOr", "BitRate", "BitSet", "BitShiftLeft", "BitShiftRight", "BitXor", "BiweightLocation", "BiweightMidvariance", "Black", "BlackmanHarrisWindow", "BlackmanNuttallWindow", "BlackmanWindow", "Blank", "BlankForm", "BlankNullSequence", "BlankSequence", "Blend", "Block", "BlockchainAddressData", "BlockchainBase", "BlockchainBlockData", "BlockchainContractValue", "BlockchainData", "BlockchainGet", "BlockchainKeyEncode", "BlockchainPut", "BlockchainTokenData", "BlockchainTransaction", "BlockchainTransactionData", "BlockchainTransactionSign", "BlockchainTransactionSubmit", "BlockDiagonalMatrix", "BlockLowerTriangularMatrix", "BlockMap", "BlockRandom", "BlockUpperTriangularMatrix", "BlomqvistBeta", "BlomqvistBetaTest", "Blue", "Blur", "Blurring", "BodePlot", "BohmanWindow", "Bold", "Bond", "BondCount", "BondLabels", "BondLabelStyle", "BondList", "BondQ", "Bookmarks", "Boole", "BooleanConsecutiveFunction", "BooleanConvert", "BooleanCountingFunction", "BooleanFunction", "BooleanGraph", "BooleanMaxterms", "BooleanMinimize", "BooleanMinterms", "BooleanQ", "BooleanRegion", "Booleans", "BooleanStrings", "BooleanTable", "BooleanVariables", "BorderDimensions", "BorelTannerDistribution", "Bottom", "BottomHatTransform", "BoundaryDiscretizeGraphics", "BoundaryDiscretizeRegion", "BoundaryMesh", "BoundaryMeshRegion", "BoundaryMeshRegionQ", "BoundaryStyle", "BoundedRegionQ", "BoundingRegion", "Bounds", "Box", "BoxBaselineShift", "BoxData", "BoxDimensions", "Boxed", "Boxes", "BoxForm", "BoxFormFormatTypes", "BoxFrame", "BoxID", "BoxMargins", "BoxMatrix", "BoxObject", "BoxRatios", "BoxRotation", "BoxRotationPoint", "BoxStyle", "BoxWhiskerChart", "Bra", "BracketingBar", "BraKet", "BrayCurtisDistance", "BreadthFirstScan", "Break", "BridgeData", "BrightnessEqualize", "BroadcastStationData", "Brown", "BrownForsytheTest", "BrownianBridgeProcess", "BrowserCategory", "BSplineBasis", "BSplineCurve", "BSplineCurve3DBox", "BSplineCurve3DBoxOptions", "BSplineCurveBox", "BSplineCurveBoxOptions", "BSplineFunction", "BSplineSurface", "BSplineSurface3DBox", "BSplineSurface3DBoxOptions", "BubbleChart", "BubbleChart3D", "BubbleScale", "BubbleSizes", "BuckyballGraph", "BuildCompiledComponent", "BuildingData", "BulletGauge", "BusinessDayQ", "ButterflyGraph", "ButterworthFilterModel", "Button", "ButtonBar", "ButtonBox", "ButtonBoxOptions", "ButtonCell", "ButtonContents", "ButtonData", "ButtonEvaluator", "ButtonExpandable", "ButtonFrame", "ButtonFunction", "ButtonMargins", "ButtonMinHeight", "ButtonNote", "ButtonNotebook", "ButtonSource", "ButtonStyle", "ButtonStyleMenuListing", "Byte", "ByteArray", "ByteArrayFormat", "ByteArrayFormatQ", "ByteArrayQ", "ByteArrayToString", "ByteCount", "ByteOrdering", "C", "CachedValue", "CacheGraphics", "CachePersistence", "CalendarConvert", "CalendarData", "CalendarType", "Callout", "CalloutMarker", "CalloutStyle", "CallPacket", "CanberraDistance", "Cancel", "CancelButton", "CandlestickChart", "CanonicalGraph", "CanonicalizePolygon", "CanonicalizePolyhedron", "CanonicalizeRegion", "CanonicalName", "CanonicalWarpingCorrespondence", "CanonicalWarpingDistance", "CantorMesh", "CantorStaircase", "Canvas", "Cap", "CapForm", "CapitalDifferentialD", "Capitalize", "CapsuleShape", "CaptureRunning", "CaputoD", "CardinalBSplineBasis", "CarlemanLinearize", "CarlsonRC", "CarlsonRD", "CarlsonRE", "CarlsonRF", "CarlsonRG", "CarlsonRJ", "CarlsonRK", "CarlsonRM", "CarmichaelLambda", "CaseOrdering", "Cases", "CaseSensitive", "Cashflow", "Casoratian", "Cast", "Catalan", "CatalanNumber", "Catch", "CategoricalDistribution", "Catenate", "CatenateLayer", "CauchyDistribution", "CauchyMatrix", "CauchyPointProcess", "CauchyWindow", "CayleyGraph", "CDF", "CDFDeploy", "CDFInformation", "CDFWavelet", "Ceiling", "CelestialSystem", "Cell", "CellAutoOverwrite", "CellBaseline", "CellBoundingBox", "CellBracketOptions", "CellChangeTimes", "CellContents", "CellContext", "CellDingbat", "CellDingbatMargin", "CellDynamicExpression", "CellEditDuplicate", "CellElementsBoundingBox", "CellElementSpacings", "CellEpilog", "CellEvaluationDuplicate", "CellEvaluationFunction", "CellEvaluationLanguage", "CellEventActions", "CellFrame", "CellFrameColor", "CellFrameLabelMargins", "CellFrameLabels", "CellFrameMargins", "CellFrameStyle", "CellGroup", "CellGroupData", "CellGrouping", "CellGroupingRules", "CellHorizontalScrolling", "CellID", "CellInsertionPointCell", "CellLabel", "CellLabelAutoDelete", "CellLabelMargins", "CellLabelPositioning", "CellLabelStyle", "CellLabelTemplate", "CellMargins", "CellObject", "CellOpen", "CellPrint", "CellProlog", "Cells", "CellSize", "CellStyle", "CellTags", "CellTrayPosition", "CellTrayWidgets", "CellularAutomaton", "CensoredDistribution", "Censoring", "Center", "CenterArray", "CenterDot", "CenteredInterval", "CentralFeature", "CentralMoment", "CentralMomentGeneratingFunction", "Cepstrogram", "CepstrogramArray", "CepstrumArray", "CForm", "ChampernowneNumber", "ChangeOptions", "ChannelBase", "ChannelBrokerAction", "ChannelDatabin", "ChannelHistoryLength", "ChannelListen", "ChannelListener", "ChannelListeners", "ChannelListenerWait", "ChannelObject", "ChannelPreSendFunction", "ChannelReceiverFunction", "ChannelSend", "ChannelSubscribers", "ChanVeseBinarize", "Character", "CharacterCounts", "CharacterEncoding", "CharacterEncodingsPath", "CharacteristicFunction", "CharacteristicPolynomial", "CharacterName", "CharacterNormalize", "CharacterRange", "Characters", "ChartBaseStyle", "ChartElementData", "ChartElementDataFunction", "ChartElementFunction", "ChartElements", "ChartLabels", "ChartLayout", "ChartLegends", "ChartStyle", "Chebyshev1FilterModel", "Chebyshev2FilterModel", "ChebyshevDistance", "ChebyshevT", "ChebyshevU", "Check", "CheckAbort", "CheckAll", "CheckArguments", "Checkbox", "CheckboxBar", "CheckboxBox", "CheckboxBoxOptions", "ChemicalConvert", "ChemicalData", "ChemicalFormula", "ChemicalInstance", "ChemicalReaction", "ChessboardDistance", "ChiDistribution", "ChineseRemainder", "ChiSquareDistribution", "ChoiceButtons", "ChoiceDialog", "CholeskyDecomposition", "Chop", "ChromaticityPlot", "ChromaticityPlot3D", "ChromaticPolynomial", "Circle", "CircleBox", "CircleDot", "CircleMinus", "CirclePlus", "CirclePoints", "CircleThrough", "CircleTimes", "CirculantGraph", "CircularArcThrough", "CircularOrthogonalMatrixDistribution", "CircularQuaternionMatrixDistribution", "CircularRealMatrixDistribution", "CircularSymplecticMatrixDistribution", "CircularUnitaryMatrixDistribution", "Circumsphere", "CityData", "ClassifierFunction", "ClassifierInformation", "ClassifierMeasurements", "ClassifierMeasurementsObject", "Classify", "ClassPriors", "Clear", "ClearAll", "ClearAttributes", "ClearCookies", "ClearPermissions", "ClearSystemCache", "ClebschGordan", "ClickPane", "ClickToCopy", "ClickToCopyEnabled", "Clip", "ClipboardNotebook", "ClipFill", "ClippingStyle", "ClipPlanes", "ClipPlanesStyle", "ClipRange", "Clock", "ClockGauge", "ClockwiseContourIntegral", "Close", "Closed", "CloseKernels", "ClosenessCentrality", "Closing", "ClosingAutoSave", "ClosingEvent", "CloudAccountData", "CloudBase", "CloudConnect", "CloudConnections", "CloudDeploy", "CloudDirectory", "CloudDisconnect", "CloudEvaluate", "CloudExport", "CloudExpression", "CloudExpressions", "CloudFunction", "CloudGet", "CloudImport", "CloudLoggingData", "CloudObject", "CloudObjectInformation", "CloudObjectInformationData", "CloudObjectNameFormat", "CloudObjects", "CloudObjectURLType", "CloudPublish", "CloudPut", "CloudRenderingMethod", "CloudSave", "CloudShare", "CloudSubmit", "CloudSymbol", "CloudUnshare", "CloudUserID", "ClusterClassify", "ClusterDissimilarityFunction", "ClusteringComponents", "ClusteringMeasurements", "ClusteringTree", "CMYKColor", "Coarse", "CodeAssistOptions", "Coefficient", "CoefficientArrays", "CoefficientDomain", "CoefficientList", "CoefficientRules", "CoifletWavelet", "Collect", "CollinearPoints", "Colon", "ColonForm", "ColorBalance", "ColorCombine", "ColorConvert", "ColorCoverage", "ColorData", "ColorDataFunction", "ColorDetect", "ColorDistance", "ColorFunction", "ColorFunctionBinning", "ColorFunctionScaling", "Colorize", "ColorNegate", "ColorOutput", "ColorProfileData", "ColorQ", "ColorQuantize", "ColorReplace", "ColorRules", "ColorSelectorSettings", "ColorSeparate", "ColorSetter", "ColorSetterBox", "ColorSetterBoxOptions", "ColorSlider", "ColorsNear", "ColorSpace", "ColorToneMapping", "Column", "ColumnAlignments", "ColumnBackgrounds", "ColumnForm", "ColumnLines", "ColumnsEqual", "ColumnSpacings", "ColumnWidths", "CombinatorB", "CombinatorC", "CombinatorI", "CombinatorK", "CombinatorS", "CombinatorW", "CombinatorY", "CombinedEntityClass", "CombinerFunction", "CometData", "CommonDefaultFormatTypes", "Commonest", "CommonestFilter", "CommonName", "CommonUnits", "CommunityBoundaryStyle", "CommunityGraphPlot", "CommunityLabels", "CommunityRegionStyle", "CompanyData", "CompatibleUnitQ", "CompilationOptions", "CompilationTarget", "Compile", "Compiled", "CompiledCodeFunction", "CompiledComponent", "CompiledExpressionDeclaration", "CompiledFunction", "CompiledLayer", "CompilerCallback", "CompilerEnvironment", "CompilerEnvironmentAppend", "CompilerEnvironmentAppendTo", "CompilerEnvironmentObject", "CompilerOptions", "Complement", "ComplementedEntityClass", "CompleteGraph", "CompleteGraphQ", "CompleteIntegral", "CompleteKaryTree", "CompletionsListPacket", "Complex", "ComplexArrayPlot", "ComplexContourPlot", "Complexes", "ComplexExpand", "ComplexInfinity", "ComplexityFunction", "ComplexListPlot", "ComplexPlot", "ComplexPlot3D", "ComplexRegionPlot", "ComplexStreamPlot", "ComplexVectorPlot", "ComponentMeasurements", "ComponentwiseContextMenu", "Compose", "ComposeList", "ComposeSeries", "CompositeQ", "Composition", "CompoundElement", "CompoundExpression", "CompoundPoissonDistribution", "CompoundPoissonProcess", "CompoundRenewalProcess", "Compress", "CompressedData", "CompressionLevel", "ComputeUncertainty", "ConcaveHullMesh", "Condition", "ConditionalExpression", "Conditioned", "Cone", "ConeBox", "ConfidenceLevel", "ConfidenceRange", "ConfidenceTransform", "ConfigurationPath", "Confirm", "ConfirmAssert", "ConfirmBy", "ConfirmMatch", "ConfirmQuiet", "ConformationMethod", "ConformAudio", "ConformImages", "Congruent", "ConicGradientFilling", "ConicHullRegion", "ConicHullRegion3DBox", "ConicHullRegion3DBoxOptions", "ConicHullRegionBox", "ConicHullRegionBoxOptions", "ConicOptimization", "Conjugate", "ConjugateTranspose", "Conjunction", "Connect", "ConnectedComponents", "ConnectedGraphComponents", "ConnectedGraphQ", "ConnectedMeshComponents", "ConnectedMoleculeComponents", "ConnectedMoleculeQ", "ConnectionSettings", "ConnectLibraryCallbackFunction", "ConnectSystemModelComponents", "ConnectSystemModelController", "ConnesWindow", "ConoverTest", "ConservativeConvectionPDETerm", "ConsoleMessage", "Constant", "ConstantArray", "ConstantArrayLayer", "ConstantImage", "ConstantPlusLayer", "ConstantRegionQ", "Constants", "ConstantTimesLayer", "ConstellationData", "ConstrainedMax", "ConstrainedMin", "Construct", "Containing", "ContainsAll", "ContainsAny", "ContainsExactly", "ContainsNone", "ContainsOnly", "ContentDetectorFunction", "ContentFieldOptions", "ContentLocationFunction", "ContentObject", "ContentPadding", "ContentsBoundingBox", "ContentSelectable", "ContentSize", "Context", "ContextMenu", "Contexts", "ContextToFileName", "Continuation", "Continue", "ContinuedFraction", "ContinuedFractionK", "ContinuousAction", "ContinuousMarkovProcess", "ContinuousTask", "ContinuousTimeModelQ", "ContinuousWaveletData", "ContinuousWaveletTransform", "ContourDetect", "ContourGraphics", "ContourIntegral", "ContourLabels", "ContourLines", "ContourPlot", "ContourPlot3D", "Contours", "ContourShading", "ContourSmoothing", "ContourStyle", "ContraharmonicMean", "ContrastiveLossLayer", "Control", "ControlActive", "ControlAlignment", "ControlGroupContentsBox", "ControllabilityGramian", "ControllabilityMatrix", "ControllableDecomposition", "ControllableModelQ", "ControllerDuration", "ControllerInformation", "ControllerInformationData", "ControllerLinking", "ControllerManipulate", "ControllerMethod", "ControllerPath", "ControllerState", "ControlPlacement", "ControlsRendering", "ControlType", "ConvectionPDETerm", "Convergents", "ConversionOptions", "ConversionRules", "ConvertToPostScript", "ConvertToPostScriptPacket", "ConvexHullMesh", "ConvexHullRegion", "ConvexOptimization", "ConvexPolygonQ", "ConvexPolyhedronQ", "ConvexRegionQ", "ConvolutionLayer", "Convolve", "ConwayGroupCo1", "ConwayGroupCo2", "ConwayGroupCo3", "CookieFunction", "Cookies", "CoordinateBoundingBox", "CoordinateBoundingBoxArray", "CoordinateBounds", "CoordinateBoundsArray", "CoordinateChartData", "CoordinatesToolOptions", "CoordinateTransform", "CoordinateTransformData", "CoplanarPoints", "CoprimeQ", "Coproduct", "CopulaDistribution", "Copyable", "CopyDatabin", "CopyDirectory", "CopyFile", "CopyFunction", "CopyTag", "CopyToClipboard", "CoreNilpotentDecomposition", "CornerFilter", "CornerNeighbors", "Correlation", "CorrelationDistance", "CorrelationFunction", "CorrelationTest", "Cos", "Cosh", "CoshIntegral", "CosineDistance", "CosineWindow", "CosIntegral", "Cot", "Coth", "CoulombF", "CoulombG", "CoulombH1", "CoulombH2", "Count", "CountDistinct", "CountDistinctBy", "CounterAssignments", "CounterBox", "CounterBoxOptions", "CounterClockwiseContourIntegral", "CounterEvaluator", "CounterFunction", "CounterIncrements", "CounterStyle", "CounterStyleMenuListing", "CountRoots", "CountryData", "Counts", "CountsBy", "Covariance", "CovarianceEstimatorFunction", "CovarianceFunction", "CoxianDistribution", "CoxIngersollRossProcess", "CoxModel", "CoxModelFit", "CramerVonMisesTest", "CreateArchive", "CreateCellID", "CreateChannel", "CreateCloudExpression", "CreateCompilerEnvironment", "CreateDatabin", "CreateDataStructure", "CreateDataSystemModel", "CreateDialog", "CreateDirectory", "CreateDocument", "CreateFile", "CreateIntermediateDirectories", "CreateLicenseEntitlement", "CreateManagedLibraryExpression", "CreateNotebook", "CreatePacletArchive", "CreatePalette", "CreatePermissionsGroup", "CreateScheduledTask", "CreateSearchIndex", "CreateSystemModel", "CreateTemporary", "CreateTypeInstance", "CreateUUID", "CreateWindow", "CriterionFunction", "CriticalityFailureImportance", "CriticalitySuccessImportance", "CriticalSection", "Cross", "CrossEntropyLossLayer", "CrossingCount", "CrossingDetect", "CrossingPolygon", "CrossMatrix", "Csc", "Csch", "CSGRegion", "CSGRegionQ", "CSGRegionTree", "CTCLossLayer", "Cube", "CubeRoot", "Cubics", "Cuboid", "CuboidBox", "CuboidBoxOptions", "Cumulant", "CumulantGeneratingFunction", "CumulativeFeatureImpactPlot", "Cup", "CupCap", "Curl", "CurlyDoubleQuote", "CurlyQuote", "CurrencyConvert", "CurrentDate", "CurrentImage", "CurrentNotebookImage", "CurrentScreenImage", "CurrentValue", "Curry", "CurryApplied", "CurvatureFlowFilter", "CurveClosed", "Cyan", "CycleGraph", "CycleIndexPolynomial", "Cycles", "CyclicGroup", "Cyclotomic", "Cylinder", "CylinderBox", "CylinderBoxOptions", "CylindricalDecomposition", "CylindricalDecompositionFunction", "D", "DagumDistribution", "DamData", "DamerauLevenshteinDistance", "DampingFactor", "Darker", "Dashed", "Dashing", "DatabaseConnect", "DatabaseDisconnect", "DatabaseReference", "Databin", "DatabinAdd", "DatabinRemove", "Databins", "DatabinSubmit", "DatabinUpload", "DataCompression", "DataDistribution", "DataRange", "DataReversed", "Dataset", "DatasetDisplayPanel", "DatasetTheme", "DataStructure", "DataStructureQ", "Date", "DateBounds", "Dated", "DateDelimiters", "DateDifference", "DatedUnit", "DateFormat", "DateFunction", "DateGranularity", "DateHistogram", "DateInterval", "DateList", "DateListLogPlot", "DateListPlot", "DateListStepPlot", "DateObject", "DateObjectQ", "DateOverlapsQ", "DatePattern", "DatePlus", "DateRange", "DateReduction", "DateScale", "DateSelect", "DateString", "DateTicksFormat", "DateValue", "DateWithinQ", "DaubechiesWavelet", "DavisDistribution", "DawsonF", "DayCount", "DayCountConvention", "DayHemisphere", "DaylightQ", "DayMatchQ", "DayName", "DayNightTerminator", "DayPlus", "DayRange", "DayRound", "DeBruijnGraph", "DeBruijnSequence", "Debug", "DebugTag", "Decapitalize", "Decimal", "DecimalForm", "DeclareCompiledComponent", "DeclareKnownSymbols", "DeclarePackage", "Decompose", "DeconvolutionLayer", "Decrement", "Decrypt", "DecryptFile", "DedekindEta", "DeepSpaceProbeData", "Default", "Default2DTool", "Default3DTool", "DefaultAttachedCellStyle", "DefaultAxesStyle", "DefaultBaseStyle", "DefaultBoxStyle", "DefaultButton", "DefaultColor", "DefaultControlPlacement", "DefaultDockedCellStyle", "DefaultDuplicateCellStyle", "DefaultDuration", "DefaultElement", "DefaultFaceGridsStyle", "DefaultFieldHintStyle", "DefaultFont", "DefaultFontProperties", "DefaultFormatType", "DefaultFrameStyle", "DefaultFrameTicksStyle", "DefaultGridLinesStyle", "DefaultInlineFormatType", "DefaultInputFormatType", "DefaultLabelStyle", "DefaultMenuStyle", "DefaultNaturalLanguage", "DefaultNewCellStyle", "DefaultNewInlineCellStyle", "DefaultNotebook", "DefaultOptions", "DefaultOutputFormatType", "DefaultPrintPrecision", "DefaultStyle", "DefaultStyleDefinitions", "DefaultTextFormatType", "DefaultTextInlineFormatType", "DefaultTicksStyle", "DefaultTooltipStyle", "DefaultValue", "DefaultValues", "Defer", "DefineExternal", "DefineInputStreamMethod", "DefineOutputStreamMethod", "DefineResourceFunction", "Definition", "Degree", "DegreeCentrality", "DegreeGraphDistribution", "DegreeLexicographic", "DegreeReverseLexicographic", "DEigensystem", "DEigenvalues", "Deinitialization", "Del", "DelaunayMesh", "Delayed", "Deletable", "Delete", "DeleteAdjacentDuplicates", "DeleteAnomalies", "DeleteBorderComponents", "DeleteCases", "DeleteChannel", "DeleteCloudExpression", "DeleteContents", "DeleteDirectory", "DeleteDuplicates", "DeleteDuplicatesBy", "DeleteElements", "DeleteFile", "DeleteMissing", "DeleteObject", "DeletePermissionsKey", "DeleteSearchIndex", "DeleteSmallComponents", "DeleteStopwords", "DeleteWithContents", "DeletionWarning", "DelimitedArray", "DelimitedSequence", "Delimiter", "DelimiterAutoMatching", "DelimiterFlashTime", "DelimiterMatching", "Delimiters", "DeliveryFunction", "Dendrogram", "Denominator", "DensityGraphics", "DensityHistogram", "DensityPlot", "DensityPlot3D", "DependentVariables", "Deploy", "Deployed", "Depth", "DepthFirstScan", "Derivative", "DerivativeFilter", "DerivativePDETerm", "DerivedKey", "DescriptorStateSpace", "DesignMatrix", "DestroyAfterEvaluation", "Det", "DeviceClose", "DeviceConfigure", "DeviceExecute", "DeviceExecuteAsynchronous", "DeviceObject", "DeviceOpen", "DeviceOpenQ", "DeviceRead", "DeviceReadBuffer", "DeviceReadLatest", "DeviceReadList", "DeviceReadTimeSeries", "Devices", "DeviceStreams", "DeviceWrite", "DeviceWriteBuffer", "DGaussianWavelet", "DiacriticalPositioning", "Diagonal", "DiagonalizableMatrixQ", "DiagonalMatrix", "DiagonalMatrixQ", "Dialog", "DialogIndent", "DialogInput", "DialogLevel", "DialogNotebook", "DialogProlog", "DialogReturn", "DialogSymbols", "Diamond", "DiamondMatrix", "DiceDissimilarity", "DictionaryLookup", "DictionaryWordQ", "DifferenceDelta", "DifferenceOrder", "DifferenceQuotient", "DifferenceRoot", "DifferenceRootReduce", "Differences", "DifferentialD", "DifferentialRoot", "DifferentialRootReduce", "DifferentiatorFilter", "DiffusionPDETerm", "DiggleGatesPointProcess", "DiggleGrattonPointProcess", "DigitalSignature", "DigitBlock", "DigitBlockMinimum", "DigitCharacter", "DigitCount", "DigitQ", "DihedralAngle", "DihedralGroup", "Dilation", "DimensionalCombinations", "DimensionalMeshComponents", "DimensionReduce", "DimensionReducerFunction", "DimensionReduction", "Dimensions", "DiracComb", "DiracDelta", "DirectedEdge", "DirectedEdges", "DirectedGraph", "DirectedGraphQ", "DirectedInfinity", "Direction", "DirectionalLight", "Directive", "Directory", "DirectoryName", "DirectoryQ", "DirectoryStack", "DirichletBeta", "DirichletCharacter", "DirichletCondition", "DirichletConvolve", "DirichletDistribution", "DirichletEta", "DirichletL", "DirichletLambda", "DirichletTransform", "DirichletWindow", "DisableConsolePrintPacket", "DisableFormatting", "DiscreteAsymptotic", "DiscreteChirpZTransform", "DiscreteConvolve", "DiscreteDelta", "DiscreteHadamardTransform", "DiscreteIndicator", "DiscreteInputOutputModel", "DiscreteLimit", "DiscreteLQEstimatorGains", "DiscreteLQRegulatorGains", "DiscreteLyapunovSolve", "DiscreteMarkovProcess", "DiscreteMaxLimit", "DiscreteMinLimit", "DiscretePlot", "DiscretePlot3D", "DiscreteRatio", "DiscreteRiccatiSolve", "DiscreteShift", "DiscreteTimeModelQ", "DiscreteUniformDistribution", "DiscreteVariables", "DiscreteWaveletData", "DiscreteWaveletPacketTransform", "DiscreteWaveletTransform", "DiscretizeGraphics", "DiscretizeRegion", "Discriminant", "DisjointQ", "Disjunction", "Disk", "DiskBox", "DiskBoxOptions", "DiskMatrix", "DiskSegment", "Dispatch", "DispatchQ", "DispersionEstimatorFunction", "Display", "DisplayAllSteps", "DisplayEndPacket", "DisplayForm", "DisplayFunction", "DisplayPacket", "DisplayRules", "DisplayString", "DisplayTemporary", "DisplayWith", "DisplayWithRef", "DisplayWithVariable", "DistanceFunction", "DistanceMatrix", "DistanceTransform", "Distribute", "Distributed", "DistributedContexts", "DistributeDefinitions", "DistributionChart", "DistributionDomain", "DistributionFitTest", "DistributionParameterAssumptions", "DistributionParameterQ", "Dithering", "Div", "Divergence", "Divide", "DivideBy", "Dividers", "DivideSides", "Divisible", "Divisors", "DivisorSigma", "DivisorSum", "DMSList", "DMSString", "Do", "DockedCell", "DockedCells", "DocumentGenerator", "DocumentGeneratorInformation", "DocumentGeneratorInformationData", "DocumentGenerators", "DocumentNotebook", "DocumentWeightingRules", "Dodecahedron", "DomainRegistrationInformation", "DominantColors", "DominatorTreeGraph", "DominatorVertexList", "DOSTextFormat", "Dot", "DotDashed", "DotEqual", "DotLayer", "DotPlusLayer", "Dotted", "DoubleBracketingBar", "DoubleContourIntegral", "DoubleDownArrow", "DoubleLeftArrow", "DoubleLeftRightArrow", "DoubleLeftTee", "DoubleLongLeftArrow", "DoubleLongLeftRightArrow", "DoubleLongRightArrow", "DoubleRightArrow", "DoubleRightTee", "DoubleUpArrow", "DoubleUpDownArrow", "DoubleVerticalBar", "DoublyInfinite", "Down", "DownArrow", "DownArrowBar", "DownArrowUpArrow", "DownLeftRightVector", "DownLeftTeeVector", "DownLeftVector", "DownLeftVectorBar", "DownRightTeeVector", "DownRightVector", "DownRightVectorBar", "Downsample", "DownTee", "DownTeeArrow", "DownValues", "DownValuesFunction", "DragAndDrop", "DrawBackFaces", "DrawEdges", "DrawFrontFaces", "DrawHighlighted", "DrazinInverse", "Drop", "DropoutLayer", "DropShadowing", "DSolve", "DSolveChangeVariables", "DSolveValue", "Dt", "DualLinearProgramming", "DualPlanarGraph", "DualPolyhedron", "DualSystemsModel", "DumpGet", "DumpSave", "DuplicateFreeQ", "Duration", "Dynamic", "DynamicBox", "DynamicBoxOptions", "DynamicEvaluationTimeout", "DynamicGeoGraphics", "DynamicImage", "DynamicLocation", "DynamicModule", "DynamicModuleBox", "DynamicModuleBoxOptions", "DynamicModuleParent", "DynamicModuleValues", "DynamicName", "DynamicNamespace", "DynamicReference", "DynamicSetting", "DynamicUpdating", "DynamicWrapper", "DynamicWrapperBox", "DynamicWrapperBoxOptions", "E", "EarthImpactData", "EarthquakeData", "EccentricityCentrality", "Echo", "EchoEvaluation", "EchoFunction", "EchoLabel", "EchoTiming", "EclipseType", "EdgeAdd", "EdgeBetweennessCentrality", "EdgeCapacity", "EdgeCapForm", "EdgeChromaticNumber", "EdgeColor", "EdgeConnectivity", "EdgeContract", "EdgeCost", "EdgeCount", "EdgeCoverQ", "EdgeCycleMatrix", "EdgeDashing", "EdgeDelete", "EdgeDetect", "EdgeForm", "EdgeIndex", "EdgeJoinForm", "EdgeLabeling", "EdgeLabels", "EdgeLabelStyle", "EdgeList", "EdgeOpacity", "EdgeQ", "EdgeRenderingFunction", "EdgeRules", "EdgeShapeFunction", "EdgeStyle", "EdgeTaggedGraph", "EdgeTaggedGraphQ", "EdgeTags", "EdgeThickness", "EdgeTransitiveGraphQ", "EdgeValueRange", "EdgeValueSizes", "EdgeWeight", "EdgeWeightedGraphQ", "Editable", "EditButtonSettings", "EditCellTagsSettings", "EditDistance", "EffectiveInterest", "Eigensystem", "Eigenvalues", "EigenvectorCentrality", "Eigenvectors", "Element", "ElementData", "ElementwiseLayer", "ElidedForms", "Eliminate", "EliminationOrder", "Ellipsoid", "EllipticE", "EllipticExp", "EllipticExpPrime", "EllipticF", "EllipticFilterModel", "EllipticK", "EllipticLog", "EllipticNomeQ", "EllipticPi", "EllipticReducedHalfPeriods", "EllipticTheta", "EllipticThetaPrime", "EmbedCode", "EmbeddedHTML", "EmbeddedService", "EmbeddedSQLEntityClass", "EmbeddedSQLExpression", "EmbeddingLayer", "EmbeddingObject", "EmitSound", "EmphasizeSyntaxErrors", "EmpiricalDistribution", "Empty", "EmptyGraphQ", "EmptyRegion", "EmptySpaceF", "EnableConsolePrintPacket", "Enabled", "Enclose", "Encode", "Encrypt", "EncryptedObject", "EncryptFile", "End", "EndAdd", "EndDialogPacket", "EndOfBuffer", "EndOfFile", "EndOfLine", "EndOfString", "EndPackage", "EngineEnvironment", "EngineeringForm", "Enter", "EnterExpressionPacket", "EnterTextPacket", "Entity", "EntityClass", "EntityClassList", "EntityCopies", "EntityFunction", "EntityGroup", "EntityInstance", "EntityList", "EntityPrefetch", "EntityProperties", "EntityProperty", "EntityPropertyClass", "EntityRegister", "EntityStore", "EntityStores", "EntityTypeName", "EntityUnregister", "EntityValue", "Entropy", "EntropyFilter", "Environment", "Epilog", "EpilogFunction", "Equal", "EqualColumns", "EqualRows", "EqualTilde", "EqualTo", "EquatedTo", "Equilibrium", "EquirippleFilterKernel", "Equivalent", "Erf", "Erfc", "Erfi", "ErlangB", "ErlangC", "ErlangDistribution", "Erosion", "ErrorBox", "ErrorBoxOptions", "ErrorNorm", "ErrorPacket", "ErrorsDialogSettings", "EscapeRadius", "EstimatedBackground", "EstimatedDistribution", "EstimatedPointNormals", "EstimatedPointProcess", "EstimatedProcess", "EstimatedVariogramModel", "EstimatorGains", "EstimatorRegulator", "EuclideanDistance", "EulerAngles", "EulerCharacteristic", "EulerE", "EulerGamma", "EulerianGraphQ", "EulerMatrix", "EulerPhi", "Evaluatable", "Evaluate", "Evaluated", "EvaluatePacket", "EvaluateScheduledTask", "EvaluationBox", "EvaluationCell", "EvaluationCompletionAction", "EvaluationData", "EvaluationElements", "EvaluationEnvironment", "EvaluationMode", "EvaluationMonitor", "EvaluationNotebook", "EvaluationObject", "EvaluationOrder", "EvaluationPrivileges", "EvaluationRateLimit", "Evaluator", "EvaluatorNames", "EvenQ", "EventData", "EventEvaluator", "EventHandler", "EventHandlerTag", "EventLabels", "EventSeries", "ExactBlackmanWindow", "ExactNumberQ", "ExactRootIsolation", "ExampleData", "Except", "ExcludedContexts", "ExcludedForms", "ExcludedLines", "ExcludedPhysicalQuantities", "ExcludePods", "Exclusions", "ExclusionsStyle", "Exists", "Exit", "ExitDialog", "ExoplanetData", "Exp", "Expand", "ExpandAll", "ExpandDenominator", "ExpandFileName", "ExpandNumerator", "Expectation", "ExpectationE", "ExpectedValue", "ExpGammaDistribution", "ExpIntegralE", "ExpIntegralEi", "ExpirationDate", "Exponent", "ExponentFunction", "ExponentialDistribution", "ExponentialFamily", "ExponentialGeneratingFunction", "ExponentialMovingAverage", "ExponentialPowerDistribution", "ExponentPosition", "ExponentStep", "Export", "ExportAutoReplacements", "ExportByteArray", "ExportForm", "ExportPacket", "ExportString", "Expression", "ExpressionCell", "ExpressionGraph", "ExpressionPacket", "ExpressionTree", "ExpressionUUID", "ExpToTrig", "ExtendedEntityClass", "ExtendedGCD", "Extension", "ExtentElementFunction", "ExtentMarkers", "ExtentSize", "ExternalBundle", "ExternalCall", "ExternalDataCharacterEncoding", "ExternalEvaluate", "ExternalFunction", "ExternalFunctionName", "ExternalIdentifier", "ExternalObject", "ExternalOptions", "ExternalSessionObject", "ExternalSessions", "ExternalStorageBase", "ExternalStorageDownload", "ExternalStorageGet", "ExternalStorageObject", "ExternalStoragePut", "ExternalStorageUpload", "ExternalTypeSignature", "ExternalValue", "Extract", "ExtractArchive", "ExtractLayer", "ExtractPacletArchive", "ExtremeValueDistribution", "FaceAlign", "FaceForm", "FaceGrids", "FaceGridsStyle", "FaceRecognize", "FacialFeatures", "Factor", "FactorComplete", "Factorial", "Factorial2", "FactorialMoment", "FactorialMomentGeneratingFunction", "FactorialPower", "FactorInteger", "FactorList", "FactorSquareFree", "FactorSquareFreeList", "FactorTerms", "FactorTermsList", "Fail", "Failure", "FailureAction", "FailureDistribution", "FailureQ", "False", "FareySequence", "FARIMAProcess", "FeatureDistance", "FeatureExtract", "FeatureExtraction", "FeatureExtractor", "FeatureExtractorFunction", "FeatureImpactPlot", "FeatureNames", "FeatureNearest", "FeatureSpacePlot", "FeatureSpacePlot3D", "FeatureTypes", "FeatureValueDependencyPlot", "FeatureValueImpactPlot", "FEDisableConsolePrintPacket", "FeedbackLinearize", "FeedbackSector", "FeedbackSectorStyle", "FeedbackType", "FEEnableConsolePrintPacket", "FetalGrowthData", "Fibonacci", "Fibonorial", "FieldCompletionFunction", "FieldHint", "FieldHintStyle", "FieldMasked", "FieldSize", "File", "FileBaseName", "FileByteCount", "FileConvert", "FileDate", "FileExistsQ", "FileExtension", "FileFormat", "FileFormatProperties", "FileFormatQ", "FileHandler", "FileHash", "FileInformation", "FileName", "FileNameDepth", "FileNameDialogSettings", "FileNameDrop", "FileNameForms", "FileNameJoin", "FileNames", "FileNameSetter", "FileNameSplit", "FileNameTake", "FileNameToFormatList", "FilePrint", "FileSize", "FileSystemMap", "FileSystemScan", "FileSystemTree", "FileTemplate", "FileTemplateApply", "FileType", "FilledCurve", "FilledCurveBox", "FilledCurveBoxOptions", "FilledTorus", "FillForm", "Filling", "FillingStyle", "FillingTransform", "FilteredEntityClass", "FilterRules", "FinancialBond", "FinancialData", "FinancialDerivative", "FinancialIndicator", "Find", "FindAnomalies", "FindArgMax", "FindArgMin", "FindChannels", "FindClique", "FindClusters", "FindCookies", "FindCurvePath", "FindCycle", "FindDevices", "FindDistribution", "FindDistributionParameters", "FindDivisions", "FindEdgeColoring", "FindEdgeCover", "FindEdgeCut", "FindEdgeIndependentPaths", "FindEquationalProof", "FindEulerianCycle", "FindExternalEvaluators", "FindFaces", "FindFile", "FindFit", "FindFormula", "FindFundamentalCycles", "FindGeneratingFunction", "FindGeoLocation", "FindGeometricConjectures", "FindGeometricTransform", "FindGraphCommunities", "FindGraphIsomorphism", "FindGraphPartition", "FindHamiltonianCycle", "FindHamiltonianPath", "FindHiddenMarkovStates", "FindImageText", "FindIndependentEdgeSet", "FindIndependentVertexSet", "FindInstance", "FindIntegerNullVector", "FindIsomers", "FindIsomorphicSubgraph", "FindKClan", "FindKClique", "FindKClub", "FindKPlex", "FindLibrary", "FindLinearRecurrence", "FindList", "FindMatchingColor", "FindMaximum", "FindMaximumCut", "FindMaximumFlow", "FindMaxValue", "FindMeshDefects", "FindMinimum", "FindMinimumCostFlow", "FindMinimumCut", "FindMinValue", "FindMoleculeSubstructure", "FindPath", "FindPeaks", "FindPermutation", "FindPlanarColoring", "FindPointProcessParameters", "FindPostmanTour", "FindProcessParameters", "FindRegionTransform", "FindRepeat", "FindRoot", "FindSequenceFunction", "FindSettings", "FindShortestPath", "FindShortestTour", "FindSpanningTree", "FindSubgraphIsomorphism", "FindSystemModelEquilibrium", "FindTextualAnswer", "FindThreshold", "FindTransientRepeat", "FindVertexColoring", "FindVertexCover", "FindVertexCut", "FindVertexIndependentPaths", "Fine", "FinishDynamic", "FiniteAbelianGroupCount", "FiniteGroupCount", "FiniteGroupData", "First", "FirstCase", "FirstPassageTimeDistribution", "FirstPosition", "FischerGroupFi22", "FischerGroupFi23", "FischerGroupFi24Prime", "FisherHypergeometricDistribution", "FisherRatioTest", "FisherZDistribution", "Fit", "FitAll", "FitRegularization", "FittedModel", "FixedOrder", "FixedPoint", "FixedPointList", "FlashSelection", "Flat", "FlatShading", "Flatten", "FlattenAt", "FlattenLayer", "FlatTopWindow", "FlightData", "FlipView", "Floor", "FlowPolynomial", "Fold", "FoldList", "FoldPair", "FoldPairList", "FoldWhile", "FoldWhileList", "FollowRedirects", "Font", "FontColor", "FontFamily", "FontForm", "FontName", "FontOpacity", "FontPostScriptName", "FontProperties", "FontReencoding", "FontSize", "FontSlant", "FontSubstitutions", "FontTracking", "FontVariations", "FontWeight", "For", "ForAll", "ForAllType", "ForceVersionInstall", "Format", "FormatRules", "FormatType", "FormatTypeAutoConvert", "FormatValues", "FormBox", "FormBoxOptions", "FormControl", "FormFunction", "FormLayoutFunction", "FormObject", "FormPage", "FormProtectionMethod", "FormTheme", "FormulaData", "FormulaLookup", "FortranForm", "Forward", "ForwardBackward", "ForwardCloudCredentials", "Fourier", "FourierCoefficient", "FourierCosCoefficient", "FourierCosSeries", "FourierCosTransform", "FourierDCT", "FourierDCTFilter", "FourierDCTMatrix", "FourierDST", "FourierDSTMatrix", "FourierMatrix", "FourierParameters", "FourierSequenceTransform", "FourierSeries", "FourierSinCoefficient", "FourierSinSeries", "FourierSinTransform", "FourierTransform", "FourierTrigSeries", "FoxH", "FoxHReduce", "FractionalBrownianMotionProcess", "FractionalD", "FractionalGaussianNoiseProcess", "FractionalPart", "FractionBox", "FractionBoxOptions", "FractionLine", "Frame", "FrameBox", "FrameBoxOptions", "Framed", "FrameInset", "FrameLabel", "Frameless", "FrameListVideo", "FrameMargins", "FrameRate", "FrameStyle", "FrameTicks", "FrameTicksStyle", "FRatioDistribution", "FrechetDistribution", "FreeQ", "FrenetSerretSystem", "FrequencySamplingFilterKernel", "FresnelC", "FresnelF", "FresnelG", "FresnelS", "Friday", "FrobeniusNumber", "FrobeniusSolve", "FromAbsoluteTime", "FromCharacterCode", "FromCoefficientRules", "FromContinuedFraction", "FromDate", "FromDateString", "FromDigits", "FromDMS", "FromEntity", "FromJulianDate", "FromLetterNumber", "FromPolarCoordinates", "FromRawPointer", "FromRomanNumeral", "FromSphericalCoordinates", "FromUnixTime", "Front", "FrontEndDynamicExpression", "FrontEndEventActions", "FrontEndExecute", "FrontEndObject", "FrontEndResource", "FrontEndResourceString", "FrontEndStackSize", "FrontEndToken", "FrontEndTokenExecute", "FrontEndValueCache", "FrontEndVersion", "FrontFaceColor", "FrontFaceGlowColor", "FrontFaceOpacity", "FrontFaceSpecularColor", "FrontFaceSpecularExponent", "FrontFaceSurfaceAppearance", "FrontFaceTexture", "Full", "FullAxes", "FullDefinition", "FullForm", "FullGraphics", "FullInformationOutputRegulator", "FullOptions", "FullRegion", "FullSimplify", "Function", "FunctionAnalytic", "FunctionBijective", "FunctionCompile", "FunctionCompileExport", "FunctionCompileExportByteArray", "FunctionCompileExportLibrary", "FunctionCompileExportString", "FunctionContinuous", "FunctionConvexity", "FunctionDeclaration", "FunctionDiscontinuities", "FunctionDomain", "FunctionExpand", "FunctionInjective", "FunctionInterpolation", "FunctionLayer", "FunctionMeromorphic", "FunctionMonotonicity", "FunctionPeriod", "FunctionPoles", "FunctionRange", "FunctionSign", "FunctionSingularities", "FunctionSpace", "FunctionSurjective", "FussellVeselyImportance", "GaborFilter", "GaborMatrix", "GaborWavelet", "GainMargins", "GainPhaseMargins", "GalaxyData", "GalleryView", "Gamma", "GammaDistribution", "GammaRegularized", "GapPenalty", "GARCHProcess", "GatedRecurrentLayer", "Gather", "GatherBy", "GaugeFaceElementFunction", "GaugeFaceStyle", "GaugeFrameElementFunction", "GaugeFrameSize", "GaugeFrameStyle", "GaugeLabels", "GaugeMarkers", "GaugeStyle", "GaussianFilter", "GaussianIntegers", "GaussianMatrix", "GaussianOrthogonalMatrixDistribution", "GaussianSymplecticMatrixDistribution", "GaussianUnitaryMatrixDistribution", "GaussianWindow", "GCD", "GegenbauerC", "General", "GeneralizedLinearModelFit", "GenerateAsymmetricKeyPair", "GenerateConditions", "GeneratedAssetFormat", "GeneratedAssetLocation", "GeneratedCell", "GeneratedCellStyles", "GeneratedDocumentBinding", "GenerateDerivedKey", "GenerateDigitalSignature", "GenerateDocument", "GeneratedParameters", "GeneratedQuantityMagnitudes", "GenerateFileSignature", "GenerateHTTPResponse", "GenerateSecuredAuthenticationKey", "GenerateSymmetricKey", "GeneratingFunction", "GeneratorDescription", "GeneratorHistoryLength", "GeneratorOutputType", "Generic", "GenericCylindricalDecomposition", "GenomeData", "GenomeLookup", "GeoAntipode", "GeoArea", "GeoArraySize", "GeoBackground", "GeoBoundary", "GeoBoundingBox", "GeoBounds", "GeoBoundsRegion", "GeoBoundsRegionBoundary", "GeoBubbleChart", "GeoCenter", "GeoCircle", "GeoContourPlot", "GeoDensityPlot", "GeodesicClosing", "GeodesicDilation", "GeodesicErosion", "GeodesicOpening", "GeodesicPolyhedron", "GeoDestination", "GeodesyData", "GeoDirection", "GeoDisk", "GeoDisplacement", "GeoDistance", "GeoDistanceList", "GeoElevationData", "GeoEntities", "GeoGraphics", "GeoGraphPlot", "GeoGraphValuePlot", "GeogravityModelData", "GeoGridDirectionDifference", "GeoGridLines", "GeoGridLinesStyle", "GeoGridPosition", "GeoGridRange", "GeoGridRangePadding", "GeoGridUnitArea", "GeoGridUnitDistance", "GeoGridVector", "GeoGroup", "GeoHemisphere", "GeoHemisphereBoundary", "GeoHistogram", "GeoIdentify", "GeoImage", "GeoLabels", "GeoLength", "GeoListPlot", "GeoLocation", "GeologicalPeriodData", "GeomagneticModelData", "GeoMarker", "GeometricAssertion", "GeometricBrownianMotionProcess", "GeometricDistribution", "GeometricMean", "GeometricMeanFilter", "GeometricOptimization", "GeometricScene", "GeometricStep", "GeometricStylingRules", "GeometricTest", "GeometricTransformation", "GeometricTransformation3DBox", "GeometricTransformation3DBoxOptions", "GeometricTransformationBox", "GeometricTransformationBoxOptions", "GeoModel", "GeoNearest", "GeoOrientationData", "GeoPath", "GeoPolygon", "GeoPosition", "GeoPositionENU", "GeoPositionXYZ", "GeoProjection", "GeoProjectionData", "GeoRange", "GeoRangePadding", "GeoRegionValuePlot", "GeoResolution", "GeoScaleBar", "GeoServer", "GeoSmoothHistogram", "GeoStreamPlot", "GeoStyling", "GeoStylingImageFunction", "GeoVariant", "GeoVector", "GeoVectorENU", "GeoVectorPlot", "GeoVectorXYZ", "GeoVisibleRegion", "GeoVisibleRegionBoundary", "GeoWithinQ", "GeoZoomLevel", "GestureHandler", "GestureHandlerTag", "Get", "GetContext", "GetEnvironment", "GetFileName", "GetLinebreakInformationPacket", "GibbsPointProcess", "Glaisher", "GlobalClusteringCoefficient", "GlobalPreferences", "GlobalSession", "Glow", "GoldenAngle", "GoldenRatio", "GompertzMakehamDistribution", "GoochShading", "GoodmanKruskalGamma", "GoodmanKruskalGammaTest", "Goto", "GouraudShading", "Grad", "Gradient", "GradientFilter", "GradientFittedMesh", "GradientOrientationFilter", "GrammarApply", "GrammarRules", "GrammarToken", "Graph", "Graph3D", "GraphAssortativity", "GraphAutomorphismGroup", "GraphCenter", "GraphComplement", "GraphData", "GraphDensity", "GraphDiameter", "GraphDifference", "GraphDisjointUnion", "GraphDistance", "GraphDistanceMatrix", "GraphEmbedding", "GraphHighlight", "GraphHighlightStyle", "GraphHub", "Graphics", "Graphics3D", "Graphics3DBox", "Graphics3DBoxOptions", "GraphicsArray", "GraphicsBaseline", "GraphicsBox", "GraphicsBoxOptions", "GraphicsColor", "GraphicsColumn", "GraphicsComplex", "GraphicsComplex3DBox", "GraphicsComplex3DBoxOptions", "GraphicsComplexBox", "GraphicsComplexBoxOptions", "GraphicsContents", "GraphicsData", "GraphicsGrid", "GraphicsGridBox", "GraphicsGroup", "GraphicsGroup3DBox", "GraphicsGroup3DBoxOptions", "GraphicsGroupBox", "GraphicsGroupBoxOptions", "GraphicsGrouping", "GraphicsHighlightColor", "GraphicsRow", "GraphicsSpacing", "GraphicsStyle", "GraphIntersection", "GraphJoin", "GraphLayerLabels", "GraphLayers", "GraphLayerStyle", "GraphLayout", "GraphLinkEfficiency", "GraphPeriphery", "GraphPlot", "GraphPlot3D", "GraphPower", "GraphProduct", "GraphPropertyDistribution", "GraphQ", "GraphRadius", "GraphReciprocity", "GraphRoot", "GraphStyle", "GraphSum", "GraphTree", "GraphUnion", "Gray", "GrayLevel", "Greater", "GreaterEqual", "GreaterEqualLess", "GreaterEqualThan", "GreaterFullEqual", "GreaterGreater", "GreaterLess", "GreaterSlantEqual", "GreaterThan", "GreaterTilde", "GreekStyle", "Green", "GreenFunction", "Grid", "GridBaseline", "GridBox", "GridBoxAlignment", "GridBoxBackground", "GridBoxDividers", "GridBoxFrame", "GridBoxItemSize", "GridBoxItemStyle", "GridBoxOptions", "GridBoxSpacings", "GridCreationSettings", "GridDefaultElement", "GridElementStyleOptions", "GridFrame", "GridFrameMargins", "GridGraph", "GridLines", "GridLinesStyle", "GridVideo", "GroebnerBasis", "GroupActionBase", "GroupBy", "GroupCentralizer", "GroupElementFromWord", "GroupElementPosition", "GroupElementQ", "GroupElements", "GroupElementToWord", "GroupGenerators", "Groupings", "GroupMultiplicationTable", "GroupOpenerColor", "GroupOpenerInsideFrame", "GroupOrbits", "GroupOrder", "GroupPageBreakWithin", "GroupSetwiseStabilizer", "GroupStabilizer", "GroupStabilizerChain", "GroupTogetherGrouping", "GroupTogetherNestedGrouping", "GrowCutComponents", "Gudermannian", "GuidedFilter", "GumbelDistribution", "HaarWavelet", "HadamardMatrix", "HalfLine", "HalfNormalDistribution", "HalfPlane", "HalfSpace", "HalftoneShading", "HamiltonianGraphQ", "HammingDistance", "HammingWindow", "HandlerFunctions", "HandlerFunctionsKeys", "HankelH1", "HankelH2", "HankelMatrix", "HankelTransform", "HannPoissonWindow", "HannWindow", "HaradaNortonGroupHN", "HararyGraph", "HardcorePointProcess", "HarmonicMean", "HarmonicMeanFilter", "HarmonicNumber", "Hash", "HatchFilling", "HatchShading", "Haversine", "HazardFunction", "Head", "HeadCompose", "HeaderAlignment", "HeaderBackground", "HeaderDisplayFunction", "HeaderLines", "Headers", "HeaderSize", "HeaderStyle", "Heads", "HeatFluxValue", "HeatInsulationValue", "HeatOutflowValue", "HeatRadiationValue", "HeatSymmetryValue", "HeatTemperatureCondition", "HeatTransferPDEComponent", "HeatTransferValue", "HeavisideLambda", "HeavisidePi", "HeavisideTheta", "HeldGroupHe", "HeldPart", "HelmholtzPDEComponent", "HelpBrowserLookup", "HelpBrowserNotebook", "HelpBrowserSettings", "HelpViewerSettings", "Here", "HermiteDecomposition", "HermiteH", "Hermitian", "HermitianMatrixQ", "HessenbergDecomposition", "Hessian", "HeunB", "HeunBPrime", "HeunC", "HeunCPrime", "HeunD", "HeunDPrime", "HeunG", "HeunGPrime", "HeunT", "HeunTPrime", "HexadecimalCharacter", "Hexahedron", "HexahedronBox", "HexahedronBoxOptions", "HiddenItems", "HiddenMarkovProcess", "HiddenSurface", "Highlighted", "HighlightGraph", "HighlightImage", "HighlightMesh", "HighlightString", "HighpassFilter", "HigmanSimsGroupHS", "HilbertCurve", "HilbertFilter", "HilbertMatrix", "Histogram", "Histogram3D", "HistogramDistribution", "HistogramList", "HistogramPointDensity", "HistogramTransform", "HistogramTransformInterpolation", "HistoricalPeriodData", "HitMissTransform", "HITSCentrality", "HjorthDistribution", "HodgeDual", "HoeffdingD", "HoeffdingDTest", "Hold", "HoldAll", "HoldAllComplete", "HoldComplete", "HoldFirst", "HoldForm", "HoldPattern", "HoldRest", "HolidayCalendar", "HomeDirectory", "HomePage", "Horizontal", "HorizontalForm", "HorizontalGauge", "HorizontalScrollPosition", "HornerForm", "HostLookup", "HotellingTSquareDistribution", "HoytDistribution", "HTMLSave", "HTTPErrorResponse", "HTTPRedirect", "HTTPRequest", "HTTPRequestData", "HTTPResponse", "Hue", "HumanGrowthData", "HumpDownHump", "HumpEqual", "HurwitzLerchPhi", "HurwitzZeta", "HyperbolicDistribution", "HypercubeGraph", "HyperexponentialDistribution", "Hyperfactorial", "Hypergeometric0F1", "Hypergeometric0F1Regularized", "Hypergeometric1F1", "Hypergeometric1F1Regularized", "Hypergeometric2F1", "Hypergeometric2F1Regularized", "HypergeometricDistribution", "HypergeometricPFQ", "HypergeometricPFQRegularized", "HypergeometricU", "Hyperlink", "HyperlinkAction", "HyperlinkCreationSettings", "Hyperplane", "Hyphenation", "HyphenationOptions", "HypoexponentialDistribution", "HypothesisTestData", "I", "IconData", "Iconize", "IconizedObject", "IconRules", "Icosahedron", "Identity", "IdentityMatrix", "If", "IfCompiled", "IgnoreCase", "IgnoreDiacritics", "IgnoreIsotopes", "IgnorePunctuation", "IgnoreSpellCheck", "IgnoreStereochemistry", "IgnoringInactive", "Im", "Image", "Image3D", "Image3DProjection", "Image3DSlices", "ImageAccumulate", "ImageAdd", "ImageAdjust", "ImageAlign", "ImageApply", "ImageApplyIndexed", "ImageAspectRatio", "ImageAssemble", "ImageAugmentationLayer", "ImageBoundingBoxes", "ImageCache", "ImageCacheValid", "ImageCapture", "ImageCaptureFunction", "ImageCases", "ImageChannels", "ImageClip", "ImageCollage", "ImageColorSpace", "ImageCompose", "ImageContainsQ", "ImageContents", "ImageConvolve", "ImageCooccurrence", "ImageCorners", "ImageCorrelate", "ImageCorrespondingPoints", "ImageCrop", "ImageData", "ImageDeconvolve", "ImageDemosaic", "ImageDifference", "ImageDimensions", "ImageDisplacements", "ImageDistance", "ImageEditMode", "ImageEffect", "ImageExposureCombine", "ImageFeatureTrack", "ImageFileApply", "ImageFileFilter", "ImageFileScan", "ImageFilter", "ImageFocusCombine", "ImageForestingComponents", "ImageFormattingWidth", "ImageForwardTransformation", "ImageGraphics", "ImageHistogram", "ImageIdentify", "ImageInstanceQ", "ImageKeypoints", "ImageLabels", "ImageLegends", "ImageLevels", "ImageLines", "ImageMargins", "ImageMarker", "ImageMarkers", "ImageMeasurements", "ImageMesh", "ImageMultiply", "ImageOffset", "ImagePad", "ImagePadding", "ImagePartition", "ImagePeriodogram", "ImagePerspectiveTransformation", "ImagePosition", "ImagePreviewFunction", "ImagePyramid", "ImagePyramidApply", "ImageQ", "ImageRangeCache", "ImageRecolor", "ImageReflect", "ImageRegion", "ImageResize", "ImageResolution", "ImageRestyle", "ImageRotate", "ImageRotated", "ImageSaliencyFilter", "ImageScaled", "ImageScan", "ImageSize", "ImageSizeAction", "ImageSizeCache", "ImageSizeMultipliers", "ImageSizeRaw", "ImageStitch", "ImageSubtract", "ImageTake", "ImageTransformation", "ImageTrim", "ImageType", "ImageValue", "ImageValuePositions", "ImageVectorscopePlot", "ImageWaveformPlot", "ImagingDevice", "ImplicitD", "ImplicitRegion", "Implies", "Import", "ImportAutoReplacements", "ImportByteArray", "ImportedObject", "ImportOptions", "ImportString", "ImprovementImportance", "In", "Inactivate", "Inactive", "InactiveStyle", "IncidenceGraph", "IncidenceList", "IncidenceMatrix", "IncludeAromaticBonds", "IncludeConstantBasis", "IncludedContexts", "IncludeDefinitions", "IncludeDirectories", "IncludeFileExtension", "IncludeGeneratorTasks", "IncludeHydrogens", "IncludeInflections", "IncludeMetaInformation", "IncludePods", "IncludeQuantities", "IncludeRelatedTables", "IncludeSingularSolutions", "IncludeSingularTerm", "IncludeWindowTimes", "Increment", "IndefiniteMatrixQ", "Indent", "IndentingNewlineSpacings", "IndentMaxFraction", "IndependenceTest", "IndependentEdgeSetQ", "IndependentPhysicalQuantity", "IndependentUnit", "IndependentUnitDimension", "IndependentVertexSetQ", "Indeterminate", "IndeterminateThreshold", "IndexCreationOptions", "Indexed", "IndexEdgeTaggedGraph", "IndexGraph", "IndexTag", "Inequality", "InertEvaluate", "InertExpression", "InexactNumberQ", "InexactNumbers", "InfiniteFuture", "InfiniteLine", "InfiniteLineThrough", "InfinitePast", "InfinitePlane", "Infinity", "Infix", "InflationAdjust", "InflationMethod", "Information", "InformationData", "InformationDataGrid", "Inherited", "InheritScope", "InhomogeneousPoissonPointProcess", "InhomogeneousPoissonProcess", "InitialEvaluationHistory", "Initialization", "InitializationCell", "InitializationCellEvaluation", "InitializationCellWarning", "InitializationObject", "InitializationObjects", "InitializationValue", "Initialize", "InitialSeeding", "InlineCounterAssignments", "InlineCounterIncrements", "InlineRules", "Inner", "InnerPolygon", "InnerPolyhedron", "Inpaint", "Input", "InputAliases", "InputAssumptions", "InputAutoReplacements", "InputField", "InputFieldBox", "InputFieldBoxOptions", "InputForm", "InputGrouping", "InputNamePacket", "InputNotebook", "InputPacket", "InputPorts", "InputSettings", "InputStream", "InputString", "InputStringPacket", "InputToBoxFormPacket", "Insert", "InsertionFunction", "InsertionPointObject", "InsertLinebreaks", "InsertResults", "Inset", "Inset3DBox", "Inset3DBoxOptions", "InsetBox", "InsetBoxOptions", "Insphere", "Install", "InstallService", "InstanceNormalizationLayer", "InString", "Integer", "IntegerDigits", "IntegerExponent", "IntegerLength", "IntegerName", "IntegerPart", "IntegerPartitions", "IntegerQ", "IntegerReverse", "Integers", "IntegerString", "Integral", "Integrate", "IntegrateChangeVariables", "Interactive", "InteractiveTradingChart", "InterfaceSwitched", "Interlaced", "Interleaving", "InternallyBalancedDecomposition", "InterpolatingFunction", "InterpolatingPolynomial", "Interpolation", "InterpolationOrder", "InterpolationPoints", "InterpolationPrecision", "Interpretation", "InterpretationBox", "InterpretationBoxOptions", "InterpretationFunction", "Interpreter", "InterpretTemplate", "InterquartileRange", "Interrupt", "InterruptSettings", "IntersectedEntityClass", "IntersectingQ", "Intersection", "Interval", "IntervalIntersection", "IntervalMarkers", "IntervalMarkersStyle", "IntervalMemberQ", "IntervalSlider", "IntervalUnion", "Into", "Inverse", "InverseBetaRegularized", "InverseBilateralLaplaceTransform", "InverseBilateralZTransform", "InverseCDF", "InverseChiSquareDistribution", "InverseContinuousWaveletTransform", "InverseDistanceTransform", "InverseEllipticNomeQ", "InverseErf", "InverseErfc", "InverseFourier", "InverseFourierCosTransform", "InverseFourierSequenceTransform", "InverseFourierSinTransform", "InverseFourierTransform", "InverseFunction", "InverseFunctions", "InverseGammaDistribution", "InverseGammaRegularized", "InverseGaussianDistribution", "InverseGudermannian", "InverseHankelTransform", "InverseHaversine", "InverseImagePyramid", "InverseJacobiCD", "InverseJacobiCN", "InverseJacobiCS", "InverseJacobiDC", "InverseJacobiDN", "InverseJacobiDS", "InverseJacobiNC", "InverseJacobiND", "InverseJacobiNS", "InverseJacobiSC", "InverseJacobiSD", "InverseJacobiSN", "InverseLaplaceTransform", "InverseMellinTransform", "InversePermutation", "InverseRadon", "InverseRadonTransform", "InverseSeries", "InverseShortTimeFourier", "InverseSpectrogram", "InverseSurvivalFunction", "InverseTransformedRegion", "InverseWaveletTransform", "InverseWeierstrassP", "InverseWishartMatrixDistribution", "InverseZTransform", "Invisible", "InvisibleApplication", "InvisibleTimes", "IPAddress", "IrreduciblePolynomialQ", "IslandData", "IsolatingInterval", "IsomorphicGraphQ", "IsomorphicSubgraphQ", "IsotopeData", "Italic", "Item", "ItemAspectRatio", "ItemBox", "ItemBoxOptions", "ItemDisplayFunction", "ItemSize", "ItemStyle", "ItoProcess", "JaccardDissimilarity", "JacobiAmplitude", "Jacobian", "JacobiCD", "JacobiCN", "JacobiCS", "JacobiDC", "JacobiDN", "JacobiDS", "JacobiEpsilon", "JacobiNC", "JacobiND", "JacobiNS", "JacobiP", "JacobiSC", "JacobiSD", "JacobiSN", "JacobiSymbol", "JacobiZeta", "JacobiZN", "JankoGroupJ1", "JankoGroupJ2", "JankoGroupJ3", "JankoGroupJ4", "JarqueBeraALMTest", "JohnsonDistribution", "Join", "JoinAcross", "Joined", "JoinedCurve", "JoinedCurveBox", "JoinedCurveBoxOptions", "JoinForm", "JordanDecomposition", "JordanModelDecomposition", "JulianDate", "JuliaSetBoettcher", "JuliaSetIterationCount", "JuliaSetPlot", "JuliaSetPoints", "K", "KagiChart", "KaiserBesselWindow", "KaiserWindow", "KalmanEstimator", "KalmanFilter", "KarhunenLoeveDecomposition", "KaryTree", "KatzCentrality", "KCoreComponents", "KDistribution", "KEdgeConnectedComponents", "KEdgeConnectedGraphQ", "KeepExistingVersion", "KelvinBei", "KelvinBer", "KelvinKei", "KelvinKer", "KendallTau", "KendallTauTest", "KernelConfiguration", "KernelExecute", "KernelFunction", "KernelMixtureDistribution", "KernelObject", "Kernels", "Ket", "Key", "KeyCollisionFunction", "KeyComplement", "KeyDrop", "KeyDropFrom", "KeyExistsQ", "KeyFreeQ", "KeyIntersection", "KeyMap", "KeyMemberQ", "KeypointStrength", "Keys", "KeySelect", "KeySort", "KeySortBy", "KeyTake", "KeyUnion", "KeyValueMap", "KeyValuePattern", "Khinchin", "KillProcess", "KirchhoffGraph", "KirchhoffMatrix", "KleinInvariantJ", "KnapsackSolve", "KnightTourGraph", "KnotData", "KnownUnitQ", "KochCurve", "KolmogorovSmirnovTest", "KroneckerDelta", "KroneckerModelDecomposition", "KroneckerProduct", "KroneckerSymbol", "KuiperTest", "KumaraswamyDistribution", "Kurtosis", "KuwaharaFilter", "KVertexConnectedComponents", "KVertexConnectedGraphQ", "LABColor", "Label", "Labeled", "LabeledSlider", "LabelingFunction", "LabelingSize", "LabelStyle", "LabelVisibility", "LaguerreL", "LakeData", "LambdaComponents", "LambertW", "LameC", "LameCPrime", "LameEigenvalueA", "LameEigenvalueB", "LameS", "LameSPrime", "LaminaData", "LanczosWindow", "LandauDistribution", "Language", "LanguageCategory", "LanguageData", "LanguageIdentify", "LanguageOptions", "LaplaceDistribution", "LaplaceTransform", "Laplacian", "LaplacianFilter", "LaplacianGaussianFilter", "LaplacianPDETerm", "Large", "Larger", "Last", "Latitude", "LatitudeLongitude", "LatticeData", "LatticeReduce", "Launch", "LaunchKernels", "LayeredGraphPlot", "LayeredGraphPlot3D", "LayerSizeFunction", "LayoutInformation", "LCHColor", "LCM", "LeaderSize", "LeafCount", "LeapVariant", "LeapYearQ", "LearnDistribution", "LearnedDistribution", "LearningRate", "LearningRateMultipliers", "LeastSquares", "LeastSquaresFilterKernel", "Left", "LeftArrow", "LeftArrowBar", "LeftArrowRightArrow", "LeftDownTeeVector", "LeftDownVector", "LeftDownVectorBar", "LeftRightArrow", "LeftRightVector", "LeftTee", "LeftTeeArrow", "LeftTeeVector", "LeftTriangle", "LeftTriangleBar", "LeftTriangleEqual", "LeftUpDownVector", "LeftUpTeeVector", "LeftUpVector", "LeftUpVectorBar", "LeftVector", "LeftVectorBar", "LegendAppearance", "Legended", "LegendFunction", "LegendLabel", "LegendLayout", "LegendMargins", "LegendMarkers", "LegendMarkerSize", "LegendreP", "LegendreQ", "LegendreType", "Length", "LengthWhile", "LerchPhi", "Less", "LessEqual", "LessEqualGreater", "LessEqualThan", "LessFullEqual", "LessGreater", "LessLess", "LessSlantEqual", "LessThan", "LessTilde", "LetterCharacter", "LetterCounts", "LetterNumber", "LetterQ", "Level", "LeveneTest", "LeviCivitaTensor", "LevyDistribution", "Lexicographic", "LexicographicOrder", "LexicographicSort", "LibraryDataType", "LibraryFunction", "LibraryFunctionDeclaration", "LibraryFunctionError", "LibraryFunctionInformation", "LibraryFunctionLoad", "LibraryFunctionUnload", "LibraryLoad", "LibraryUnload", "LicenseEntitlementObject", "LicenseEntitlements", "LicenseID", "LicensingSettings", "LiftingFilterData", "LiftingWaveletTransform", "LightBlue", "LightBrown", "LightCyan", "Lighter", "LightGray", "LightGreen", "Lighting", "LightingAngle", "LightMagenta", "LightOrange", "LightPink", "LightPurple", "LightRed", "LightSources", "LightYellow", "Likelihood", "Limit", "LimitsPositioning", "LimitsPositioningTokens", "LindleyDistribution", "Line", "Line3DBox", "Line3DBoxOptions", "LinearFilter", "LinearFractionalOptimization", "LinearFractionalTransform", "LinearGradientFilling", "LinearGradientImage", "LinearizingTransformationData", "LinearLayer", "LinearModelFit", "LinearOffsetFunction", "LinearOptimization", "LinearProgramming", "LinearRecurrence", "LinearSolve", "LinearSolveFunction", "LineBox", "LineBoxOptions", "LineBreak", "LinebreakAdjustments", "LineBreakChart", "LinebreakSemicolonWeighting", "LineBreakWithin", "LineColor", "LineGraph", "LineIndent", "LineIndentMaxFraction", "LineIntegralConvolutionPlot", "LineIntegralConvolutionScale", "LineLegend", "LineOpacity", "LineSpacing", "LineWrapParts", "LinkActivate", "LinkClose", "LinkConnect", "LinkConnectedQ", "LinkCreate", "LinkError", "LinkFlush", "LinkFunction", "LinkHost", "LinkInterrupt", "LinkLaunch", "LinkMode", "LinkObject", "LinkOpen", "LinkOptions", "LinkPatterns", "LinkProtocol", "LinkRankCentrality", "LinkRead", "LinkReadHeld", "LinkReadyQ", "Links", "LinkService", "LinkWrite", "LinkWriteHeld", "LiouvilleLambda", "List", "Listable", "ListAnimate", "ListContourPlot", "ListContourPlot3D", "ListConvolve", "ListCorrelate", "ListCurvePathPlot", "ListDeconvolve", "ListDensityPlot", "ListDensityPlot3D", "Listen", "ListFormat", "ListFourierSequenceTransform", "ListInterpolation", "ListLineIntegralConvolutionPlot", "ListLinePlot", "ListLinePlot3D", "ListLogLinearPlot", "ListLogLogPlot", "ListLogPlot", "ListPicker", "ListPickerBox", "ListPickerBoxBackground", "ListPickerBoxOptions", "ListPlay", "ListPlot", "ListPlot3D", "ListPointPlot3D", "ListPolarPlot", "ListQ", "ListSliceContourPlot3D", "ListSliceDensityPlot3D", "ListSliceVectorPlot3D", "ListStepPlot", "ListStreamDensityPlot", "ListStreamPlot", "ListStreamPlot3D", "ListSurfacePlot3D", "ListVectorDensityPlot", "ListVectorDisplacementPlot", "ListVectorDisplacementPlot3D", "ListVectorPlot", "ListVectorPlot3D", "ListZTransform", "Literal", "LiteralSearch", "LiteralType", "LoadCompiledComponent", "LocalAdaptiveBinarize", "LocalCache", "LocalClusteringCoefficient", "LocalEvaluate", "LocalizeDefinitions", "LocalizeVariables", "LocalObject", "LocalObjects", "LocalResponseNormalizationLayer", "LocalSubmit", "LocalSymbol", "LocalTime", "LocalTimeZone", "LocationEquivalenceTest", "LocationTest", "Locator", "LocatorAutoCreate", "LocatorBox", "LocatorBoxOptions", "LocatorCentering", "LocatorPane", "LocatorPaneBox", "LocatorPaneBoxOptions", "LocatorRegion", "Locked", "Log", "Log10", "Log2", "LogBarnesG", "LogGamma", "LogGammaDistribution", "LogicalExpand", "LogIntegral", "LogisticDistribution", "LogisticSigmoid", "LogitModelFit", "LogLikelihood", "LogLinearPlot", "LogLogisticDistribution", "LogLogPlot", "LogMultinormalDistribution", "LogNormalDistribution", "LogPlot", "LogRankTest", "LogSeriesDistribution", "LongEqual", "Longest", "LongestCommonSequence", "LongestCommonSequencePositions", "LongestCommonSubsequence", "LongestCommonSubsequencePositions", "LongestMatch", "LongestOrderedSequence", "LongForm", "Longitude", "LongLeftArrow", "LongLeftRightArrow", "LongRightArrow", "LongShortTermMemoryLayer", "Lookup", "Loopback", "LoopFreeGraphQ", "Looping", "LossFunction", "LowerCaseQ", "LowerLeftArrow", "LowerRightArrow", "LowerTriangularize", "LowerTriangularMatrix", "LowerTriangularMatrixQ", "LowpassFilter", "LQEstimatorGains", "LQGRegulator", "LQOutputRegulatorGains", "LQRegulatorGains", "LUBackSubstitution", "LucasL", "LuccioSamiComponents", "LUDecomposition", "LunarEclipse", "LUVColor", "LyapunovSolve", "LyonsGroupLy", "MachineID", "MachineName", "MachineNumberQ", "MachinePrecision", "MacintoshSystemPageSetup", "Magenta", "Magnification", "Magnify", "MailAddressValidation", "MailExecute", "MailFolder", "MailItem", "MailReceiverFunction", "MailResponseFunction", "MailSearch", "MailServerConnect", "MailServerConnection", "MailSettings", "MainSolve", "MaintainDynamicCaches", "Majority", "MakeBoxes", "MakeExpression", "MakeRules", "ManagedLibraryExpressionID", "ManagedLibraryExpressionQ", "MandelbrotSetBoettcher", "MandelbrotSetDistance", "MandelbrotSetIterationCount", "MandelbrotSetMemberQ", "MandelbrotSetPlot", "MangoldtLambda", "ManhattanDistance", "Manipulate", "Manipulator", "MannedSpaceMissionData", "MannWhitneyTest", "MantissaExponent", "Manual", "Map", "MapAll", "MapApply", "MapAt", "MapIndexed", "MAProcess", "MapThread", "MarchenkoPasturDistribution", "MarcumQ", "MardiaCombinedTest", "MardiaKurtosisTest", "MardiaSkewnessTest", "MarginalDistribution", "MarkovProcessProperties", "Masking", "MassConcentrationCondition", "MassFluxValue", "MassImpermeableBoundaryValue", "MassOutflowValue", "MassSymmetryValue", "MassTransferValue", "MassTransportPDEComponent", "MatchingDissimilarity", "MatchLocalNameQ", "MatchLocalNames", "MatchQ", "Material", "MaterialShading", "MaternPointProcess", "MathematicalFunctionData", "MathematicaNotation", "MathieuC", "MathieuCharacteristicA", "MathieuCharacteristicB", "MathieuCharacteristicExponent", "MathieuCPrime", "MathieuGroupM11", "MathieuGroupM12", "MathieuGroupM22", "MathieuGroupM23", "MathieuGroupM24", "MathieuS", "MathieuSPrime", "MathMLForm", "MathMLText", "Matrices", "MatrixExp", "MatrixForm", "MatrixFunction", "MatrixLog", "MatrixNormalDistribution", "MatrixPlot", "MatrixPower", "MatrixPropertyDistribution", "MatrixQ", "MatrixRank", "MatrixTDistribution", "Max", "MaxBend", "MaxCellMeasure", "MaxColorDistance", "MaxDate", "MaxDetect", "MaxDisplayedChildren", "MaxDuration", "MaxExtraBandwidths", "MaxExtraConditions", "MaxFeatureDisplacement", "MaxFeatures", "MaxFilter", "MaximalBy", "Maximize", "MaxItems", "MaxIterations", "MaxLimit", "MaxMemoryUsed", "MaxMixtureKernels", "MaxOverlapFraction", "MaxPlotPoints", "MaxPoints", "MaxRecursion", "MaxStableDistribution", "MaxStepFraction", "MaxSteps", "MaxStepSize", "MaxTrainingRounds", "MaxValue", "MaxwellDistribution", "MaxWordGap", "McLaughlinGroupMcL", "Mean", "MeanAbsoluteLossLayer", "MeanAround", "MeanClusteringCoefficient", "MeanDegreeConnectivity", "MeanDeviation", "MeanFilter", "MeanGraphDistance", "MeanNeighborDegree", "MeanPointDensity", "MeanShift", "MeanShiftFilter", "MeanSquaredLossLayer", "Median", "MedianDeviation", "MedianFilter", "MedicalTestData", "Medium", "MeijerG", "MeijerGReduce", "MeixnerDistribution", "MellinConvolve", "MellinTransform", "MemberQ", "MemoryAvailable", "MemoryConstrained", "MemoryConstraint", "MemoryInUse", "MengerMesh", "Menu", "MenuAppearance", "MenuCommandKey", "MenuEvaluator", "MenuItem", "MenuList", "MenuPacket", "MenuSortingValue", "MenuStyle", "MenuView", "Merge", "MergeDifferences", "MergingFunction", "MersennePrimeExponent", "MersennePrimeExponentQ", "Mesh", "MeshCellCentroid", "MeshCellCount", "MeshCellHighlight", "MeshCellIndex", "MeshCellLabel", "MeshCellMarker", "MeshCellMeasure", "MeshCellQuality", "MeshCells", "MeshCellShapeFunction", "MeshCellStyle", "MeshConnectivityGraph", "MeshCoordinates", "MeshFunctions", "MeshPrimitives", "MeshQualityGoal", "MeshRange", "MeshRefinementFunction", "MeshRegion", "MeshRegionQ", "MeshShading", "MeshStyle", "Message", "MessageDialog", "MessageList", "MessageName", "MessageObject", "MessageOptions", "MessagePacket", "Messages", "MessagesNotebook", "MetaCharacters", "MetaInformation", "MeteorShowerData", "Method", "MethodOptions", "MexicanHatWavelet", "MeyerWavelet", "Midpoint", "MIMETypeToFormatList", "Min", "MinColorDistance", "MinDate", "MinDetect", "MineralData", "MinFilter", "MinimalBy", "MinimalPolynomial", "MinimalStateSpaceModel", "Minimize", "MinimumTimeIncrement", "MinIntervalSize", "MinkowskiQuestionMark", "MinLimit", "MinMax", "MinorPlanetData", "Minors", "MinPointSeparation", "MinRecursion", "MinSize", "MinStableDistribution", "Minus", "MinusPlus", "MinValue", "Missing", "MissingBehavior", "MissingDataMethod", "MissingDataRules", "MissingQ", "MissingString", "MissingStyle", "MissingValuePattern", "MissingValueSynthesis", "MittagLefflerE", "MixedFractionParts", "MixedGraphQ", "MixedMagnitude", "MixedRadix", "MixedRadixQuantity", "MixedUnit", "MixtureDistribution", "Mod", "Modal", "Mode", "ModelPredictiveController", "Modular", "ModularInverse", "ModularLambda", "Module", "Modulus", "MoebiusMu", "Molecule", "MoleculeAlign", "MoleculeContainsQ", "MoleculeDraw", "MoleculeEquivalentQ", "MoleculeFreeQ", "MoleculeGraph", "MoleculeMatchQ", "MoleculeMaximumCommonSubstructure", "MoleculeModify", "MoleculeName", "MoleculePattern", "MoleculePlot", "MoleculePlot3D", "MoleculeProperty", "MoleculeQ", "MoleculeRecognize", "MoleculeSubstructureCount", "MoleculeValue", "Moment", "MomentConvert", "MomentEvaluate", "MomentGeneratingFunction", "MomentOfInertia", "Monday", "Monitor", "MonomialList", "MonomialOrder", "MonsterGroupM", "MoonPhase", "MoonPosition", "MorletWavelet", "MorphologicalBinarize", "MorphologicalBranchPoints", "MorphologicalComponents", "MorphologicalEulerNumber", "MorphologicalGraph", "MorphologicalPerimeter", "MorphologicalTransform", "MortalityData", "Most", "MountainData", "MouseAnnotation", "MouseAppearance", "MouseAppearanceTag", "MouseButtons", "Mouseover", "MousePointerNote", "MousePosition", "MovieData", "MovingAverage", "MovingMap", "MovingMedian", "MoyalDistribution", "MultiaxisArrangement", "Multicolumn", "MultiedgeStyle", "MultigraphQ", "MultilaunchWarning", "MultiLetterItalics", "MultiLetterStyle", "MultilineFunction", "Multinomial", "MultinomialDistribution", "MultinormalDistribution", "MultiplicativeOrder", "Multiplicity", "MultiplySides", "MultiscriptBoxOptions", "Multiselection", "MultivariateHypergeometricDistribution", "MultivariatePoissonDistribution", "MultivariateTDistribution", "N", "NakagamiDistribution", "NameQ", "Names", "NamespaceBox", "NamespaceBoxOptions", "Nand", "NArgMax", "NArgMin", "NBernoulliB", "NBodySimulation", "NBodySimulationData", "NCache", "NCaputoD", "NDEigensystem", "NDEigenvalues", "NDSolve", "NDSolveValue", "Nearest", "NearestFunction", "NearestMeshCells", "NearestNeighborG", "NearestNeighborGraph", "NearestTo", "NebulaData", "NeedlemanWunschSimilarity", "Needs", "Negative", "NegativeBinomialDistribution", "NegativeDefiniteMatrixQ", "NegativeIntegers", "NegativelyOrientedPoints", "NegativeMultinomialDistribution", "NegativeRationals", "NegativeReals", "NegativeSemidefiniteMatrixQ", "NeighborhoodData", "NeighborhoodGraph", "Nest", "NestedGreaterGreater", "NestedLessLess", "NestedScriptRules", "NestGraph", "NestList", "NestTree", "NestWhile", "NestWhileList", "NetAppend", "NetArray", "NetArrayLayer", "NetBidirectionalOperator", "NetChain", "NetDecoder", "NetDelete", "NetDrop", "NetEncoder", "NetEvaluationMode", "NetExternalObject", "NetExtract", "NetFlatten", "NetFoldOperator", "NetGANOperator", "NetGraph", "NetInformation", "NetInitialize", "NetInsert", "NetInsertSharedArrays", "NetJoin", "NetMapOperator", "NetMapThreadOperator", "NetMeasurements", "NetModel", "NetNestOperator", "NetPairEmbeddingOperator", "NetPort", "NetPortGradient", "NetPrepend", "NetRename", "NetReplace", "NetReplacePart", "NetSharedArray", "NetStateObject", "NetTake", "NetTrain", "NetTrainResultsObject", "NetUnfold", "NetworkPacketCapture", "NetworkPacketRecording", "NetworkPacketRecordingDuring", "NetworkPacketTrace", "NeumannValue", "NevilleThetaC", "NevilleThetaD", "NevilleThetaN", "NevilleThetaS", "NewPrimitiveStyle", "NExpectation", "Next", "NextCell", "NextDate", "NextPrime", "NextScheduledTaskTime", "NeymanScottPointProcess", "NFractionalD", "NHoldAll", "NHoldFirst", "NHoldRest", "NicholsGridLines", "NicholsPlot", "NightHemisphere", "NIntegrate", "NMaximize", "NMaxValue", "NMinimize", "NMinValue", "NominalScale", "NominalVariables", "NonAssociative", "NoncentralBetaDistribution", "NoncentralChiSquareDistribution", "NoncentralFRatioDistribution", "NoncentralStudentTDistribution", "NonCommutativeMultiply", "NonConstants", "NondimensionalizationTransform", "None", "NoneTrue", "NonlinearModelFit", "NonlinearStateSpaceModel", "NonlocalMeansFilter", "NonNegative", "NonNegativeIntegers", "NonNegativeRationals", "NonNegativeReals", "NonPositive", "NonPositiveIntegers", "NonPositiveRationals", "NonPositiveReals", "Nor", "NorlundB", "Norm", "Normal", "NormalDistribution", "NormalGrouping", "NormalizationLayer", "Normalize", "Normalized", "NormalizedSquaredEuclideanDistance", "NormalMatrixQ", "NormalsFunction", "NormFunction", "Not", "NotCongruent", "NotCupCap", "NotDoubleVerticalBar", "Notebook", "NotebookApply", "NotebookAutoSave", "NotebookBrowseDirectory", "NotebookClose", "NotebookConvertSettings", "NotebookCreate", "NotebookDefault", "NotebookDelete", "NotebookDirectory", "NotebookDynamicExpression", "NotebookEvaluate", "NotebookEventActions", "NotebookFileName", "NotebookFind", "NotebookGet", "NotebookImport", "NotebookInformation", "NotebookInterfaceObject", "NotebookLocate", "NotebookObject", "NotebookOpen", "NotebookPath", "NotebookPrint", "NotebookPut", "NotebookRead", "Notebooks", "NotebookSave", "NotebookSelection", "NotebooksMenu", "NotebookTemplate", "NotebookWrite", "NotElement", "NotEqualTilde", "NotExists", "NotGreater", "NotGreaterEqual", "NotGreaterFullEqual", "NotGreaterGreater", "NotGreaterLess", "NotGreaterSlantEqual", "NotGreaterTilde", "Nothing", "NotHumpDownHump", "NotHumpEqual", "NotificationFunction", "NotLeftTriangle", "NotLeftTriangleBar", "NotLeftTriangleEqual", "NotLess", "NotLessEqual", "NotLessFullEqual", "NotLessGreater", "NotLessLess", "NotLessSlantEqual", "NotLessTilde", "NotNestedGreaterGreater", "NotNestedLessLess", "NotPrecedes", "NotPrecedesEqual", "NotPrecedesSlantEqual", "NotPrecedesTilde", "NotReverseElement", "NotRightTriangle", "NotRightTriangleBar", "NotRightTriangleEqual", "NotSquareSubset", "NotSquareSubsetEqual", "NotSquareSuperset", "NotSquareSupersetEqual", "NotSubset", "NotSubsetEqual", "NotSucceeds", "NotSucceedsEqual", "NotSucceedsSlantEqual", "NotSucceedsTilde", "NotSuperset", "NotSupersetEqual", "NotTilde", "NotTildeEqual", "NotTildeFullEqual", "NotTildeTilde", "NotVerticalBar", "Now", "NoWhitespace", "NProbability", "NProduct", "NProductFactors", "NRoots", "NSolve", "NSolveValues", "NSum", "NSumTerms", "NuclearExplosionData", "NuclearReactorData", "Null", "NullRecords", "NullSpace", "NullWords", "Number", "NumberCompose", "NumberDecompose", "NumberDigit", "NumberExpand", "NumberFieldClassNumber", "NumberFieldDiscriminant", "NumberFieldFundamentalUnits", "NumberFieldIntegralBasis", "NumberFieldNormRepresentatives", "NumberFieldRegulator", "NumberFieldRootsOfUnity", "NumberFieldSignature", "NumberForm", "NumberFormat", "NumberLinePlot", "NumberMarks", "NumberMultiplier", "NumberPadding", "NumberPoint", "NumberQ", "NumberSeparator", "NumberSigns", "NumberString", "Numerator", "NumeratorDenominator", "NumericalOrder", "NumericalSort", "NumericArray", "NumericArrayQ", "NumericArrayType", "NumericFunction", "NumericQ", "NuttallWindow", "NValues", "NyquistGridLines", "NyquistPlot", "O", "ObjectExistsQ", "ObservabilityGramian", "ObservabilityMatrix", "ObservableDecomposition", "ObservableModelQ", "OceanData", "Octahedron", "OddQ", "Off", "Offset", "OLEData", "On", "ONanGroupON", "Once", "OneIdentity", "Opacity", "OpacityFunction", "OpacityFunctionScaling", "Open", "OpenAppend", "Opener", "OpenerBox", "OpenerBoxOptions", "OpenerView", "OpenFunctionInspectorPacket", "Opening", "OpenRead", "OpenSpecialOptions", "OpenTemporary", "OpenWrite", "Operate", "OperatingSystem", "OperatorApplied", "OptimumFlowData", "Optional", "OptionalElement", "OptionInspectorSettings", "OptionQ", "Options", "OptionsPacket", "OptionsPattern", "OptionValue", "OptionValueBox", "OptionValueBoxOptions", "Or", "Orange", "Order", "OrderDistribution", "OrderedQ", "Ordering", "OrderingBy", "OrderingLayer", "Orderless", "OrderlessPatternSequence", "OrdinalScale", "OrnsteinUhlenbeckProcess", "Orthogonalize", "OrthogonalMatrixQ", "Out", "Outer", "OuterPolygon", "OuterPolyhedron", "OutputAutoOverwrite", "OutputControllabilityMatrix", "OutputControllableModelQ", "OutputForm", "OutputFormData", "OutputGrouping", "OutputMathEditExpression", "OutputNamePacket", "OutputPorts", "OutputResponse", "OutputSizeLimit", "OutputStream", "Over", "OverBar", "OverDot", "Overflow", "OverHat", "Overlaps", "Overlay", "OverlayBox", "OverlayBoxOptions", "OverlayVideo", "Overscript", "OverscriptBox", "OverscriptBoxOptions", "OverTilde", "OverVector", "OverwriteTarget", "OwenT", "OwnValues", "Package", "PackingMethod", "PackPaclet", "PacletDataRebuild", "PacletDirectoryAdd", "PacletDirectoryLoad", "PacletDirectoryRemove", "PacletDirectoryUnload", "PacletDisable", "PacletEnable", "PacletFind", "PacletFindRemote", "PacletInformation", "PacletInstall", "PacletInstallSubmit", "PacletNewerQ", "PacletObject", "PacletObjectQ", "PacletSite", "PacletSiteObject", "PacletSiteRegister", "PacletSites", "PacletSiteUnregister", "PacletSiteUpdate", "PacletSymbol", "PacletUninstall", "PacletUpdate", "PaddedForm", "Padding", "PaddingLayer", "PaddingSize", "PadeApproximant", "PadLeft", "PadRight", "PageBreakAbove", "PageBreakBelow", "PageBreakWithin", "PageFooterLines", "PageFooters", "PageHeaderLines", "PageHeaders", "PageHeight", "PageRankCentrality", "PageTheme", "PageWidth", "Pagination", "PairCorrelationG", "PairedBarChart", "PairedHistogram", "PairedSmoothHistogram", "PairedTTest", "PairedZTest", "PaletteNotebook", "PalettePath", "PalettesMenuSettings", "PalindromeQ", "Pane", "PaneBox", "PaneBoxOptions", "Panel", "PanelBox", "PanelBoxOptions", "Paneled", "PaneSelector", "PaneSelectorBox", "PaneSelectorBoxOptions", "PaperWidth", "ParabolicCylinderD", "ParagraphIndent", "ParagraphSpacing", "ParallelArray", "ParallelAxisPlot", "ParallelCombine", "ParallelDo", "Parallelepiped", "ParallelEvaluate", "Parallelization", "Parallelize", "ParallelKernels", "ParallelMap", "ParallelNeeds", "Parallelogram", "ParallelProduct", "ParallelSubmit", "ParallelSum", "ParallelTable", "ParallelTry", "Parameter", "ParameterEstimator", "ParameterMixtureDistribution", "ParameterVariables", "ParametricConvexOptimization", "ParametricFunction", "ParametricNDSolve", "ParametricNDSolveValue", "ParametricPlot", "ParametricPlot3D", "ParametricRampLayer", "ParametricRegion", "ParentBox", "ParentCell", "ParentConnect", "ParentDirectory", "ParentEdgeLabel", "ParentEdgeLabelFunction", "ParentEdgeLabelStyle", "ParentEdgeShapeFunction", "ParentEdgeStyle", "ParentEdgeStyleFunction", "ParentForm", "Parenthesize", "ParentList", "ParentNotebook", "ParetoDistribution", "ParetoPickandsDistribution", "ParkData", "Part", "PartBehavior", "PartialCorrelationFunction", "PartialD", "ParticleAcceleratorData", "ParticleData", "Partition", "PartitionGranularity", "PartitionsP", "PartitionsQ", "PartLayer", "PartOfSpeech", "PartProtection", "ParzenWindow", "PascalDistribution", "PassEventsDown", "PassEventsUp", "Paste", "PasteAutoQuoteCharacters", "PasteBoxFormInlineCells", "PasteButton", "Path", "PathGraph", "PathGraphQ", "Pattern", "PatternFilling", "PatternReaction", "PatternSequence", "PatternTest", "PauliMatrix", "PaulWavelet", "Pause", "PausedTime", "PDF", "PeakDetect", "PeanoCurve", "PearsonChiSquareTest", "PearsonCorrelationTest", "PearsonDistribution", "PenttinenPointProcess", "PercentForm", "PerfectNumber", "PerfectNumberQ", "PerformanceGoal", "Perimeter", "PeriodicBoundaryCondition", "PeriodicInterpolation", "Periodogram", "PeriodogramArray", "Permanent", "Permissions", "PermissionsGroup", "PermissionsGroupMemberQ", "PermissionsGroups", "PermissionsKey", "PermissionsKeys", "PermutationCycles", "PermutationCyclesQ", "PermutationGroup", "PermutationLength", "PermutationList", "PermutationListQ", "PermutationMatrix", "PermutationMax", "PermutationMin", "PermutationOrder", "PermutationPower", "PermutationProduct", "PermutationReplace", "Permutations", "PermutationSupport", "Permute", "PeronaMalikFilter", "Perpendicular", "PerpendicularBisector", "PersistenceLocation", "PersistenceTime", "PersistentObject", "PersistentObjects", "PersistentSymbol", "PersistentValue", "PersonData", "PERTDistribution", "PetersenGraph", "PhaseMargins", "PhaseRange", "PhongShading", "PhysicalSystemData", "Pi", "Pick", "PickedElements", "PickMode", "PIDData", "PIDDerivativeFilter", "PIDFeedforward", "PIDTune", "Piecewise", "PiecewiseExpand", "PieChart", "PieChart3D", "PillaiTrace", "PillaiTraceTest", "PingTime", "Pink", "PitchRecognize", "Pivoting", "PixelConstrained", "PixelValue", "PixelValuePositions", "Placed", "Placeholder", "PlaceholderLayer", "PlaceholderReplace", "Plain", "PlanarAngle", "PlanarFaceList", "PlanarGraph", "PlanarGraphQ", "PlanckRadiationLaw", "PlaneCurveData", "PlanetaryMoonData", "PlanetData", "PlantData", "Play", "PlaybackSettings", "PlayRange", "Plot", "Plot3D", "Plot3Matrix", "PlotDivision", "PlotJoined", "PlotLabel", "PlotLabels", "PlotLayout", "PlotLegends", "PlotMarkers", "PlotPoints", "PlotRange", "PlotRangeClipping", "PlotRangeClipPlanesStyle", "PlotRangePadding", "PlotRegion", "PlotStyle", "PlotTheme", "Pluralize", "Plus", "PlusMinus", "Pochhammer", "PodStates", "PodWidth", "Point", "Point3DBox", "Point3DBoxOptions", "PointBox", "PointBoxOptions", "PointCountDistribution", "PointDensity", "PointDensityFunction", "PointFigureChart", "PointLegend", "PointLight", "PointProcessEstimator", "PointProcessFitTest", "PointProcessParameterAssumptions", "PointProcessParameterQ", "PointSize", "PointStatisticFunction", "PointValuePlot", "PoissonConsulDistribution", "PoissonDistribution", "PoissonPDEComponent", "PoissonPointProcess", "PoissonProcess", "PoissonWindow", "PolarAxes", "PolarAxesOrigin", "PolarGridLines", "PolarPlot", "PolarTicks", "PoleZeroMarkers", "PolyaAeppliDistribution", "PolyGamma", "Polygon", "Polygon3DBox", "Polygon3DBoxOptions", "PolygonalNumber", "PolygonAngle", "PolygonBox", "PolygonBoxOptions", "PolygonCoordinates", "PolygonDecomposition", "PolygonHoleScale", "PolygonIntersections", "PolygonScale", "Polyhedron", "PolyhedronAngle", "PolyhedronBox", "PolyhedronBoxOptions", "PolyhedronCoordinates", "PolyhedronData", "PolyhedronDecomposition", "PolyhedronGenus", "PolyLog", "PolynomialExpressionQ", "PolynomialExtendedGCD", "PolynomialForm", "PolynomialGCD", "PolynomialLCM", "PolynomialMod", "PolynomialQ", "PolynomialQuotient", "PolynomialQuotientRemainder", "PolynomialReduce", "PolynomialRemainder", "Polynomials", "PolynomialSumOfSquaresList", "PoolingLayer", "PopupMenu", "PopupMenuBox", "PopupMenuBoxOptions", "PopupView", "PopupWindow", "Position", "PositionIndex", "PositionLargest", "PositionSmallest", "Positive", "PositiveDefiniteMatrixQ", "PositiveIntegers", "PositivelyOrientedPoints", "PositiveRationals", "PositiveReals", "PositiveSemidefiniteMatrixQ", "PossibleZeroQ", "Postfix", "PostScript", "Power", "PowerDistribution", "PowerExpand", "PowerMod", "PowerModList", "PowerRange", "PowerSpectralDensity", "PowersRepresentations", "PowerSymmetricPolynomial", "Precedence", "PrecedenceForm", "Precedes", "PrecedesEqual", "PrecedesSlantEqual", "PrecedesTilde", "Precision", "PrecisionGoal", "PreDecrement", "Predict", "PredictionRoot", "PredictorFunction", "PredictorInformation", "PredictorMeasurements", "PredictorMeasurementsObject", "PreemptProtect", "PreferencesPath", "PreferencesSettings", "Prefix", "PreIncrement", "Prepend", "PrependLayer", "PrependTo", "PreprocessingRules", "PreserveColor", "PreserveImageOptions", "Previous", "PreviousCell", "PreviousDate", "PriceGraphDistribution", "PrimaryPlaceholder", "Prime", "PrimeNu", "PrimeOmega", "PrimePi", "PrimePowerQ", "PrimeQ", "Primes", "PrimeZetaP", "PrimitivePolynomialQ", "PrimitiveRoot", "PrimitiveRootList", "PrincipalComponents", "PrincipalValue", "Print", "PrintableASCIIQ", "PrintAction", "PrintForm", "PrintingCopies", "PrintingOptions", "PrintingPageRange", "PrintingStartingPageNumber", "PrintingStyleEnvironment", "Printout3D", "Printout3DPreviewer", "PrintPrecision", "PrintTemporary", "Prism", "PrismBox", "PrismBoxOptions", "PrivateCellOptions", "PrivateEvaluationOptions", "PrivateFontOptions", "PrivateFrontEndOptions", "PrivateKey", "PrivateNotebookOptions", "PrivatePaths", "Probability", "ProbabilityDistribution", "ProbabilityPlot", "ProbabilityPr", "ProbabilityScalePlot", "ProbitModelFit", "ProcessConnection", "ProcessDirectory", "ProcessEnvironment", "Processes", "ProcessEstimator", "ProcessInformation", "ProcessObject", "ProcessParameterAssumptions", "ProcessParameterQ", "ProcessStateDomain", "ProcessStatus", "ProcessTimeDomain", "Product", "ProductDistribution", "ProductLog", "ProgressIndicator", "ProgressIndicatorBox", "ProgressIndicatorBoxOptions", "ProgressReporting", "Projection", "Prolog", "PromptForm", "ProofObject", "PropagateAborts", "Properties", "Property", "PropertyList", "PropertyValue", "Proportion", "Proportional", "Protect", "Protected", "ProteinData", "Pruning", "PseudoInverse", "PsychrometricPropertyData", "PublicKey", "PublisherID", "PulsarData", "PunctuationCharacter", "Purple", "Put", "PutAppend", "Pyramid", "PyramidBox", "PyramidBoxOptions", "QBinomial", "QFactorial", "QGamma", "QHypergeometricPFQ", "QnDispersion", "QPochhammer", "QPolyGamma", "QRDecomposition", "QuadraticIrrationalQ", "QuadraticOptimization", "Quantile", "QuantilePlot", "Quantity", "QuantityArray", "QuantityDistribution", "QuantityForm", "QuantityMagnitude", "QuantityQ", "QuantityUnit", "QuantityVariable", "QuantityVariableCanonicalUnit", "QuantityVariableDimensions", "QuantityVariableIdentifier", "QuantityVariablePhysicalQuantity", "Quartics", "QuartileDeviation", "Quartiles", "QuartileSkewness", "Query", "QuestionGenerator", "QuestionInterface", "QuestionObject", "QuestionSelector", "QueueingNetworkProcess", "QueueingProcess", "QueueProperties", "Quiet", "QuietEcho", "Quit", "Quotient", "QuotientRemainder", "RadialAxisPlot", "RadialGradientFilling", "RadialGradientImage", "RadialityCentrality", "RadicalBox", "RadicalBoxOptions", "RadioButton", "RadioButtonBar", "RadioButtonBox", "RadioButtonBoxOptions", "Radon", "RadonTransform", "RamanujanTau", "RamanujanTauL", "RamanujanTauTheta", "RamanujanTauZ", "Ramp", "Random", "RandomArrayLayer", "RandomChoice", "RandomColor", "RandomComplex", "RandomDate", "RandomEntity", "RandomFunction", "RandomGeneratorState", "RandomGeoPosition", "RandomGraph", "RandomImage", "RandomInstance", "RandomInteger", "RandomPermutation", "RandomPoint", "RandomPointConfiguration", "RandomPolygon", "RandomPolyhedron", "RandomPrime", "RandomReal", "RandomSample", "RandomSeed", "RandomSeeding", "RandomTime", "RandomTree", "RandomVariate", "RandomWalkProcess", "RandomWord", "Range", "RangeFilter", "RangeSpecification", "RankedMax", "RankedMin", "RarerProbability", "Raster", "Raster3D", "Raster3DBox", "Raster3DBoxOptions", "RasterArray", "RasterBox", "RasterBoxOptions", "Rasterize", "RasterSize", "Rational", "RationalExpressionQ", "RationalFunctions", "Rationalize", "Rationals", "Ratios", "RawArray", "RawBoxes", "RawData", "RawMedium", "RayleighDistribution", "Re", "ReactionBalance", "ReactionBalancedQ", "ReactionPDETerm", "Read", "ReadByteArray", "ReadLine", "ReadList", "ReadProtected", "ReadString", "Real", "RealAbs", "RealBlockDiagonalForm", "RealDigits", "RealExponent", "Reals", "RealSign", "Reap", "RebuildPacletData", "RecalibrationFunction", "RecognitionPrior", "RecognitionThreshold", "ReconstructionMesh", "Record", "RecordLists", "RecordSeparators", "Rectangle", "RectangleBox", "RectangleBoxOptions", "RectangleChart", "RectangleChart3D", "RectangularRepeatingElement", "RecurrenceFilter", "RecurrenceTable", "RecurringDigitsForm", "Red", "Reduce", "RefBox", "ReferenceLineStyle", "ReferenceMarkers", "ReferenceMarkerStyle", "Refine", "ReflectionMatrix", "ReflectionTransform", "Refresh", "RefreshRate", "Region", "RegionBinarize", "RegionBoundary", "RegionBoundaryStyle", "RegionBounds", "RegionCentroid", "RegionCongruent", "RegionConvert", "RegionDifference", "RegionDilation", "RegionDimension", "RegionDisjoint", "RegionDistance", "RegionDistanceFunction", "RegionEmbeddingDimension", "RegionEqual", "RegionErosion", "RegionFillingStyle", "RegionFit", "RegionFunction", "RegionImage", "RegionIntersection", "RegionMeasure", "RegionMember", "RegionMemberFunction", "RegionMoment", "RegionNearest", "RegionNearestFunction", "RegionPlot", "RegionPlot3D", "RegionProduct", "RegionQ", "RegionResize", "RegionSimilar", "RegionSize", "RegionSymmetricDifference", "RegionUnion", "RegionWithin", "RegisterExternalEvaluator", "RegularExpression", "Regularization", "RegularlySampledQ", "RegularPolygon", "ReIm", "ReImLabels", "ReImPlot", "ReImStyle", "Reinstall", "RelationalDatabase", "RelationGraph", "Release", "ReleaseHold", "ReliabilityDistribution", "ReliefImage", "ReliefPlot", "RemoteAuthorizationCaching", "RemoteBatchJobAbort", "RemoteBatchJobObject", "RemoteBatchJobs", "RemoteBatchMapSubmit", "RemoteBatchSubmissionEnvironment", "RemoteBatchSubmit", "RemoteConnect", "RemoteConnectionObject", "RemoteEvaluate", "RemoteFile", "RemoteInputFiles", "RemoteKernelObject", "RemoteProviderSettings", "RemoteRun", "RemoteRunProcess", "RemovalConditions", "Remove", "RemoveAlphaChannel", "RemoveAsynchronousTask", "RemoveAudioStream", "RemoveBackground", "RemoveChannelListener", "RemoveChannelSubscribers", "Removed", "RemoveDiacritics", "RemoveInputStreamMethod", "RemoveOutputStreamMethod", "RemoveProperty", "RemoveScheduledTask", "RemoveUsers", "RemoveVideoStream", "RenameDirectory", "RenameFile", "RenderAll", "RenderingOptions", "RenewalProcess", "RenkoChart", "RepairMesh", "Repeated", "RepeatedNull", "RepeatedString", "RepeatedTiming", "RepeatingElement", "Replace", "ReplaceAll", "ReplaceAt", "ReplaceHeldPart", "ReplaceImageValue", "ReplaceList", "ReplacePart", "ReplacePixelValue", "ReplaceRepeated", "ReplicateLayer", "RequiredPhysicalQuantities", "Resampling", "ResamplingAlgorithmData", "ResamplingMethod", "Rescale", "RescalingTransform", "ResetDirectory", "ResetScheduledTask", "ReshapeLayer", "Residue", "ResidueSum", "ResizeLayer", "Resolve", "ResolveContextAliases", "ResourceAcquire", "ResourceData", "ResourceFunction", "ResourceObject", "ResourceRegister", "ResourceRemove", "ResourceSearch", "ResourceSubmissionObject", "ResourceSubmit", "ResourceSystemBase", "ResourceSystemPath", "ResourceUpdate", "ResourceVersion", "ResponseForm", "Rest", "RestartInterval", "Restricted", "Resultant", "ResumePacket", "Return", "ReturnCreatesNewCell", "ReturnEntersInput", "ReturnExpressionPacket", "ReturnInputFormPacket", "ReturnPacket", "ReturnReceiptFunction", "ReturnTextPacket", "Reverse", "ReverseApplied", "ReverseBiorthogonalSplineWavelet", "ReverseElement", "ReverseEquilibrium", "ReverseGraph", "ReverseSort", "ReverseSortBy", "ReverseUpEquilibrium", "RevolutionAxis", "RevolutionPlot3D", "RGBColor", "RiccatiSolve", "RiceDistribution", "RidgeFilter", "RiemannR", "RiemannSiegelTheta", "RiemannSiegelZ", "RiemannXi", "Riffle", "Right", "RightArrow", "RightArrowBar", "RightArrowLeftArrow", "RightComposition", "RightCosetRepresentative", "RightDownTeeVector", "RightDownVector", "RightDownVectorBar", "RightTee", "RightTeeArrow", "RightTeeVector", "RightTriangle", "RightTriangleBar", "RightTriangleEqual", "RightUpDownVector", "RightUpTeeVector", "RightUpVector", "RightUpVectorBar", "RightVector", "RightVectorBar", "RipleyK", "RipleyRassonRegion", "RiskAchievementImportance", "RiskReductionImportance", "RobustConvexOptimization", "RogersTanimotoDissimilarity", "RollPitchYawAngles", "RollPitchYawMatrix", "RomanNumeral", "Root", "RootApproximant", "RootIntervals", "RootLocusPlot", "RootMeanSquare", "RootOfUnityQ", "RootReduce", "Roots", "RootSum", "RootTree", "Rotate", "RotateLabel", "RotateLeft", "RotateRight", "RotationAction", "RotationBox", "RotationBoxOptions", "RotationMatrix", "RotationTransform", "Round", "RoundImplies", "RoundingRadius", "Row", "RowAlignments", "RowBackgrounds", "RowBox", "RowHeights", "RowLines", "RowMinHeight", "RowReduce", "RowsEqual", "RowSpacings", "RSolve", "RSolveValue", "RudinShapiro", "RudvalisGroupRu", "Rule", "RuleCondition", "RuleDelayed", "RuleForm", "RulePlot", "RulerUnits", "RulesTree", "Run", "RunProcess", "RunScheduledTask", "RunThrough", "RuntimeAttributes", "RuntimeOptions", "RussellRaoDissimilarity", "SameAs", "SameQ", "SameTest", "SameTestProperties", "SampledEntityClass", "SampleDepth", "SampledSoundFunction", "SampledSoundList", "SampleRate", "SamplingPeriod", "SARIMAProcess", "SARMAProcess", "SASTriangle", "SatelliteData", "SatisfiabilityCount", "SatisfiabilityInstances", "SatisfiableQ", "Saturday", "Save", "Saveable", "SaveAutoDelete", "SaveConnection", "SaveDefinitions", "SavitzkyGolayMatrix", "SawtoothWave", "Scale", "Scaled", "ScaleDivisions", "ScaledMousePosition", "ScaleOrigin", "ScalePadding", "ScaleRanges", "ScaleRangeStyle", "ScalingFunctions", "ScalingMatrix", "ScalingTransform", "Scan", "ScheduledTask", "ScheduledTaskActiveQ", "ScheduledTaskInformation", "ScheduledTaskInformationData", "ScheduledTaskObject", "ScheduledTasks", "SchurDecomposition", "ScientificForm", "ScientificNotationThreshold", "ScorerGi", "ScorerGiPrime", "ScorerHi", "ScorerHiPrime", "ScreenRectangle", "ScreenStyleEnvironment", "ScriptBaselineShifts", "ScriptForm", "ScriptLevel", "ScriptMinSize", "ScriptRules", "ScriptSizeMultipliers", "Scrollbars", "ScrollingOptions", "ScrollPosition", "SearchAdjustment", "SearchIndexObject", "SearchIndices", "SearchQueryString", "SearchResultObject", "Sec", "Sech", "SechDistribution", "SecondOrderConeOptimization", "SectionGrouping", "SectorChart", "SectorChart3D", "SectorOrigin", "SectorSpacing", "SecuredAuthenticationKey", "SecuredAuthenticationKeys", "SecurityCertificate", "SeedRandom", "Select", "Selectable", "SelectComponents", "SelectedCells", "SelectedNotebook", "SelectFirst", "Selection", "SelectionAnimate", "SelectionCell", "SelectionCellCreateCell", "SelectionCellDefaultStyle", "SelectionCellParentStyle", "SelectionCreateCell", "SelectionDebuggerTag", "SelectionEvaluate", "SelectionEvaluateCreateCell", "SelectionMove", "SelectionPlaceholder", "SelectWithContents", "SelfLoops", "SelfLoopStyle", "SemanticImport", "SemanticImportString", "SemanticInterpretation", "SemialgebraicComponentInstances", "SemidefiniteOptimization", "SendMail", "SendMessage", "Sequence", "SequenceAlignment", "SequenceAttentionLayer", "SequenceCases", "SequenceCount", "SequenceFold", "SequenceFoldList", "SequenceForm", "SequenceHold", "SequenceIndicesLayer", "SequenceLastLayer", "SequenceMostLayer", "SequencePosition", "SequencePredict", "SequencePredictorFunction", "SequenceReplace", "SequenceRestLayer", "SequenceReverseLayer", "SequenceSplit", "Series", "SeriesCoefficient", "SeriesData", "SeriesTermGoal", "ServiceConnect", "ServiceDisconnect", "ServiceExecute", "ServiceObject", "ServiceRequest", "ServiceResponse", "ServiceSubmit", "SessionSubmit", "SessionTime", "Set", "SetAccuracy", "SetAlphaChannel", "SetAttributes", "Setbacks", "SetCloudDirectory", "SetCookies", "SetDelayed", "SetDirectory", "SetEnvironment", "SetFileDate", "SetFileFormatProperties", "SetOptions", "SetOptionsPacket", "SetPermissions", "SetPrecision", "SetProperty", "SetSecuredAuthenticationKey", "SetSelectedNotebook", "SetSharedFunction", "SetSharedVariable", "SetStreamPosition", "SetSystemModel", "SetSystemOptions", "Setter", "SetterBar", "SetterBox", "SetterBoxOptions", "Setting", "SetUsers", "Shading", "Shallow", "ShannonWavelet", "ShapiroWilkTest", "Share", "SharingList", "Sharpen", "ShearingMatrix", "ShearingTransform", "ShellRegion", "ShenCastanMatrix", "ShiftedGompertzDistribution", "ShiftRegisterSequence", "Short", "ShortDownArrow", "Shortest", "ShortestMatch", "ShortestPathFunction", "ShortLeftArrow", "ShortRightArrow", "ShortTimeFourier", "ShortTimeFourierData", "ShortUpArrow", "Show", "ShowAutoConvert", "ShowAutoSpellCheck", "ShowAutoStyles", "ShowCellBracket", "ShowCellLabel", "ShowCellTags", "ShowClosedCellArea", "ShowCodeAssist", "ShowContents", "ShowControls", "ShowCursorTracker", "ShowGroupOpenCloseIcon", "ShowGroupOpener", "ShowInvisibleCharacters", "ShowPageBreaks", "ShowPredictiveInterface", "ShowSelection", "ShowShortBoxForm", "ShowSpecialCharacters", "ShowStringCharacters", "ShowSyntaxStyles", "ShrinkingDelay", "ShrinkWrapBoundingBox", "SiderealTime", "SiegelTheta", "SiegelTukeyTest", "SierpinskiCurve", "SierpinskiMesh", "Sign", "Signature", "SignedRankTest", "SignedRegionDistance", "SignificanceLevel", "SignPadding", "SignTest", "SimilarityRules", "SimpleGraph", "SimpleGraphQ", "SimplePolygonQ", "SimplePolyhedronQ", "Simplex", "Simplify", "Sin", "Sinc", "SinghMaddalaDistribution", "SingleEvaluation", "SingleLetterItalics", "SingleLetterStyle", "SingularValueDecomposition", "SingularValueList", "SingularValuePlot", "SingularValues", "Sinh", "SinhIntegral", "SinIntegral", "SixJSymbol", "Skeleton", "SkeletonTransform", "SkellamDistribution", "Skewness", "SkewNormalDistribution", "SkinStyle", "Skip", "SliceContourPlot3D", "SliceDensityPlot3D", "SliceDistribution", "SliceVectorPlot3D", "Slider", "Slider2D", "Slider2DBox", "Slider2DBoxOptions", "SliderBox", "SliderBoxOptions", "SlideShowVideo", "SlideView", "Slot", "SlotSequence", "Small", "SmallCircle", "Smaller", "SmithDecomposition", "SmithDelayCompensator", "SmithWatermanSimilarity", "SmoothDensityHistogram", "SmoothHistogram", "SmoothHistogram3D", "SmoothKernelDistribution", "SmoothPointDensity", "SnDispersion", "Snippet", "SnippetsVideo", "SnubPolyhedron", "SocialMediaData", "Socket", "SocketConnect", "SocketListen", "SocketListener", "SocketObject", "SocketOpen", "SocketReadMessage", "SocketReadyQ", "Sockets", "SocketWaitAll", "SocketWaitNext", "SoftmaxLayer", "SokalSneathDissimilarity", "SolarEclipse", "SolarSystemFeatureData", "SolarTime", "SolidAngle", "SolidBoundaryLoadValue", "SolidData", "SolidDisplacementCondition", "SolidFixedCondition", "SolidMechanicsPDEComponent", "SolidMechanicsStrain", "SolidMechanicsStress", "SolidRegionQ", "Solve", "SolveAlways", "SolveDelayed", "SolveValues", "Sort", "SortBy", "SortedBy", "SortedEntityClass", "Sound", "SoundAndGraphics", "SoundNote", "SoundVolume", "SourceLink", "SourcePDETerm", "Sow", "Space", "SpaceCurveData", "SpaceForm", "Spacer", "Spacings", "Span", "SpanAdjustments", "SpanCharacterRounding", "SpanFromAbove", "SpanFromBoth", "SpanFromLeft", "SpanLineThickness", "SpanMaxSize", "SpanMinSize", "SpanningCharacters", "SpanSymmetric", "SparseArray", "SparseArrayQ", "SpatialBinnedPointData", "SpatialBoundaryCorrection", "SpatialEstimate", "SpatialEstimatorFunction", "SpatialGraphDistribution", "SpatialJ", "SpatialMedian", "SpatialNoiseLevel", "SpatialObservationRegionQ", "SpatialPointData", "SpatialPointSelect", "SpatialRandomnessTest", "SpatialTransformationLayer", "SpatialTrendFunction", "Speak", "SpeakerMatchQ", "SpearmanRankTest", "SpearmanRho", "SpeciesData", "SpecificityGoal", "SpectralLineData", "Spectrogram", "SpectrogramArray", "Specularity", "SpeechCases", "SpeechInterpreter", "SpeechRecognize", "SpeechSynthesize", "SpellingCorrection", "SpellingCorrectionList", "SpellingDictionaries", "SpellingDictionariesPath", "SpellingOptions", "Sphere", "SphereBox", "SphereBoxOptions", "SpherePoints", "SphericalBesselJ", "SphericalBesselY", "SphericalHankelH1", "SphericalHankelH2", "SphericalHarmonicY", "SphericalPlot3D", "SphericalRegion", "SphericalShell", "SpheroidalEigenvalue", "SpheroidalJoiningFactor", "SpheroidalPS", "SpheroidalPSPrime", "SpheroidalQS", "SpheroidalQSPrime", "SpheroidalRadialFactor", "SpheroidalS1", "SpheroidalS1Prime", "SpheroidalS2", "SpheroidalS2Prime", "Splice", "SplicedDistribution", "SplineClosed", "SplineDegree", "SplineKnots", "SplineWeights", "Split", "SplitBy", "SpokenString", "SpotLight", "Sqrt", "SqrtBox", "SqrtBoxOptions", "Square", "SquaredEuclideanDistance", "SquareFreeQ", "SquareIntersection", "SquareMatrixQ", "SquareRepeatingElement", "SquaresR", "SquareSubset", "SquareSubsetEqual", "SquareSuperset", "SquareSupersetEqual", "SquareUnion", "SquareWave", "SSSTriangle", "StabilityMargins", "StabilityMarginsStyle", "StableDistribution", "Stack", "StackBegin", "StackComplete", "StackedDateListPlot", "StackedListPlot", "StackInhibit", "StadiumShape", "StandardAtmosphereData", "StandardDeviation", "StandardDeviationFilter", "StandardForm", "Standardize", "Standardized", "StandardOceanData", "StandbyDistribution", "Star", "StarClusterData", "StarData", "StarGraph", "StartAsynchronousTask", "StartExternalSession", "StartingStepSize", "StartOfLine", "StartOfString", "StartProcess", "StartScheduledTask", "StartupSound", "StartWebSession", "StateDimensions", "StateFeedbackGains", "StateOutputEstimator", "StateResponse", "StateSpaceModel", "StateSpaceRealization", "StateSpaceTransform", "StateTransformationLinearize", "StationaryDistribution", "StationaryWaveletPacketTransform", "StationaryWaveletTransform", "StatusArea", "StatusCentrality", "StepMonitor", "StereochemistryElements", "StieltjesGamma", "StippleShading", "StirlingS1", "StirlingS2", "StopAsynchronousTask", "StoppingPowerData", "StopScheduledTask", "StrataVariables", "StratonovichProcess", "StraussHardcorePointProcess", "StraussPointProcess", "StreamColorFunction", "StreamColorFunctionScaling", "StreamDensityPlot", "StreamMarkers", "StreamPlot", "StreamPlot3D", "StreamPoints", "StreamPosition", "Streams", "StreamScale", "StreamStyle", "StrictInequalities", "String", "StringBreak", "StringByteCount", "StringCases", "StringContainsQ", "StringCount", "StringDelete", "StringDrop", "StringEndsQ", "StringExpression", "StringExtract", "StringForm", "StringFormat", "StringFormatQ", "StringFreeQ", "StringInsert", "StringJoin", "StringLength", "StringMatchQ", "StringPadLeft", "StringPadRight", "StringPart", "StringPartition", "StringPosition", "StringQ", "StringRepeat", "StringReplace", "StringReplaceList", "StringReplacePart", "StringReverse", "StringRiffle", "StringRotateLeft", "StringRotateRight", "StringSkeleton", "StringSplit", "StringStartsQ", "StringTake", "StringTakeDrop", "StringTemplate", "StringToByteArray", "StringToStream", "StringTrim", "StripBoxes", "StripOnInput", "StripStyleOnPaste", "StripWrapperBoxes", "StrokeForm", "Struckthrough", "StructuralImportance", "StructuredArray", "StructuredArrayHeadQ", "StructuredSelection", "StruveH", "StruveL", "Stub", "StudentTDistribution", "Style", "StyleBox", "StyleBoxAutoDelete", "StyleData", "StyleDefinitions", "StyleForm", "StyleHints", "StyleKeyMapping", "StyleMenuListing", "StyleNameDialogSettings", "StyleNames", "StylePrint", "StyleSheetPath", "Subdivide", "Subfactorial", "Subgraph", "SubMinus", "SubPlus", "SubresultantPolynomialRemainders", "SubresultantPolynomials", "Subresultants", "Subscript", "SubscriptBox", "SubscriptBoxOptions", "Subscripted", "Subsequences", "Subset", "SubsetCases", "SubsetCount", "SubsetEqual", "SubsetMap", "SubsetPosition", "SubsetQ", "SubsetReplace", "Subsets", "SubStar", "SubstitutionSystem", "Subsuperscript", "SubsuperscriptBox", "SubsuperscriptBoxOptions", "SubtitleEncoding", "SubtitleTrackSelection", "Subtract", "SubtractFrom", "SubtractSides", "SubValues", "Succeeds", "SucceedsEqual", "SucceedsSlantEqual", "SucceedsTilde", "Success", "SuchThat", "Sum", "SumConvergence", "SummationLayer", "Sunday", "SunPosition", "Sunrise", "Sunset", "SuperDagger", "SuperMinus", "SupernovaData", "SuperPlus", "Superscript", "SuperscriptBox", "SuperscriptBoxOptions", "Superset", "SupersetEqual", "SuperStar", "Surd", "SurdForm", "SurfaceAppearance", "SurfaceArea", "SurfaceColor", "SurfaceData", "SurfaceGraphics", "SurvivalDistribution", "SurvivalFunction", "SurvivalModel", "SurvivalModelFit", "SuspendPacket", "SuzukiDistribution", "SuzukiGroupSuz", "SwatchLegend", "Switch", "Symbol", "SymbolName", "SymletWavelet", "Symmetric", "SymmetricDifference", "SymmetricGroup", "SymmetricKey", "SymmetricMatrixQ", "SymmetricPolynomial", "SymmetricReduction", "Symmetrize", "SymmetrizedArray", "SymmetrizedArrayRules", "SymmetrizedDependentComponents", "SymmetrizedIndependentComponents", "SymmetrizedReplacePart", "SynchronousInitialization", "SynchronousUpdating", "Synonyms", "Syntax", "SyntaxForm", "SyntaxInformation", "SyntaxLength", "SyntaxPacket", "SyntaxQ", "SynthesizeMissingValues", "SystemCredential", "SystemCredentialData", "SystemCredentialKey", "SystemCredentialKeys", "SystemCredentialStoreObject", "SystemDialogInput", "SystemException", "SystemGet", "SystemHelpPath", "SystemInformation", "SystemInformationData", "SystemInstall", "SystemModel", "SystemModeler", "SystemModelExamples", "SystemModelLinearize", "SystemModelMeasurements", "SystemModelParametricSimulate", "SystemModelPlot", "SystemModelProgressReporting", "SystemModelReliability", "SystemModels", "SystemModelSimulate", "SystemModelSimulateSensitivity", "SystemModelSimulationData", "SystemOpen", "SystemOptions", "SystemProcessData", "SystemProcesses", "SystemsConnectionsModel", "SystemsModelControllerData", "SystemsModelDelay", "SystemsModelDelayApproximate", "SystemsModelDelete", "SystemsModelDimensions", "SystemsModelExtract", "SystemsModelFeedbackConnect", "SystemsModelLabels", "SystemsModelLinearity", "SystemsModelMerge", "SystemsModelOrder", "SystemsModelParallelConnect", "SystemsModelSeriesConnect", "SystemsModelStateFeedbackConnect", "SystemsModelVectorRelativeOrders", "SystemStub", "SystemTest", "Tab", "TabFilling", "Table", "TableAlignments", "TableDepth", "TableDirections", "TableForm", "TableHeadings", "TableSpacing", "TableView", "TableViewBox", "TableViewBoxAlignment", "TableViewBoxBackground", "TableViewBoxHeaders", "TableViewBoxItemSize", "TableViewBoxItemStyle", "TableViewBoxOptions", "TabSpacings", "TabView", "TabViewBox", "TabViewBoxOptions", "TagBox", "TagBoxNote", "TagBoxOptions", "TaggingRules", "TagSet", "TagSetDelayed", "TagStyle", "TagUnset", "Take", "TakeDrop", "TakeLargest", "TakeLargestBy", "TakeList", "TakeSmallest", "TakeSmallestBy", "TakeWhile", "Tally", "Tan", "Tanh", "TargetDevice", "TargetFunctions", "TargetSystem", "TargetUnits", "TaskAbort", "TaskExecute", "TaskObject", "TaskRemove", "TaskResume", "Tasks", "TaskSuspend", "TaskWait", "TautologyQ", "TelegraphProcess", "TemplateApply", "TemplateArgBox", "TemplateBox", "TemplateBoxOptions", "TemplateEvaluate", "TemplateExpression", "TemplateIf", "TemplateObject", "TemplateSequence", "TemplateSlot", "TemplateSlotSequence", "TemplateUnevaluated", "TemplateVerbatim", "TemplateWith", "TemporalData", "TemporalRegularity", "Temporary", "TemporaryVariable", "TensorContract", "TensorDimensions", "TensorExpand", "TensorProduct", "TensorQ", "TensorRank", "TensorReduce", "TensorSymmetry", "TensorTranspose", "TensorWedge", "TerminatedEvaluation", "TernaryListPlot", "TernaryPlotCorners", "TestID", "TestReport", "TestReportObject", "TestResultObject", "Tetrahedron", "TetrahedronBox", "TetrahedronBoxOptions", "TeXForm", "TeXSave", "Text", "Text3DBox", "Text3DBoxOptions", "TextAlignment", "TextBand", "TextBoundingBox", "TextBox", "TextCases", "TextCell", "TextClipboardType", "TextContents", "TextData", "TextElement", "TextForm", "TextGrid", "TextJustification", "TextLine", "TextPacket", "TextParagraph", "TextPosition", "TextRecognize", "TextSearch", "TextSearchReport", "TextSentences", "TextString", "TextStructure", "TextStyle", "TextTranslation", "Texture", "TextureCoordinateFunction", "TextureCoordinateScaling", "TextWords", "Therefore", "ThermodynamicData", "ThermometerGauge", "Thick", "Thickness", "Thin", "Thinning", "ThisLink", "ThomasPointProcess", "ThompsonGroupTh", "Thread", "Threaded", "ThreadingLayer", "ThreeJSymbol", "Threshold", "Through", "Throw", "ThueMorse", "Thumbnail", "Thursday", "TickDirection", "TickLabelOrientation", "TickLabelPositioning", "TickLabels", "TickLengths", "TickPositions", "Ticks", "TicksStyle", "TideData", "Tilde", "TildeEqual", "TildeFullEqual", "TildeTilde", "TimeConstrained", "TimeConstraint", "TimeDirection", "TimeFormat", "TimeGoal", "TimelinePlot", "TimeObject", "TimeObjectQ", "TimeRemaining", "Times", "TimesBy", "TimeSeries", "TimeSeriesAggregate", "TimeSeriesForecast", "TimeSeriesInsert", "TimeSeriesInvertibility", "TimeSeriesMap", "TimeSeriesMapThread", "TimeSeriesModel", "TimeSeriesModelFit", "TimeSeriesResample", "TimeSeriesRescale", "TimeSeriesShift", "TimeSeriesThread", "TimeSeriesWindow", "TimeSystem", "TimeSystemConvert", "TimeUsed", "TimeValue", "TimeWarpingCorrespondence", "TimeWarpingDistance", "TimeZone", "TimeZoneConvert", "TimeZoneOffset", "Timing", "Tiny", "TitleGrouping", "TitsGroupT", "ToBoxes", "ToCharacterCode", "ToColor", "ToContinuousTimeModel", "ToDate", "Today", "ToDiscreteTimeModel", "ToEntity", "ToeplitzMatrix", "ToExpression", "ToFileName", "Together", "Toggle", "ToggleFalse", "Toggler", "TogglerBar", "TogglerBox", "TogglerBoxOptions", "ToHeldExpression", "ToInvertibleTimeSeries", "TokenWords", "Tolerance", "ToLowerCase", "Tomorrow", "ToNumberField", "TooBig", "Tooltip", "TooltipBox", "TooltipBoxOptions", "TooltipDelay", "TooltipStyle", "ToonShading", "Top", "TopHatTransform", "ToPolarCoordinates", "TopologicalSort", "ToRadicals", "ToRawPointer", "ToRules", "Torus", "TorusGraph", "ToSphericalCoordinates", "ToString", "Total", "TotalHeight", "TotalLayer", "TotalVariationFilter", "TotalWidth", "TouchPosition", "TouchscreenAutoZoom", "TouchscreenControlPlacement", "ToUpperCase", "TourVideo", "Tr", "Trace", "TraceAbove", "TraceAction", "TraceBackward", "TraceDepth", "TraceDialog", "TraceForward", "TraceInternal", "TraceLevel", "TraceOff", "TraceOn", "TraceOriginal", "TracePrint", "TraceScan", "TrackCellChangeTimes", "TrackedSymbols", "TrackingFunction", "TracyWidomDistribution", "TradingChart", "TraditionalForm", "TraditionalFunctionNotation", "TraditionalNotation", "TraditionalOrder", "TrainImageContentDetector", "TrainingProgressCheckpointing", "TrainingProgressFunction", "TrainingProgressMeasurements", "TrainingProgressReporting", "TrainingStoppingCriterion", "TrainingUpdateSchedule", "TrainTextContentDetector", "TransferFunctionCancel", "TransferFunctionExpand", "TransferFunctionFactor", "TransferFunctionModel", "TransferFunctionPoles", "TransferFunctionTransform", "TransferFunctionZeros", "TransformationClass", "TransformationFunction", "TransformationFunctions", "TransformationMatrix", "TransformedDistribution", "TransformedField", "TransformedProcess", "TransformedRegion", "TransitionDirection", "TransitionDuration", "TransitionEffect", "TransitiveClosureGraph", "TransitiveReductionGraph", "Translate", "TranslationOptions", "TranslationTransform", "Transliterate", "Transparent", "TransparentColor", "Transpose", "TransposeLayer", "TrapEnterKey", "TrapSelection", "TravelDirections", "TravelDirectionsData", "TravelDistance", "TravelDistanceList", "TravelMethod", "TravelTime", "Tree", "TreeCases", "TreeChildren", "TreeCount", "TreeData", "TreeDelete", "TreeDepth", "TreeElementCoordinates", "TreeElementLabel", "TreeElementLabelFunction", "TreeElementLabelStyle", "TreeElementShape", "TreeElementShapeFunction", "TreeElementSize", "TreeElementSizeFunction", "TreeElementStyle", "TreeElementStyleFunction", "TreeExpression", "TreeExtract", "TreeFold", "TreeForm", "TreeGraph", "TreeGraphQ", "TreeInsert", "TreeLayout", "TreeLeafCount", "TreeLeafQ", "TreeLeaves", "TreeLevel", "TreeMap", "TreeMapAt", "TreeOutline", "TreePlot", "TreePosition", "TreeQ", "TreeReplacePart", "TreeRules", "TreeScan", "TreeSelect", "TreeSize", "TreeTraversalOrder", "TrendStyle", "Triangle", "TriangleCenter", "TriangleConstruct", "TriangleMeasurement", "TriangleWave", "TriangularDistribution", "TriangulateMesh", "Trig", "TrigExpand", "TrigFactor", "TrigFactorList", "Trigger", "TrigReduce", "TrigToExp", "TrimmedMean", "TrimmedVariance", "TropicalStormData", "True", "TrueQ", "TruncatedDistribution", "TruncatedPolyhedron", "TsallisQExponentialDistribution", "TsallisQGaussianDistribution", "TTest", "Tube", "TubeBezierCurveBox", "TubeBezierCurveBoxOptions", "TubeBox", "TubeBoxOptions", "TubeBSplineCurveBox", "TubeBSplineCurveBoxOptions", "Tuesday", "TukeyLambdaDistribution", "TukeyWindow", "TunnelData", "Tuples", "TuranGraph", "TuringMachine", "TuttePolynomial", "TwoWayRule", "Typed", "TypeDeclaration", "TypeEvaluate", "TypeHint", "TypeOf", "TypeSpecifier", "UnateQ", "Uncompress", "UnconstrainedParameters", "Undefined", "UnderBar", "Underflow", "Underlined", "Underoverscript", "UnderoverscriptBox", "UnderoverscriptBoxOptions", "Underscript", "UnderscriptBox", "UnderscriptBoxOptions", "UnderseaFeatureData", "UndirectedEdge", "UndirectedGraph", "UndirectedGraphQ", "UndoOptions", "UndoTrackedVariables", "Unequal", "UnequalTo", "Unevaluated", "UniformDistribution", "UniformGraphDistribution", "UniformPolyhedron", "UniformSumDistribution", "Uninstall", "Union", "UnionedEntityClass", "UnionPlus", "Unique", "UniqueElements", "UnitaryMatrixQ", "UnitBox", "UnitConvert", "UnitDimensions", "Unitize", "UnitRootTest", "UnitSimplify", "UnitStep", "UnitSystem", "UnitTriangle", "UnitVector", "UnitVectorLayer", "UnityDimensions", "UniverseModelData", "UniversityData", "UnixTime", "UnlabeledTree", "UnmanageObject", "Unprotect", "UnregisterExternalEvaluator", "UnsameQ", "UnsavedVariables", "Unset", "UnsetShared", "Until", "UntrackedVariables", "Up", "UpArrow", "UpArrowBar", "UpArrowDownArrow", "Update", "UpdateDynamicObjects", "UpdateDynamicObjectsSynchronous", "UpdateInterval", "UpdatePacletSites", "UpdateSearchIndex", "UpDownArrow", "UpEquilibrium", "UpperCaseQ", "UpperLeftArrow", "UpperRightArrow", "UpperTriangularize", "UpperTriangularMatrix", "UpperTriangularMatrixQ", "Upsample", "UpSet", "UpSetDelayed", "UpTee", "UpTeeArrow", "UpTo", "UpValues", "URL", "URLBuild", "URLDecode", "URLDispatcher", "URLDownload", "URLDownloadSubmit", "URLEncode", "URLExecute", "URLExpand", "URLFetch", "URLFetchAsynchronous", "URLParse", "URLQueryDecode", "URLQueryEncode", "URLRead", "URLResponseTime", "URLSave", "URLSaveAsynchronous", "URLShorten", "URLSubmit", "UseEmbeddedLibrary", "UseGraphicsRange", "UserDefinedWavelet", "Using", "UsingFrontEnd", "UtilityFunction", "V2Get", "ValenceErrorHandling", "ValenceFilling", "ValidationLength", "ValidationSet", "ValueBox", "ValueBoxOptions", "ValueDimensions", "ValueForm", "ValuePreprocessingFunction", "ValueQ", "Values", "ValuesData", "VandermondeMatrix", "Variables", "Variance", "VarianceEquivalenceTest", "VarianceEstimatorFunction", "VarianceGammaDistribution", "VarianceGammaPointProcess", "VarianceTest", "VariogramFunction", "VariogramModel", "VectorAngle", "VectorAround", "VectorAspectRatio", "VectorColorFunction", "VectorColorFunctionScaling", "VectorDensityPlot", "VectorDisplacementPlot", "VectorDisplacementPlot3D", "VectorGlyphData", "VectorGreater", "VectorGreaterEqual", "VectorLess", "VectorLessEqual", "VectorMarkers", "VectorPlot", "VectorPlot3D", "VectorPoints", "VectorQ", "VectorRange", "Vectors", "VectorScale", "VectorScaling", "VectorSizes", "VectorStyle", "Vee", "Verbatim", "Verbose", "VerificationTest", "VerifyConvergence", "VerifyDerivedKey", "VerifyDigitalSignature", "VerifyFileSignature", "VerifyInterpretation", "VerifySecurityCertificates", "VerifySolutions", "VerifyTestAssumptions", "VersionedPreferences", "VertexAdd", "VertexCapacity", "VertexChromaticNumber", "VertexColors", "VertexComponent", "VertexConnectivity", "VertexContract", "VertexCoordinateRules", "VertexCoordinates", "VertexCorrelationSimilarity", "VertexCosineSimilarity", "VertexCount", "VertexCoverQ", "VertexDataCoordinates", "VertexDegree", "VertexDelete", "VertexDiceSimilarity", "VertexEccentricity", "VertexInComponent", "VertexInComponentGraph", "VertexInDegree", "VertexIndex", "VertexJaccardSimilarity", "VertexLabeling", "VertexLabels", "VertexLabelStyle", "VertexList", "VertexNormals", "VertexOutComponent", "VertexOutComponentGraph", "VertexOutDegree", "VertexQ", "VertexRenderingFunction", "VertexReplace", "VertexShape", "VertexShapeFunction", "VertexSize", "VertexStyle", "VertexTextureCoordinates", "VertexTransitiveGraphQ", "VertexWeight", "VertexWeightedGraphQ", "Vertical", "VerticalBar", "VerticalForm", "VerticalGauge", "VerticalSeparator", "VerticalSlider", "VerticalTilde", "Video", "VideoCapture", "VideoCombine", "VideoDelete", "VideoEncoding", "VideoExtractFrames", "VideoFrameList", "VideoFrameMap", "VideoGenerator", "VideoInsert", "VideoIntervals", "VideoJoin", "VideoMap", "VideoMapList", "VideoMapTimeSeries", "VideoPadding", "VideoPause", "VideoPlay", "VideoQ", "VideoRecord", "VideoReplace", "VideoScreenCapture", "VideoSplit", "VideoStop", "VideoStream", "VideoStreams", "VideoTimeStretch", "VideoTrackSelection", "VideoTranscode", "VideoTransparency", "VideoTrim", "ViewAngle", "ViewCenter", "ViewMatrix", "ViewPoint", "ViewPointSelectorSettings", "ViewPort", "ViewProjection", "ViewRange", "ViewVector", "ViewVertical", "VirtualGroupData", "Visible", "VisibleCell", "VoiceStyleData", "VoigtDistribution", "VolcanoData", "Volume", "VonMisesDistribution", "VoronoiMesh", "WaitAll", "WaitAsynchronousTask", "WaitNext", "WaitUntil", "WakebyDistribution", "WalleniusHypergeometricDistribution", "WaringYuleDistribution", "WarpingCorrespondence", "WarpingDistance", "WatershedComponents", "WatsonUSquareTest", "WattsStrogatzGraphDistribution", "WaveletBestBasis", "WaveletFilterCoefficients", "WaveletImagePlot", "WaveletListPlot", "WaveletMapIndexed", "WaveletMatrixPlot", "WaveletPhi", "WaveletPsi", "WaveletScale", "WaveletScalogram", "WaveletThreshold", "WavePDEComponent", "WeaklyConnectedComponents", "WeaklyConnectedGraphComponents", "WeaklyConnectedGraphQ", "WeakStationarity", "WeatherData", "WeatherForecastData", "WebAudioSearch", "WebColumn", "WebElementObject", "WeberE", "WebExecute", "WebImage", "WebImageSearch", "WebItem", "WebPageMetaInformation", "WebRow", "WebSearch", "WebSessionObject", "WebSessions", "WebWindowObject", "Wedge", "Wednesday", "WeibullDistribution", "WeierstrassE1", "WeierstrassE2", "WeierstrassE3", "WeierstrassEta1", "WeierstrassEta2", "WeierstrassEta3", "WeierstrassHalfPeriods", "WeierstrassHalfPeriodW1", "WeierstrassHalfPeriodW2", "WeierstrassHalfPeriodW3", "WeierstrassInvariantG2", "WeierstrassInvariantG3", "WeierstrassInvariants", "WeierstrassP", "WeierstrassPPrime", "WeierstrassSigma", "WeierstrassZeta", "WeightedAdjacencyGraph", "WeightedAdjacencyMatrix", "WeightedData", "WeightedGraphQ", "Weights", "WelchWindow", "WheelGraph", "WhenEvent", "Which", "While", "White", "WhiteNoiseProcess", "WhitePoint", "Whitespace", "WhitespaceCharacter", "WhittakerM", "WhittakerW", "WholeCellGroupOpener", "WienerFilter", "WienerProcess", "WignerD", "WignerSemicircleDistribution", "WikidataData", "WikidataSearch", "WikipediaData", "WikipediaSearch", "WilksW", "WilksWTest", "WindDirectionData", "WindingCount", "WindingPolygon", "WindowClickSelect", "WindowElements", "WindowFloating", "WindowFrame", "WindowFrameElements", "WindowMargins", "WindowMovable", "WindowOpacity", "WindowPersistentStyles", "WindowSelected", "WindowSize", "WindowStatusArea", "WindowTitle", "WindowToolbars", "WindowWidth", "WindSpeedData", "WindVectorData", "WinsorizedMean", "WinsorizedVariance", "WishartMatrixDistribution", "With", "WithCleanup", "WithLock", "WolframAlpha", "WolframAlphaDate", "WolframAlphaQuantity", "WolframAlphaResult", "WolframCloudSettings", "WolframLanguageData", "Word", "WordBoundary", "WordCharacter", "WordCloud", "WordCount", "WordCounts", "WordData", "WordDefinition", "WordFrequency", "WordFrequencyData", "WordList", "WordOrientation", "WordSearch", "WordSelectionFunction", "WordSeparators", "WordSpacings", "WordStem", "WordTranslation", "WorkingPrecision", "WrapAround", "Write", "WriteLine", "WriteString", "Wronskian", "XMLElement", "XMLObject", "XMLTemplate", "Xnor", "Xor", "XYZColor", "Yellow", "Yesterday", "YuleDissimilarity", "ZernikeR", "ZeroSymmetric", "ZeroTest", "ZeroWidthTimes", "Zeta", "ZetaZero", "ZIPCodeData", "ZipfDistribution", "ZoomCenter", "ZoomFactor", "ZTest", "ZTransform", "$Aborted", "$ActivationGroupID", "$ActivationKey", "$ActivationUserRegistered", "$AddOnsDirectory", "$AllowDataUpdates", "$AllowExternalChannelFunctions", "$AllowInternet", "$AssertFunction", "$Assumptions", "$AsynchronousTask", "$AudioDecoders", "$AudioEncoders", "$AudioInputDevices", "$AudioOutputDevices", "$BaseDirectory", "$BasePacletsDirectory", "$BatchInput", "$BatchOutput", "$BlockchainBase", "$BoxForms", "$ByteOrdering", "$CacheBaseDirectory", "$Canceled", "$ChannelBase", "$CharacterEncoding", "$CharacterEncodings", "$CloudAccountName", "$CloudBase", "$CloudConnected", "$CloudConnection", "$CloudCreditsAvailable", "$CloudEvaluation", "$CloudExpressionBase", "$CloudObjectNameFormat", "$CloudObjectURLType", "$CloudRootDirectory", "$CloudSymbolBase", "$CloudUserID", "$CloudUserUUID", "$CloudVersion", "$CloudVersionNumber", "$CloudWolframEngineVersionNumber", "$CommandLine", "$CompilationTarget", "$CompilerEnvironment", "$ConditionHold", "$ConfiguredKernels", "$Context", "$ContextAliases", "$ContextPath", "$ControlActiveSetting", "$Cookies", "$CookieStore", "$CreationDate", "$CryptographicEllipticCurveNames", "$CurrentLink", "$CurrentTask", "$CurrentWebSession", "$DataStructures", "$DateStringFormat", "$DefaultAudioInputDevice", "$DefaultAudioOutputDevice", "$DefaultFont", "$DefaultFrontEnd", "$DefaultImagingDevice", "$DefaultKernels", "$DefaultLocalBase", "$DefaultLocalKernel", "$DefaultMailbox", "$DefaultNetworkInterface", "$DefaultPath", "$DefaultProxyRules", "$DefaultRemoteBatchSubmissionEnvironment", "$DefaultRemoteKernel", "$DefaultSystemCredentialStore", "$Display", "$DisplayFunction", "$DistributedContexts", "$DynamicEvaluation", "$Echo", "$EmbedCodeEnvironments", "$EmbeddableServices", "$EntityStores", "$Epilog", "$EvaluationCloudBase", "$EvaluationCloudObject", "$EvaluationEnvironment", "$ExportFormats", "$ExternalIdentifierTypes", "$ExternalStorageBase", "$Failed", "$FinancialDataSource", "$FontFamilies", "$FormatType", "$FrontEnd", "$FrontEndSession", "$GeneratedAssetLocation", "$GeoEntityTypes", "$GeoLocation", "$GeoLocationCity", "$GeoLocationCountry", "$GeoLocationPrecision", "$GeoLocationSource", "$HistoryLength", "$HomeDirectory", "$HTMLExportRules", "$HTTPCookies", "$HTTPRequest", "$IgnoreEOF", "$ImageFormattingWidth", "$ImageResolution", "$ImagingDevice", "$ImagingDevices", "$ImportFormats", "$IncomingMailSettings", "$InitialDirectory", "$Initialization", "$InitializationContexts", "$Input", "$InputFileName", "$InputStreamMethods", "$Inspector", "$InstallationDate", "$InstallationDirectory", "$InterfaceEnvironment", "$InterpreterTypes", "$IterationLimit", "$KernelCount", "$KernelID", "$Language", "$LaunchDirectory", "$LibraryPath", "$LicenseExpirationDate", "$LicenseID", "$LicenseProcesses", "$LicenseServer", "$LicenseSubprocesses", "$LicenseType", "$Line", "$Linked", "$LinkSupported", "$LoadedFiles", "$LocalBase", "$LocalSymbolBase", "$MachineAddresses", "$MachineDomain", "$MachineDomains", "$MachineEpsilon", "$MachineID", "$MachineName", "$MachinePrecision", "$MachineType", "$MaxDisplayedChildren", "$MaxExtraPrecision", "$MaxLicenseProcesses", "$MaxLicenseSubprocesses", "$MaxMachineNumber", "$MaxNumber", "$MaxPiecewiseCases", "$MaxPrecision", "$MaxRootDegree", "$MessageGroups", "$MessageList", "$MessagePrePrint", "$Messages", "$MinMachineNumber", "$MinNumber", "$MinorReleaseNumber", "$MinPrecision", "$MobilePhone", "$ModuleNumber", "$NetworkConnected", "$NetworkInterfaces", "$NetworkLicense", "$NewMessage", "$NewSymbol", "$NotebookInlineStorageLimit", "$Notebooks", "$NoValue", "$NumberMarks", "$Off", "$OperatingSystem", "$Output", "$OutputForms", "$OutputSizeLimit", "$OutputStreamMethods", "$Packages", "$ParentLink", "$ParentProcessID", "$PasswordFile", "$PatchLevelID", "$Path", "$PathnameSeparator", "$PerformanceGoal", "$Permissions", "$PermissionsGroupBase", "$PersistenceBase", "$PersistencePath", "$PipeSupported", "$PlotTheme", "$Post", "$Pre", "$PreferencesDirectory", "$PreInitialization", "$PrePrint", "$PreRead", "$PrintForms", "$PrintLiteral", "$Printout3DPreviewer", "$ProcessID", "$ProcessorCount", "$ProcessorType", "$ProductInformation", "$ProgramName", "$ProgressReporting", "$PublisherID", "$RandomGeneratorState", "$RandomState", "$RecursionLimit", "$RegisteredDeviceClasses", "$RegisteredUserName", "$ReleaseNumber", "$RequesterAddress", "$RequesterCloudUserID", "$RequesterCloudUserUUID", "$RequesterWolframID", "$RequesterWolframUUID", "$ResourceSystemBase", "$ResourceSystemPath", "$RootDirectory", "$ScheduledTask", "$ScriptCommandLine", "$ScriptInputString", "$SecuredAuthenticationKeyTokens", "$ServiceCreditsAvailable", "$Services", "$SessionID", "$SetParentLink", "$SharedFunctions", "$SharedVariables", "$SoundDisplay", "$SoundDisplayFunction", "$SourceLink", "$SSHAuthentication", "$SubtitleDecoders", "$SubtitleEncoders", "$SummaryBoxDataSizeLimit", "$SuppressInputFormHeads", "$SynchronousEvaluation", "$SyntaxHandler", "$System", "$SystemCharacterEncoding", "$SystemCredentialStore", "$SystemID", "$SystemMemory", "$SystemShell", "$SystemTimeZone", "$SystemWordLength", "$TargetSystems", "$TemplatePath", "$TemporaryDirectory", "$TemporaryPrefix", "$TestFileName", "$TextStyle", "$TimedOut", "$TimeUnit", "$TimeZone", "$TimeZoneEntity", "$TopDirectory", "$TraceOff", "$TraceOn", "$TracePattern", "$TracePostAction", "$TracePreAction", "$UnitSystem", "$Urgent", "$UserAddOnsDirectory", "$UserAgentLanguages", "$UserAgentMachine", "$UserAgentName", "$UserAgentOperatingSystem", "$UserAgentString", "$UserAgentVersion", "$UserBaseDirectory", "$UserBasePacletsDirectory", "$UserDocumentsDirectory", "$Username", "$UserName", "$UserURLBase", "$Version", "$VersionNumber", "$VideoDecoders", "$VideoEncoders", "$VoiceStyles", "$WolframDocumentsDirectory", "$WolframID", "$WolframUUID"];
@@ -5307,7 +5355,7 @@
                 }, {className: "brace", relevance: 0, begin: /[[\](){}]/}]
             }
         }, oi
-    }()),Cs.registerLanguage("matlab", (ci || (ci = 1, li = function (e) {
+    }()),fs.registerLanguage("matlab", (ci || (ci = 1, li = function (e) {
         const t = "('|\\.')+", a = {relevance: 0, contains: [{begin: t}]};
         return {
             name: "Matlab",
@@ -5346,7 +5394,7 @@
                 starts: a
             }, e.COMMENT("^\\s*%\\{\\s*$", "^\\s*%\\}\\s*$"), e.COMMENT("%", "$")]
         }
-    }), li)),Cs.registerLanguage("maxima", (di || (di = 1, _i = function (e) {
+    }), li)),fs.registerLanguage("maxima", (di || (di = 1, _i = function (e) {
         return {
             name: "Maxima",
             keywords: {
@@ -5371,7 +5419,7 @@
             }],
             illegal: /@/
         }
-    }), _i)),Cs.registerLanguage("mel", (pi || (pi = 1, mi = function (e) {
+    }), _i)),fs.registerLanguage("mel", (pi || (pi = 1, mi = function (e) {
         return {
             name: "MEL",
             keywords: "int float string vector matrix if else switch case default while do for in break continue global proc return about abs addAttr addAttributeEditorNodeHelp addDynamic addNewShelfTab addPP addPanelCategory addPrefixToName advanceToNextDrivenKey affectedNet affects aimConstraint air alias aliasAttr align alignCtx alignCurve alignSurface allViewFit ambientLight angle angleBetween animCone animCurveEditor animDisplay animView annotate appendStringArray applicationName applyAttrPreset applyTake arcLenDimContext arcLengthDimension arclen arrayMapper art3dPaintCtx artAttrCtx artAttrPaintVertexCtx artAttrSkinPaintCtx artAttrTool artBuildPaintMenu artFluidAttrCtx artPuttyCtx artSelectCtx artSetPaintCtx artUserPaintCtx assignCommand assignInputDevice assignViewportFactories attachCurve attachDeviceAttr attachSurface attrColorSliderGrp attrCompatibility attrControlGrp attrEnumOptionMenu attrEnumOptionMenuGrp attrFieldGrp attrFieldSliderGrp attrNavigationControlGrp attrPresetEditWin attributeExists attributeInfo attributeMenu attributeQuery autoKeyframe autoPlace bakeClip bakeFluidShading bakePartialHistory bakeResults bakeSimulation basename basenameEx batchRender bessel bevel bevelPlus binMembership bindSkin blend2 blendShape blendShapeEditor blendShapePanel blendTwoAttr blindDataType boneLattice boundary boxDollyCtx boxZoomCtx bufferCurve buildBookmarkMenu buildKeyframeMenu button buttonManip CBG cacheFile cacheFileCombine cacheFileMerge cacheFileTrack camera cameraView canCreateManip canvas capitalizeString catch catchQuiet ceil changeSubdivComponentDisplayLevel changeSubdivRegion channelBox character characterMap characterOutlineEditor characterize chdir checkBox checkBoxGrp checkDefaultRenderGlobals choice circle circularFillet clamp clear clearCache clip clipEditor clipEditorCurrentTimeCtx clipSchedule clipSchedulerOutliner clipTrimBefore closeCurve closeSurface cluster cmdFileOutput cmdScrollFieldExecuter cmdScrollFieldReporter cmdShell coarsenSubdivSelectionList collision color colorAtPoint colorEditor colorIndex colorIndexSliderGrp colorSliderButtonGrp colorSliderGrp columnLayout commandEcho commandLine commandPort compactHairSystem componentEditor compositingInterop computePolysetVolume condition cone confirmDialog connectAttr connectControl connectDynamic connectJoint connectionInfo constrain constrainValue constructionHistory container containsMultibyte contextInfo control convertFromOldLayers convertIffToPsd convertLightmap convertSolidTx convertTessellation convertUnit copyArray copyFlexor copyKey copySkinWeights cos cpButton cpCache cpClothSet cpCollision cpConstraint cpConvClothToMesh cpForces cpGetSolverAttr cpPanel cpProperty cpRigidCollisionFilter cpSeam cpSetEdit cpSetSolverAttr cpSolver cpSolverTypes cpTool cpUpdateClothUVs createDisplayLayer createDrawCtx createEditor createLayeredPsdFile createMotionField createNewShelf createNode createRenderLayer createSubdivRegion cross crossProduct ctxAbort ctxCompletion ctxEditMode ctxTraverse currentCtx currentTime currentTimeCtx currentUnit curve curveAddPtCtx curveCVCtx curveEPCtx curveEditorCtx curveIntersect curveMoveEPCtx curveOnSurface curveSketchCtx cutKey cycleCheck cylinder dagPose date defaultLightListCheckBox defaultNavigation defineDataServer defineVirtualDevice deformer deg_to_rad delete deleteAttr deleteShadingGroupsAndMaterials deleteShelfTab deleteUI deleteUnusedBrushes delrandstr detachCurve detachDeviceAttr detachSurface deviceEditor devicePanel dgInfo dgdirty dgeval dgtimer dimWhen directKeyCtx directionalLight dirmap dirname disable disconnectAttr disconnectJoint diskCache displacementToPoly displayAffected displayColor displayCull displayLevelOfDetail displayPref displayRGBColor displaySmoothness displayStats displayString displaySurface distanceDimContext distanceDimension doBlur dolly dollyCtx dopeSheetEditor dot dotProduct doubleProfileBirailSurface drag dragAttrContext draggerContext dropoffLocator duplicate duplicateCurve duplicateSurface dynCache dynControl dynExport dynExpression dynGlobals dynPaintEditor dynParticleCtx dynPref dynRelEdPanel dynRelEditor dynamicLoad editAttrLimits editDisplayLayerGlobals editDisplayLayerMembers editRenderLayerAdjustment editRenderLayerGlobals editRenderLayerMembers editor editorTemplate effector emit emitter enableDevice encodeString endString endsWith env equivalent equivalentTol erf error eval evalDeferred evalEcho event exactWorldBoundingBox exclusiveLightCheckBox exec executeForEachObject exists exp expression expressionEditorListen extendCurve extendSurface extrude fcheck fclose feof fflush fgetline fgetword file fileBrowserDialog fileDialog fileExtension fileInfo filetest filletCurve filter filterCurve filterExpand filterStudioImport findAllIntersections findAnimCurves findKeyframe findMenuItem findRelatedSkinCluster finder firstParentOf fitBspline flexor floatEq floatField floatFieldGrp floatScrollBar floatSlider floatSlider2 floatSliderButtonGrp floatSliderGrp floor flow fluidCacheInfo fluidEmitter fluidVoxelInfo flushUndo fmod fontDialog fopen formLayout format fprint frameLayout fread freeFormFillet frewind fromNativePath fwrite gamma gauss geometryConstraint getApplicationVersionAsFloat getAttr getClassification getDefaultBrush getFileList getFluidAttr getInputDeviceRange getMayaPanelTypes getModifiers getPanel getParticleAttr getPluginResource getenv getpid glRender glRenderEditor globalStitch gmatch goal gotoBindPose grabColor gradientControl gradientControlNoAttr graphDollyCtx graphSelectContext graphTrackCtx gravity grid gridLayout group groupObjectsByName HfAddAttractorToAS HfAssignAS HfBuildEqualMap HfBuildFurFiles HfBuildFurImages HfCancelAFR HfConnectASToHF HfCreateAttractor HfDeleteAS HfEditAS HfPerformCreateAS HfRemoveAttractorFromAS HfSelectAttached HfSelectAttractors HfUnAssignAS hardenPointCurve hardware hardwareRenderPanel headsUpDisplay headsUpMessage help helpLine hermite hide hilite hitTest hotBox hotkey hotkeyCheck hsv_to_rgb hudButton hudSlider hudSliderButton hwReflectionMap hwRender hwRenderLoad hyperGraph hyperPanel hyperShade hypot iconTextButton iconTextCheckBox iconTextRadioButton iconTextRadioCollection iconTextScrollList iconTextStaticLabel ikHandle ikHandleCtx ikHandleDisplayScale ikSolver ikSplineHandleCtx ikSystem ikSystemInfo ikfkDisplayMethod illustratorCurves image imfPlugins inheritTransform insertJoint insertJointCtx insertKeyCtx insertKnotCurve insertKnotSurface instance instanceable instancer intField intFieldGrp intScrollBar intSlider intSliderGrp interToUI internalVar intersect iprEngine isAnimCurve isConnected isDirty isParentOf isSameObject isTrue isValidObjectName isValidString isValidUiName isolateSelect itemFilter itemFilterAttr itemFilterRender itemFilterType joint jointCluster jointCtx jointDisplayScale jointLattice keyTangent keyframe keyframeOutliner keyframeRegionCurrentTimeCtx keyframeRegionDirectKeyCtx keyframeRegionDollyCtx keyframeRegionInsertKeyCtx keyframeRegionMoveKeyCtx keyframeRegionScaleKeyCtx keyframeRegionSelectKeyCtx keyframeRegionSetKeyCtx keyframeRegionTrackCtx keyframeStats lassoContext lattice latticeDeformKeyCtx launch launchImageEditor layerButton layeredShaderPort layeredTexturePort layout layoutDialog lightList lightListEditor lightListPanel lightlink lineIntersection linearPrecision linstep listAnimatable listAttr listCameras listConnections listDeviceAttachments listHistory listInputDeviceAxes listInputDeviceButtons listInputDevices listMenuAnnotation listNodeTypes listPanelCategories listRelatives listSets listTransforms listUnselected listerEditor loadFluid loadNewShelf loadPlugin loadPluginLanguageResources loadPrefObjects localizedPanelLabel lockNode loft log longNameOf lookThru ls lsThroughFilter lsType lsUI Mayatomr mag makeIdentity makeLive makePaintable makeRoll makeSingleSurface makeTubeOn makebot manipMoveContext manipMoveLimitsCtx manipOptions manipRotateContext manipRotateLimitsCtx manipScaleContext manipScaleLimitsCtx marker match max memory menu menuBarLayout menuEditor menuItem menuItemToShelf menuSet menuSetPref messageLine min minimizeApp mirrorJoint modelCurrentTimeCtx modelEditor modelPanel mouse movIn movOut move moveIKtoFK moveKeyCtx moveVertexAlongDirection multiProfileBirailSurface mute nParticle nameCommand nameField namespace namespaceInfo newPanelItems newton nodeCast nodeIconButton nodeOutliner nodePreset nodeType noise nonLinear normalConstraint normalize nurbsBoolean nurbsCopyUVSet nurbsCube nurbsEditUV nurbsPlane nurbsSelect nurbsSquare nurbsToPoly nurbsToPolygonsPref nurbsToSubdiv nurbsToSubdivPref nurbsUVSet nurbsViewDirectionVector objExists objectCenter objectLayer objectType objectTypeUI obsoleteProc oceanNurbsPreviewPlane offsetCurve offsetCurveOnSurface offsetSurface openGLExtension openMayaPref optionMenu optionMenuGrp optionVar orbit orbitCtx orientConstraint outlinerEditor outlinerPanel overrideModifier paintEffectsDisplay pairBlend palettePort paneLayout panel panelConfiguration panelHistory paramDimContext paramDimension paramLocator parent parentConstraint particle particleExists particleInstancer particleRenderInfo partition pasteKey pathAnimation pause pclose percent performanceOptions pfxstrokes pickWalk picture pixelMove planarSrf plane play playbackOptions playblast plugAttr plugNode pluginInfo pluginResourceUtil pointConstraint pointCurveConstraint pointLight pointMatrixMult pointOnCurve pointOnSurface pointPosition poleVectorConstraint polyAppend polyAppendFacetCtx polyAppendVertex polyAutoProjection polyAverageNormal polyAverageVertex polyBevel polyBlendColor polyBlindData polyBoolOp polyBridgeEdge polyCacheMonitor polyCheck polyChipOff polyClipboard polyCloseBorder polyCollapseEdge polyCollapseFacet polyColorBlindData polyColorDel polyColorPerVertex polyColorSet polyCompare polyCone polyCopyUV polyCrease polyCreaseCtx polyCreateFacet polyCreateFacetCtx polyCube polyCut polyCutCtx polyCylinder polyCylindricalProjection polyDelEdge polyDelFacet polyDelVertex polyDuplicateAndConnect polyDuplicateEdge polyEditUV polyEditUVShell polyEvaluate polyExtrudeEdge polyExtrudeFacet polyExtrudeVertex polyFlipEdge polyFlipUV polyForceUV polyGeoSampler polyHelix polyInfo polyInstallAction polyLayoutUV polyListComponentConversion polyMapCut polyMapDel polyMapSew polyMapSewMove polyMergeEdge polyMergeEdgeCtx polyMergeFacet polyMergeFacetCtx polyMergeUV polyMergeVertex polyMirrorFace polyMoveEdge polyMoveFacet polyMoveFacetUV polyMoveUV polyMoveVertex polyNormal polyNormalPerVertex polyNormalizeUV polyOptUvs polyOptions polyOutput polyPipe polyPlanarProjection polyPlane polyPlatonicSolid polyPoke polyPrimitive polyPrism polyProjection polyPyramid polyQuad polyQueryBlindData polyReduce polySelect polySelectConstraint polySelectConstraintMonitor polySelectCtx polySelectEditCtx polySeparate polySetToFaceNormal polySewEdge polyShortestPathCtx polySmooth polySoftEdge polySphere polySphericalProjection polySplit polySplitCtx polySplitEdge polySplitRing polySplitVertex polyStraightenUVBorder polySubdivideEdge polySubdivideFacet polyToSubdiv polyTorus polyTransfer polyTriangulate polyUVSet polyUnite polyWedgeFace popen popupMenu pose pow preloadRefEd print progressBar progressWindow projFileViewer projectCurve projectTangent projectionContext projectionManip promptDialog propModCtx propMove psdChannelOutliner psdEditTextureFile psdExport psdTextureFile putenv pwd python querySubdiv quit rad_to_deg radial radioButton radioButtonGrp radioCollection radioMenuItemCollection rampColorPort rand randomizeFollicles randstate rangeControl readTake rebuildCurve rebuildSurface recordAttr recordDevice redo reference referenceEdit referenceQuery refineSubdivSelectionList refresh refreshAE registerPluginResource rehash reloadImage removeJoint removeMultiInstance removePanelCategory rename renameAttr renameSelectionList renameUI render renderGlobalsNode renderInfo renderLayerButton renderLayerParent renderLayerPostProcess renderLayerUnparent renderManip renderPartition renderQualityNode renderSettings renderThumbnailUpdate renderWindowEditor renderWindowSelectContext renderer reorder reorderDeformers requires reroot resampleFluid resetAE resetPfxToPolyCamera resetTool resolutionNode retarget reverseCurve reverseSurface revolve rgb_to_hsv rigidBody rigidSolver roll rollCtx rootOf rot rotate rotationInterpolation roundConstantRadius rowColumnLayout rowLayout runTimeCommand runup sampleImage saveAllShelves saveAttrPreset saveFluid saveImage saveInitialState saveMenu savePrefObjects savePrefs saveShelf saveToolSettings scale scaleBrushBrightness scaleComponents scaleConstraint scaleKey scaleKeyCtx sceneEditor sceneUIReplacement scmh scriptCtx scriptEditorInfo scriptJob scriptNode scriptTable scriptToShelf scriptedPanel scriptedPanelType scrollField scrollLayout sculpt searchPathArray seed selLoadSettings select selectContext selectCurveCV selectKey selectKeyCtx selectKeyframeRegionCtx selectMode selectPref selectPriority selectType selectedNodes selectionConnection separator setAttr setAttrEnumResource setAttrMapping setAttrNiceNameResource setConstraintRestPosition setDefaultShadingGroup setDrivenKeyframe setDynamic setEditCtx setEditor setFluidAttr setFocus setInfinity setInputDeviceMapping setKeyCtx setKeyPath setKeyframe setKeyframeBlendshapeTargetWts setMenuMode setNodeNiceNameResource setNodeTypeFlag setParent setParticleAttr setPfxToPolyCamera setPluginResource setProject setStampDensity setStartupMessage setState setToolTo setUITemplate setXformManip sets shadingConnection shadingGeometryRelCtx shadingLightRelCtx shadingNetworkCompare shadingNode shapeCompare shelfButton shelfLayout shelfTabLayout shellField shortNameOf showHelp showHidden showManipCtx showSelectionInTitle showShadingGroupAttrEditor showWindow sign simplify sin singleProfileBirailSurface size sizeBytes skinCluster skinPercent smoothCurve smoothTangentSurface smoothstep snap2to2 snapKey snapMode snapTogetherCtx snapshot soft softMod softModCtx sort sound soundControl source spaceLocator sphere sphrand spotLight spotLightPreviewPort spreadSheetEditor spring sqrt squareSurface srtContext stackTrace startString startsWith stitchAndExplodeShell stitchSurface stitchSurfacePoints strcmp stringArrayCatenate stringArrayContains stringArrayCount stringArrayInsertAtIndex stringArrayIntersector stringArrayRemove stringArrayRemoveAtIndex stringArrayRemoveDuplicates stringArrayRemoveExact stringArrayToString stringToStringArray strip stripPrefixFromName stroke subdAutoProjection subdCleanTopology subdCollapse subdDuplicateAndConnect subdEditUV subdListComponentConversion subdMapCut subdMapSewMove subdMatchTopology subdMirror subdToBlind subdToPoly subdTransferUVsToCache subdiv subdivCrease subdivDisplaySmoothness substitute substituteAllString substituteGeometry substring surface surfaceSampler surfaceShaderList swatchDisplayPort switchTable symbolButton symbolCheckBox sysFile system tabLayout tan tangentConstraint texLatticeDeformContext texManipContext texMoveContext texMoveUVShellContext texRotateContext texScaleContext texSelectContext texSelectShortestPathCtx texSmudgeUVContext texWinToolCtx text textCurves textField textFieldButtonGrp textFieldGrp textManip textScrollList textToShelf textureDisplacePlane textureHairColor texturePlacementContext textureWindow threadCount threePointArcCtx timeControl timePort timerX toNativePath toggle toggleAxis toggleWindowVisibility tokenize tokenizeList tolerance tolower toolButton toolCollection toolDropped toolHasOptions toolPropertyWindow torus toupper trace track trackCtx transferAttributes transformCompare transformLimits translator trim trunc truncateFluidCache truncateHairCache tumble tumbleCtx turbulence twoPointArcCtx uiRes uiTemplate unassignInputDevice undo undoInfo ungroup uniform unit unloadPlugin untangleUV untitledFileName untrim upAxis updateAE userCtx uvLink uvSnapshot validateShelfName vectorize view2dToolCtx viewCamera viewClipPlane viewFit viewHeadOn viewLookAt viewManip viewPlace viewSet visor volumeAxis vortex waitCursor warning webBrowser webBrowserPrefs whatIs window windowPref wire wireContext workspace wrinkle wrinkleContext writeTake xbmLangPathList xform",
@@ -5383,7 +5431,7 @@
                 contains: [e.BACKSLASH_ESCAPE]
             }, {begin: /[$%@](\^\w\b|#\w+|[^\s\w{]|\{\w+\}|\w+)/}, e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE]
         }
-    }), mi)),Cs.registerLanguage("mercury", (gi || (gi = 1, ui = function (e) {
+    }), mi)),fs.registerLanguage("mercury", (gi || (gi = 1, ui = function (e) {
         const t = e.COMMENT("%", "$"), a = e.inherit(e.APOS_STRING_MODE, {relevance: 0}),
             n = e.inherit(e.QUOTE_STRING_MODE, {relevance: 0});
         return n.contains = n.contains.slice(), n.contains.push({
@@ -5412,7 +5460,7 @@
                 begin: "0'.\\|0[box][0-9a-fA-F]*"
             }, e.NUMBER_MODE, a, n, {begin: /:-/}, {begin: /\.$/}]
         }
-    }), ui)),Cs.registerLanguage("mipsasm", (Si || (Si = 1, Ei = function (e) {
+    }), ui)),fs.registerLanguage("mipsasm", (Si || (Si = 1, Ei = function (e) {
         return {
             name: "MIPS Assembly",
             case_insensitive: !0,
@@ -5442,28 +5490,35 @@
             }],
             illegal: /\//
         }
-    }), Ei)),Cs.registerLanguage("mizar", (Ti || (Ti = 1, bi = function (e) {
+    }), Ei)),fs.registerLanguage("mizar", (Ti || (Ti = 1, bi = function (e) {
         return {
             name: "Mizar",
             keywords: "environ vocabularies notations constructors definitions registrations theorems schemes requirements begin end definition registration cluster existence pred func defpred deffunc theorem proof let take assume then thus hence ex for st holds consider reconsider such that and in provided of as from be being by means equals implies iff redefine define now not or attr is mode suppose per cases set thesis contradiction scheme reserve struct correctness compatibility coherence symmetry assymetry reflexivity irreflexivity connectedness uniqueness commutativity idempotence involutiveness projectivity",
             contains: [e.COMMENT("::", "$")]
         }
-    }), bi)),Cs.registerLanguage("perl", (fi || (fi = 1, Ci = function (e) {
+    }), bi)),fs.registerLanguage("perl", (Ci || (Ci = 1, fi = function (e) {
         const t = e.regex, a = /[dualxmsipngr]{0,12}/, n = {
                 $pattern: /[\w.]+/,
-                keyword: ["abs", "accept", "alarm", "and", "atan2", "bind", "binmode", "bless", "break", "caller", "chdir", "chmod", "chomp", "chop", "chown", "chr", "chroot", "close", "closedir", "connect", "continue", "cos", "crypt", "dbmclose", "dbmopen", "defined", "delete", "die", "do", "dump", "each", "else", "elsif", "endgrent", "endhostent", "endnetent", "endprotoent", "endpwent", "endservent", "eof", "eval", "exec", "exists", "exit", "exp", "fcntl", "fileno", "flock", "for", "foreach", "fork", "format", "formline", "getc", "getgrent", "getgrgid", "getgrnam", "gethostbyaddr", "gethostbyname", "gethostent", "getlogin", "getnetbyaddr", "getnetbyname", "getnetent", "getpeername", "getpgrp", "getpriority", "getprotobyname", "getprotobynumber", "getprotoent", "getpwent", "getpwnam", "getpwuid", "getservbyname", "getservbyport", "getservent", "getsockname", "getsockopt", "given", "glob", "gmtime", "goto", "grep", "gt", "hex", "if", "index", "int", "ioctl", "join", "keys", "kill", "last", "lc", "lcfirst", "length", "link", "listen", "local", "localtime", "log", "lstat", "lt", "ma", "map", "mkdir", "msgctl", "msgget", "msgrcv", "msgsnd", "my", "ne", "next", "no", "not", "oct", "open", "opendir", "or", "ord", "our", "pack", "package", "pipe", "pop", "pos", "print", "printf", "prototype", "push", "q|0", "qq", "quotemeta", "qw", "qx", "rand", "read", "readdir", "readline", "readlink", "readpipe", "recv", "redo", "ref", "rename", "require", "reset", "return", "reverse", "rewinddir", "rindex", "rmdir", "say", "scalar", "seek", "seekdir", "select", "semctl", "semget", "semop", "send", "setgrent", "sethostent", "setnetent", "setpgrp", "setpriority", "setprotoent", "setpwent", "setservent", "setsockopt", "shift", "shmctl", "shmget", "shmread", "shmwrite", "shutdown", "sin", "sleep", "socket", "socketpair", "sort", "splice", "split", "sprintf", "sqrt", "srand", "stat", "state", "study", "sub", "substr", "symlink", "syscall", "sysopen", "sysread", "sysseek", "system", "syswrite", "tell", "telldir", "tie", "tied", "time", "times", "tr", "truncate", "uc", "ucfirst", "umask", "undef", "unless", "unlink", "unpack", "unshift", "untie", "until", "use", "utime", "values", "vec", "wait", "waitpid", "wantarray", "warn", "when", "while", "write", "x|0", "xor", "y|0"].join(" ")
-            }, i = {className: "subst", begin: "[$@]\\{", end: "\\}", keywords: n}, r = {begin: /->\{/, end: /\}/}, o = {
-                variants: [{begin: /\$\d/}, {begin: t.concat(/[$%@](\^\w\b|#\w+(::\w+)*|\{\w+\}|\w+(::\w*)*)/, "(?![A-Za-z])(?![@$%])")}, {
-                    begin: /[$%@][^\s\w{]/,
+                keyword: ["abs", "accept", "alarm", "and", "atan2", "bind", "binmode", "bless", "break", "caller", "chdir", "chmod", "chomp", "chop", "chown", "chr", "chroot", "class", "close", "closedir", "connect", "continue", "cos", "crypt", "dbmclose", "dbmopen", "defined", "delete", "die", "do", "dump", "each", "else", "elsif", "endgrent", "endhostent", "endnetent", "endprotoent", "endpwent", "endservent", "eof", "eval", "exec", "exists", "exit", "exp", "fcntl", "field", "fileno", "flock", "for", "foreach", "fork", "format", "formline", "getc", "getgrent", "getgrgid", "getgrnam", "gethostbyaddr", "gethostbyname", "gethostent", "getlogin", "getnetbyaddr", "getnetbyname", "getnetent", "getpeername", "getpgrp", "getpriority", "getprotobyname", "getprotobynumber", "getprotoent", "getpwent", "getpwnam", "getpwuid", "getservbyname", "getservbyport", "getservent", "getsockname", "getsockopt", "given", "glob", "gmtime", "goto", "grep", "gt", "hex", "if", "index", "int", "ioctl", "join", "keys", "kill", "last", "lc", "lcfirst", "length", "link", "listen", "local", "localtime", "log", "lstat", "lt", "ma", "map", "method", "mkdir", "msgctl", "msgget", "msgrcv", "msgsnd", "my", "ne", "next", "no", "not", "oct", "open", "opendir", "or", "ord", "our", "pack", "package", "pipe", "pop", "pos", "print", "printf", "prototype", "push", "q|0", "qq", "quotemeta", "qw", "qx", "rand", "read", "readdir", "readline", "readlink", "readpipe", "recv", "redo", "ref", "rename", "require", "reset", "return", "reverse", "rewinddir", "rindex", "rmdir", "say", "scalar", "seek", "seekdir", "select", "semctl", "semget", "semop", "send", "setgrent", "sethostent", "setnetent", "setpgrp", "setpriority", "setprotoent", "setpwent", "setservent", "setsockopt", "shift", "shmctl", "shmget", "shmread", "shmwrite", "shutdown", "sin", "sleep", "socket", "socketpair", "sort", "splice", "split", "sprintf", "sqrt", "srand", "stat", "state", "study", "sub", "substr", "symlink", "syscall", "sysopen", "sysread", "sysseek", "system", "syswrite", "tell", "telldir", "tie", "tied", "time", "times", "tr", "truncate", "uc", "ucfirst", "umask", "undef", "unless", "unlink", "unpack", "unshift", "untie", "until", "use", "utime", "values", "vec", "wait", "waitpid", "wantarray", "warn", "when", "while", "write", "x|0", "xor", "y|0"].join(" ")
+            }, i = {className: "subst", begin: "[$@]\\{", end: "\\}", keywords: n}, r = {begin: /->\{/, end: /\}/},
+            o = {scope: "attr", match: /\s+:\s*\w+(\s*\(.*?\))?/}, s = {
+                scope: "variable",
+                variants: [{begin: /\$\d/}, {begin: t.concat(/[$%@](?!")(\^\w\b|#\w+(::\w+)*|\{\w+\}|\w+(::\w*)*)/, "(?![A-Za-z])(?![@$%])")}, {
+                    begin: /[$%@](?!")[^\s\w{=]|\$=/,
                     relevance: 0
-                }]
-            }, s = [e.BACKSLASH_ESCAPE, i, o], l = [/!/, /\//, /\|/, /\?/, /'/, /"/, /#/], c = (e, n, i = "\\1") => {
+                }],
+                contains: [o]
+            }, l = {
+                className: "number",
+                variants: [{match: /0?\.[0-9][0-9_]+\b/}, {match: /\bv?(0|[1-9][0-9_]*(\.[0-9_]+)?|[1-9][0-9_]*)\b/}, {match: /\b0[0-7][0-7_]*\b/}, {match: /\b0x[0-9a-fA-F][0-9a-fA-F_]*\b/}, {match: /\b0b[0-1][0-1_]*\b/}],
+                relevance: 0
+            }, c = [e.BACKSLASH_ESCAPE, i, s], _ = [/!/, /\//, /\|/, /\?/, /'/, /"/, /#/], d = (e, n, i = "\\1") => {
                 const r = "\\1" === i ? i : t.concat(i, n);
                 return t.concat(t.concat("(?:", e, ")"), n, /(?:\\.|[^\\\/])*?/, r, /(?:\\.|[^\\\/])*?/, i, a)
-            }, _ = (e, n, i) => t.concat(t.concat("(?:", e, ")"), n, /(?:\\.|[^\\\/])*?/, i, a),
-            d = [o, e.HASH_COMMENT_MODE, e.COMMENT(/^=\w/, /=cut/, {endsWithParent: !0}), r, {
+            }, m = (e, n, i) => t.concat(t.concat("(?:", e, ")"), n, /(?:\\.|[^\\\/])*?/, i, a),
+            p = [s, e.HASH_COMMENT_MODE, e.COMMENT(/^=\w/, /=cut/, {endsWithParent: !0}), r, {
                 className: "string",
-                contains: s,
+                contains: c,
                 variants: [{begin: "q[qwxr]?\\s*\\(", end: "\\)", relevance: 5}, {
                     begin: "q[qwxr]?\\s*\\[",
                     end: "\\]",
@@ -5481,40 +5536,43 @@
                     end: "`",
                     contains: [e.BACKSLASH_ESCAPE]
                 }, {begin: /\{\w+\}/, relevance: 0}, {begin: "-?\\w+\\s*=>", relevance: 0}]
-            }, {
-                className: "number",
-                begin: "(\\b0[0-7_]+)|(\\b0x[0-9a-fA-F_]+)|(\\b[1-9][0-9_]*(\\.[0-9_]+)?)|[0_]\\b",
-                relevance: 0
-            }, {
+            }, l, {
                 begin: "(\\/\\/|" + e.RE_STARTERS_RE + "|\\b(split|return|print|reverse|grep)\\b)\\s*",
                 keywords: "split return print reverse grep",
                 relevance: 0,
                 contains: [e.HASH_COMMENT_MODE, {
                     className: "regexp",
-                    variants: [{begin: c("s|tr|y", t.either(...l, {capture: !0}))}, {begin: c("s|tr|y", "\\(", "\\)")}, {begin: c("s|tr|y", "\\[", "\\]")}, {begin: c("s|tr|y", "\\{", "\\}")}],
+                    variants: [{begin: d("s|tr|y", t.either(..._, {capture: !0}))}, {begin: d("s|tr|y", "\\(", "\\)")}, {begin: d("s|tr|y", "\\[", "\\]")}, {begin: d("s|tr|y", "\\{", "\\}")}],
                     relevance: 2
                 }, {
                     className: "regexp",
                     variants: [{
                         begin: /(m|qr)\/\//,
                         relevance: 0
-                    }, {begin: _("(?:m|qr)?", /\//, /\//)}, {begin: _("m|qr", t.either(...l, {capture: !0}), /\1/)}, {begin: _("m|qr", /\(/, /\)/)}, {begin: _("m|qr", /\[/, /\]/)}, {begin: _("m|qr", /\{/, /\}/)}]
+                    }, {begin: m("(?:m|qr)?", /\//, /\//)}, {begin: m("m|qr", t.either(..._, {capture: !0}), /\1/)}, {begin: m("m|qr", /\(/, /\)/)}, {begin: m("m|qr", /\[/, /\]/)}, {begin: m("m|qr", /\{/, /\}/)}]
                 }]
             }, {
                 className: "function",
-                beginKeywords: "sub",
+                beginKeywords: "sub method",
                 end: "(\\s*\\(.*?\\))?[;{]",
                 excludeEnd: !0,
                 relevance: 5,
-                contains: [e.TITLE_MODE]
+                contains: [e.TITLE_MODE, o]
+            }, {
+                className: "class",
+                beginKeywords: "class",
+                end: "[;{]",
+                excludeEnd: !0,
+                relevance: 5,
+                contains: [e.TITLE_MODE, o, l]
             }, {begin: "-\\w\\b", relevance: 0}, {
                 begin: "^__DATA__$",
                 end: "^__END__$",
                 subLanguage: "mojolicious",
                 contains: [{begin: "^@@.*", end: "$", className: "comment"}]
             }];
-        return i.contains = d, r.contains = d, {name: "Perl", aliases: ["pl", "pm"], keywords: n, contains: d}
-    }), Ci)),Cs.registerLanguage("mojolicious", Ni ? Ri : (Ni = 1, Ri = function (e) {
+        return i.contains = p, r.contains = p, {name: "Perl", aliases: ["pl", "pm"], keywords: n, contains: p}
+    }), fi)),fs.registerLanguage("mojolicious", Ni ? Ri : (Ni = 1, Ri = function (e) {
         return {
             name: "Mojolicious",
             subLanguage: "xml",
@@ -5524,7 +5582,7 @@
                 subLanguage: "perl"
             }, {begin: "<%{1,2}={0,2}", end: "={0,1}%>", subLanguage: "perl", excludeBegin: !0, excludeEnd: !0}]
         }
-    })),Cs.registerLanguage("monkey", (hi || (hi = 1, Oi = function (e) {
+    })),fs.registerLanguage("monkey", (Oi || (Oi = 1, hi = function (e) {
         const t = {className: "number", relevance: 0, variants: [{begin: "[$][a-fA-F0-9]+"}, e.NUMBER_MODE]}, a = {
             variants: [{match: [/(function|method)/, /\s+/, e.UNDERSCORE_IDENT_RE]}],
             scope: {1: "keyword", 3: "title.function"}
@@ -5555,7 +5613,7 @@
                 contains: [e.UNDERSCORE_TITLE_MODE]
             }, e.QUOTE_STRING_MODE, t]
         }
-    }), Oi)),Cs.registerLanguage("moonscript", (Ii || (Ii = 1, vi = function (e) {
+    }), hi)),fs.registerLanguage("moonscript", (yi || (yi = 1, vi = function (e) {
         const t = {
                 keyword: "if then not for in while do return else elseif break continue switch and or unless when class extends super local import export from using",
                 literal: "true false nil",
@@ -5602,7 +5660,7 @@
                 contains: [{beginKeywords: "extends", endsWithParent: !0, illegal: /[:="\[\]]/, contains: [r]}, r]
             }, {className: "name", begin: a + ":", end: ":", returnBegin: !0, returnEnd: !0, relevance: 0}])
         }
-    }), vi)),Cs.registerLanguage("n1ql", (yi || (yi = 1, Ai = function (e) {
+    }), vi)),fs.registerLanguage("n1ql", (Ai || (Ai = 1, Ii = function (e) {
         return {
             name: "N1QL", case_insensitive: !0, contains: [{
                 beginKeywords: "build create index delete drop explain infer|10 insert merge prepare select update upsert|10",
@@ -5625,7 +5683,7 @@
                 }, e.C_NUMBER_MODE, e.C_BLOCK_COMMENT_MODE]
             }, e.C_BLOCK_COMMENT_MODE]
         }
-    }), Ai)),Cs.registerLanguage("nestedtext", (Mi || (Mi = 1, Di = function (e) {
+    }), Ii)),fs.registerLanguage("nestedtext", (xi || (xi = 1, Di = function (e) {
         return {
             name: "Nested Text",
             aliases: ["nt"],
@@ -5646,7 +5704,7 @@
                 className: {2: "attribute", 3: "punctuation", 5: "string"}
             }]
         }
-    }), Di)),Cs.registerLanguage("nginx", (xi || (xi = 1, Li = function (e) {
+    }), Di)),fs.registerLanguage("nginx", (Li || (Li = 1, Mi = function (e) {
         const t = e.regex, a = {
             className: "variable",
             variants: [{begin: /\$\d+/}, {begin: /\$\{\w+\}/}, {begin: t.concat(/[$@]/, e.UNDERSCORE_IDENT_RE)}]
@@ -5701,7 +5759,7 @@
             }],
             illegal: "[^\\s\\}\\{]"
         }
-    }), Li)),Cs.registerLanguage("nim", (Pi || (Pi = 1, wi = function (e) {
+    }), Mi)),fs.registerLanguage("nim", (Pi || (Pi = 1, wi = function (e) {
         return {
             name: "Nim",
             keywords: {
@@ -5725,7 +5783,7 @@
                 variants: [{begin: /\b(0[xX][0-9a-fA-F][_0-9a-fA-F]*)('?[iIuU](8|16|32|64))?/}, {begin: /\b(0o[0-7][_0-7]*)('?[iIuUfF](8|16|32|64))?/}, {begin: /\b(0(b|B)[01][_01]*)('?[iIuUfF](8|16|32|64))?/}, {begin: /\b(\d[_\d]*)('?[iIuUfF](8|16|32|64))?/}]
             }, e.HASH_COMMENT_MODE]
         }
-    }), wi)),Cs.registerLanguage("nix", (Ui || (Ui = 1, ki = function (e) {
+    }), wi)),fs.registerLanguage("nix", (Fi || (Fi = 1, ki = function (e) {
         const t = {
             keyword: ["rec", "with", "let", "in", "inherit", "assert", "if", "else", "then"],
             literal: ["true", "false", "or", "and", "null"],
@@ -5741,7 +5799,7 @@
             contains: [{className: "attr", begin: /\S+/, relevance: .2}]
         }];
         return a.contains = i, {name: "Nix", aliases: ["nixos"], keywords: t, contains: i}
-    }), ki)),Cs.registerLanguage("node-repl", Bi ? Fi : (Bi = 1, Fi = function (e) {
+    }), ki)),fs.registerLanguage("node-repl", Bi ? Ui : (Bi = 1, Ui = function (e) {
         return {
             name: "Node REPL",
             contains: [{
@@ -5750,7 +5808,7 @@
                 variants: [{begin: /^>(?=[ ]|$)/}, {begin: /^\.\.\.(?=[ ]|$)/}]
             }]
         }
-    })),Cs.registerLanguage("nsis", (Yi || (Yi = 1, Gi = function (e) {
+    })),fs.registerLanguage("nsis", (Yi || (Yi = 1, Gi = function (e) {
         const t = e.regex, a = {
                 className: "variable.constant",
                 begin: t.concat(/\$/, t.either("ADMINTOOLS", "APPDATA", "CDBURN_AREA", "CMDLINE", "COMMONFILES32", "COMMONFILES64", "COMMONFILES", "COOKIES", "DESKTOP", "DOCUMENTS", "EXEDIR", "EXEFILE", "EXEPATH", "FAVORITES", "FONTS", "HISTORY", "HWNDPARENT", "INSTDIR", "INTERNET_CACHE", "LANGUAGE", "LOCALAPPDATA", "MUSIC", "NETHOOD", "OUTDIR", "PICTURES", "PLUGINSDIR", "PRINTHOOD", "PROFILE", "PROGRAMFILES32", "PROGRAMFILES64", "PROGRAMFILES", "QUICKLAUNCH", "RECENT", "RESOURCES_LOCALIZED", "RESOURCES", "SENDTO", "SMPROGRAMS", "SMSTARTUP", "STARTMENU", "SYSDIR", "TEMP", "TEMPLATES", "VIDEOS", "WINDIR"))
@@ -5784,7 +5842,7 @@
                 begin: /\w+::\w+/
             }, e.NUMBER_MODE]
         }
-    }), Gi)),Cs.registerLanguage("objectivec", (Vi || (Vi = 1, Hi = function (e) {
+    }), Gi)),fs.registerLanguage("objectivec", (Vi || (Vi = 1, Hi = function (e) {
         const t = /[a-zA-Z@][a-zA-Z0-9_]*/,
             a = {$pattern: t, keyword: ["@interface", "@class", "@protocol", "@implementation"]};
         return {
@@ -5828,7 +5886,7 @@
                 contains: [e.UNDERSCORE_TITLE_MODE]
             }, {begin: "\\." + e.UNDERSCORE_IDENT_RE, relevance: 0}]
         }
-    }), Hi)),Cs.registerLanguage("ocaml", (zi || (zi = 1, qi = function (e) {
+    }), Hi)),fs.registerLanguage("ocaml", (zi || (zi = 1, qi = function (e) {
         return {
             name: "OCaml",
             aliases: ["ml"],
@@ -5859,7 +5917,7 @@
                 relevance: 0
             }, {begin: /->/}]
         }
-    }), qi)),Cs.registerLanguage("openscad", (Wi || (Wi = 1, $i = function (e) {
+    }), qi)),fs.registerLanguage("openscad", (Wi || (Wi = 1, $i = function (e) {
         const t = {className: "keyword", begin: "\\$(f[asn]|t|vp[rtd]|children)"},
             a = {className: "number", begin: "\\b\\d+(\\.\\d+)?(e-?\\d+)?", relevance: 0},
             n = e.inherit(e.QUOTE_STRING_MODE, {illegal: null}), i = {
@@ -5888,7 +5946,7 @@
                 end: ">"
             }, n, t, {begin: "[*!#%]", relevance: 0}, i]
         }
-    }), $i)),Cs.registerLanguage("oxygene", (Ki || (Ki = 1, Qi = function (e) {
+    }), $i)),fs.registerLanguage("oxygene", (Ki || (Ki = 1, Qi = function (e) {
         const t = {
                 $pattern: /\.?\w+/,
                 keyword: "abstract add and array as asc aspect assembly async begin break block by case class concat const copy constructor continue create default delegate desc distinct div do downto dynamic each else empty end ensure enum equals event except exit extension external false final finalize finalizer finally flags for forward from function future global group has if implementation implements implies in index inherited inline interface into invariants is iterator join locked locking loop matching method mod module namespace nested new nil not notify nullable of old on operator or order out override parallel params partial pinned private procedure property protected public queryable raise read readonly record reintroduce remove repeat require result reverse sealed select self sequence set shl shr skip static step soft take then to true try tuple type union unit unsafe until uses using var virtual raises volatile where while with write xor yield await mapped deprecated stdcall cdecl pascal register safecall overload library platform reference packed strict published autoreleasepool selector strong weak unretained"
@@ -5917,7 +5975,7 @@
                 relevance: 0
             }]
         }
-    }), Qi)),Cs.registerLanguage("parser3", (Xi || (Xi = 1, ji = function (e) {
+    }), Qi)),fs.registerLanguage("parser3", (Xi || (Xi = 1, ji = function (e) {
         const t = e.COMMENT(/\{/, /\}/, {contains: ["self"]});
         return {
             name: "Parser3",
@@ -5934,7 +5992,7 @@
                 begin: /\^[\w\-.:]+/
             }, {className: "number", begin: "\\^#[0-9a-fA-F]+"}, e.C_NUMBER_MODE]
         }
-    }), ji)),Cs.registerLanguage("pf", (Ji || (Ji = 1, Zi = function (e) {
+    }), ji)),fs.registerLanguage("pf", (Ji || (Ji = 1, Zi = function (e) {
         return {
             name: "Packet Filter config",
             aliases: ["pf.conf"],
@@ -5950,7 +6008,7 @@
                 relevance: 0
             }, {className: "variable", begin: /<(?!\/)/, end: />/}]
         }
-    }), Zi)),Cs.registerLanguage("pgsql", (tr || (tr = 1, er = function (e) {
+    }), Zi)),fs.registerLanguage("pgsql", (tr || (tr = 1, er = function (e) {
         const t = e.COMMENT("--", "$"), a = "\\$([a-zA-Z_]?|[a-zA-Z_][a-zA-Z_0-9]*)\\$",
             n = "BIGINT INT8 BIGSERIAL SERIAL8 BIT VARYING VARBIT BOOLEAN BOOL BOX BYTEA CHARACTER CHAR VARCHAR CIDR CIRCLE DATE DOUBLE PRECISION FLOAT8 FLOAT INET INTEGER INT INT4 INTERVAL JSON JSONB LINE LSEG|10 MACADDR MACADDR8 MONEY NUMERIC DEC DECIMAL PATH POINT POLYGON REAL FLOAT4 SMALLINT INT2 SMALLSERIAL|10 SERIAL2|10 SERIAL|10 SERIAL4|10 TEXT TIME ZONE TIMETZ|10 TIMESTAMP TIMESTAMPTZ|10 TSQUERY|10 TSVECTOR|10 TXID_SNAPSHOT|10 UUID XML NATIONAL NCHAR INT4RANGE|10 INT8RANGE|10 NUMRANGE|10 TSRANGE|10 TSTZRANGE|10 DATERANGE|10 ANYELEMENT ANYARRAY ANYNONARRAY ANYENUM ANYRANGE CSTRING INTERNAL RECORD PG_DDL_COMMAND VOID UNKNOWN OPAQUE REFCURSOR NAME OID REGPROC|10 REGPROCEDURE|10 REGOPER|10 REGOPERATOR|10 REGCLASS|10 REGTYPE|10 REGROLE|10 REGNAMESPACE|10 REGCONFIG|10 REGDICTIONARY|10 ",
             i = n.trim().split(" ").map((function (e) {
@@ -6033,7 +6091,7 @@
                 variants: [{begin: "%(ROW)?TYPE", relevance: 10}, {begin: "\\$\\d+"}, {begin: "^#\\w", end: "$"}]
             }, {className: "symbol", begin: "<<\\s*[a-zA-Z_][a-zA-Z_0-9$]*\\s*>>", relevance: 10}]
         }
-    }), er)),Cs.registerLanguage("php", (nr || (nr = 1, ar = function (e) {
+    }), er)),fs.registerLanguage("php", (nr || (nr = 1, ar = function (e) {
         const t = e.regex, a = /(?![A-Za-z0-9])(?![$])/, n = t.concat(/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/, a),
             i = t.concat(/(\\?[A-Z][a-z0-9_\x7f-\xff]+|\\?[A-Z]+(?=[A-Z][a-z0-9_\x7f-\xff])){1,}/, a),
             r = {scope: "variable", match: "\\$+" + n},
@@ -6087,19 +6145,19 @@
                     match: [i, t.concat("::", t.lookahead(/(?!class\b)/))],
                     scope: {1: "title.class"}
                 }, {match: [i, /::/, /class/], scope: {1: "title.class", 3: "variable.language"}}]
-            }, T = {scope: "attr", match: t.concat(n, t.lookahead(":"), t.lookahead(/(?!::)/))}, C = {
+            }, T = {scope: "attr", match: t.concat(n, t.lookahead(":"), t.lookahead(/(?!::)/))}, f = {
                 relevance: 0,
                 begin: /\(/,
                 end: /\)/,
                 keywords: u,
                 contains: [T, r, b, e.C_BLOCK_COMMENT_MODE, c, _, E]
-            }, f = {
+            }, C = {
                 relevance: 0,
                 match: [/\b/, t.concat("(?!fn\\b|function\\b|", g(m).join("\\b|"), "|", g(p).join("\\b|"), "\\b)"), n, t.concat(l, "*"), t.lookahead(/(?=\()/)],
                 scope: {3: "title.function.invoke"},
-                contains: [C]
+                contains: [f]
             };
-        C.contains.push(f);
+        f.contains.push(C);
         const R = [T, b, e.C_BLOCK_COMMENT_MODE, c, _, E];
         return {
             case_insensitive: !1,
@@ -6135,7 +6193,7 @@
                     begin: /<\?/,
                     relevance: .1
                 }, {begin: /\?>/}]
-            }, {scope: "variable.language", match: /\$this\b/}, r, f, b, {
+            }, {scope: "variable.language", match: /\$this\b/}, r, C, b, {
                 match: [/const/, /\s/, n],
                 scope: {1: "keyword", 3: "variable.constant"}
             }, E, {
@@ -6180,7 +6238,7 @@
                 contains: [{match: /\b(as|const|function)\b/, scope: "keyword"}, e.UNDERSCORE_TITLE_MODE]
             }, c, _]
         }
-    }), ar)),Cs.registerLanguage("php-template", (rr || (rr = 1, ir = function (e) {
+    }), ar)),fs.registerLanguage("php-template", (rr || (rr = 1, ir = function (e) {
         return {
             name: "PHP template",
             subLanguage: "xml",
@@ -6200,9 +6258,9 @@
                 }), e.inherit(e.QUOTE_STRING_MODE, {illegal: null, className: null, contains: null, skip: !0})]
             }]
         }
-    }), ir)),Cs.registerLanguage("plaintext", sr ? or : (sr = 1, or = function (e) {
+    }), ir)),fs.registerLanguage("plaintext", sr ? or : (sr = 1, or = function (e) {
         return {name: "Plain text", aliases: ["text", "txt"], disableAutodetect: !0}
-    })),Cs.registerLanguage("pony", (cr || (cr = 1, lr = function (e) {
+    })),fs.registerLanguage("pony", (cr || (cr = 1, lr = function (e) {
         return {
             name: "Pony",
             keywords: {
@@ -6227,7 +6285,7 @@
                 relevance: 0
             }, e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE]
         }
-    }), lr)),Cs.registerLanguage("powershell", (dr || (dr = 1, _r = function (e) {
+    }), lr)),fs.registerLanguage("powershell", (dr || (dr = 1, _r = function (e) {
         const t = {
                 $pattern: /-?[A-z\.\-]+\b/,
                 keyword: "if else foreach return do while until elseif begin for trap data dynamicparam end break throw param continue finally in switch exit filter try process catch hidden static parameter",
@@ -6312,7 +6370,7 @@
             keywords: t,
             contains: p.concat(l, c, _, d, u)
         }
-    }), _r)),Cs.registerLanguage("processing", (pr || (pr = 1, mr = function (e) {
+    }), _r)),fs.registerLanguage("processing", (pr || (pr = 1, mr = function (e) {
         const t = e.regex,
             a = ["displayHeight", "displayWidth", "mouseY", "mouseX", "mousePressed", "pmouseX", "pmouseY", "key", "keyCode", "pixels", "focused", "frameCount", "frameRate", "height", "width", "size", "createGraphics", "beginDraw", "createShape", "loadShape", "PShape", "arc", "ellipse", "line", "point", "quad", "rect", "triangle", "bezier", "bezierDetail", "bezierPoint", "bezierTangent", "curve", "curveDetail", "curvePoint", "curveTangent", "curveTightness", "shape", "shapeMode", "beginContour", "beginShape", "bezierVertex", "curveVertex", "endContour", "endShape", "quadraticVertex", "vertex", "ellipseMode", "noSmooth", "rectMode", "smooth", "strokeCap", "strokeJoin", "strokeWeight", "mouseClicked", "mouseDragged", "mouseMoved", "mousePressed", "mouseReleased", "mouseWheel", "keyPressed", "keyPressedkeyReleased", "keyTyped", "print", "println", "save", "saveFrame", "day", "hour", "millis", "minute", "month", "second", "year", "background", "clear", "colorMode", "fill", "noFill", "noStroke", "stroke", "alpha", "blue", "brightness", "color", "green", "hue", "lerpColor", "red", "saturation", "modelX", "modelY", "modelZ", "screenX", "screenY", "screenZ", "ambient", "emissive", "shininess", "specular", "add", "createImage", "beginCamera", "camera", "endCamera", "frustum", "ortho", "perspective", "printCamera", "printProjection", "cursor", "frameRate", "noCursor", "exit", "loop", "noLoop", "popStyle", "pushStyle", "redraw", "binary", "boolean", "byte", "char", "float", "hex", "int", "str", "unbinary", "unhex", "join", "match", "matchAll", "nf", "nfc", "nfp", "nfs", "split", "splitTokens", "trim", "append", "arrayCopy", "concat", "expand", "reverse", "shorten", "sort", "splice", "subset", "box", "sphere", "sphereDetail", "createInput", "createReader", "loadBytes", "loadJSONArray", "loadJSONObject", "loadStrings", "loadTable", "loadXML", "open", "parseXML", "saveTable", "selectFolder", "selectInput", "beginRaw", "beginRecord", "createOutput", "createWriter", "endRaw", "endRecord", "PrintWritersaveBytes", "saveJSONArray", "saveJSONObject", "saveStream", "saveStrings", "saveXML", "selectOutput", "popMatrix", "printMatrix", "pushMatrix", "resetMatrix", "rotate", "rotateX", "rotateY", "rotateZ", "scale", "shearX", "shearY", "translate", "ambientLight", "directionalLight", "lightFalloff", "lights", "lightSpecular", "noLights", "normal", "pointLight", "spotLight", "image", "imageMode", "loadImage", "noTint", "requestImage", "tint", "texture", "textureMode", "textureWrap", "blend", "copy", "filter", "get", "loadPixels", "set", "updatePixels", "blendMode", "loadShader", "PShaderresetShader", "shader", "createFont", "loadFont", "text", "textFont", "textAlign", "textLeading", "textMode", "textSize", "textWidth", "textAscent", "textDescent", "abs", "ceil", "constrain", "dist", "exp", "floor", "lerp", "log", "mag", "map", "max", "min", "norm", "pow", "round", "sq", "sqrt", "acos", "asin", "atan", "atan2", "cos", "degrees", "radians", "sin", "tan", "noise", "noiseDetail", "noiseSeed", "random", "randomGaussian", "randomSeed"],
             n = e.IDENT_RE, i = {
@@ -6342,7 +6400,7 @@
             },
             contains: [s, r, i, o, e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE, e.APOS_STRING_MODE, e.QUOTE_STRING_MODE, e.C_NUMBER_MODE]
         }
-    }), mr)),Cs.registerLanguage("profile", (gr || (gr = 1, ur = function (e) {
+    }), mr)),fs.registerLanguage("profile", (gr || (gr = 1, ur = function (e) {
         return {
             name: "Python profiler",
             contains: [e.C_NUMBER_MODE, {
@@ -6368,7 +6426,7 @@
                 relevance: 0
             }]
         }
-    }), ur)),Cs.registerLanguage("prolog", (Sr || (Sr = 1, Er = function (e) {
+    }), ur)),fs.registerLanguage("prolog", (Sr || (Sr = 1, Er = function (e) {
         const t = {begin: /\(/, end: /\)/, relevance: 0}, a = {begin: /\[/, end: /\]/},
             n = {className: "comment", begin: /%/, end: /$/, contains: [e.PHRASAL_WORDS_MODE]},
             i = {className: "string", begin: /`/, end: /`/, contains: [e.BACKSLASH_ESCAPE]},
@@ -6381,7 +6439,7 @@
                 begin: /0'(\\'|.)/
             }, {className: "string", begin: /0'\\s/}, e.C_NUMBER_MODE];
         return t.contains = r, a.contains = r, {name: "Prolog", contains: r.concat([{begin: /\.$/}])}
-    }), Er)),Cs.registerLanguage("properties", (Tr || (Tr = 1, br = function (e) {
+    }), Er)),fs.registerLanguage("properties", (Tr || (Tr = 1, br = function (e) {
         const t = "[ \\t\\f]*", a = t + "[:=]" + t, n = "[ \\t\\f]+", i = "([^\\\\:= \\t\\f\\n]|\\\\.)+", r = {
             end: "(" + a + "|" + n + ")",
             relevance: 0,
@@ -6399,7 +6457,7 @@
                 starts: r
             }, {className: "attr", begin: i + t + "$"}]
         }
-    }), br)),Cs.registerLanguage("protobuf", (fr || (fr = 1, Cr = function (e) {
+    }), br)),fs.registerLanguage("protobuf", (Cr || (Cr = 1, fr = function (e) {
         const t = {match: [/(message|enum|service)\s+/, e.IDENT_RE], scope: {1: "keyword", 2: "title.class"}};
         return {
             name: "Protocol Buffers",
@@ -6417,7 +6475,7 @@
                 keywords: "rpc returns"
             }, {begin: /^\s*[A-Z_]+(?=\s*=[^\n]+;$)/}]
         }
-    }), Cr)),Cs.registerLanguage("puppet", (Nr || (Nr = 1, Rr = function (e) {
+    }), fr)),fs.registerLanguage("puppet", (Nr || (Nr = 1, Rr = function (e) {
         const t = e.COMMENT("#", "$"), a = "([A-Za-z_]|::)(\\w|::)*", n = e.inherit(e.TITLE_MODE, {begin: a}),
             i = {className: "variable", begin: "\\$" + a}, r = {
                 className: "string",
@@ -6463,7 +6521,7 @@
                 relevance: 0
             }]
         }
-    }), Rr)),Cs.registerLanguage("purebasic", (hr || (hr = 1, Or = function (e) {
+    }), Rr)),fs.registerLanguage("purebasic", (Or || (Or = 1, hr = function (e) {
         return {
             name: "PureBASIC",
             aliases: ["pb", "pbi"],
@@ -6484,7 +6542,7 @@
                 begin: "#[a-zA-Z_]\\w*\\$?"
             }]
         }
-    }), Or)),Cs.registerLanguage("python", (Ir || (Ir = 1, vr = function (e) {
+    }), hr)),fs.registerLanguage("python", (yr || (yr = 1, vr = function (e) {
         const t = e.regex, a = /[\p{XID_Start}_]\p{XID_Continue}*/u,
             n = ["and", "as", "assert", "async", "await", "break", "case", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "match", "nonlocal|10", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield"],
             i = {
@@ -6559,10 +6617,10 @@
             unicodeRegex: !0,
             keywords: i,
             illegal: /(<\/|\?)|=>/,
-            contains: [r, m, {begin: /\bself\b/}, {
+            contains: [r, m, {scope: "variable.language", match: /\bself\b/}, {
                 beginKeywords: "if",
                 relevance: 0
-            }, l, p, e.HASH_COMMENT_MODE, {
+            }, {match: /\bor\b/, scope: "keyword"}, l, p, e.HASH_COMMENT_MODE, {
                 match: [/\bdef/, /\s+/, a],
                 scope: {1: "keyword", 3: "title.function"},
                 contains: [u]
@@ -6571,7 +6629,7 @@
                 scope: {1: "keyword", 3: "title.class", 6: "title.class.inherited"}
             }, {className: "meta", begin: /^[\t ]*@/, end: /(?=#)|$/, contains: [m, u, l]}]
         }
-    }), vr)),Cs.registerLanguage("python-repl", yr ? Ar : (yr = 1, Ar = function (e) {
+    }), vr)),fs.registerLanguage("python-repl", Ar ? Ir : (Ar = 1, Ir = function (e) {
         return {
             aliases: ["pycon"],
             contains: [{
@@ -6580,7 +6638,7 @@
                 variants: [{begin: /^>>>(?=[ ]|$)/}, {begin: /^\.\.\.(?=[ ]|$)/}]
             }]
         }
-    })),Cs.registerLanguage("q", (Mr || (Mr = 1, Dr = function (e) {
+    })),fs.registerLanguage("q", (xr || (xr = 1, Dr = function (e) {
         return {
             name: "Q",
             aliases: ["k", "kdb"],
@@ -6593,7 +6651,7 @@
             },
             contains: [e.C_LINE_COMMENT_MODE, e.QUOTE_STRING_MODE, e.C_NUMBER_MODE]
         }
-    }), Dr)),Cs.registerLanguage("qml", (xr || (xr = 1, Lr = function (e) {
+    }), Dr)),fs.registerLanguage("qml", (Lr || (Lr = 1, Mr = function (e) {
         const t = "[a-zA-Z_][a-zA-Z0-9\\._]*",
             a = {className: "attribute", begin: "\\bid\\s*:", starts: {className: "string", end: t, returnEnd: !1}},
             n = {
@@ -6664,7 +6722,7 @@
             }, {begin: "\\." + e.IDENT_RE, relevance: 0}, a, n, i],
             illegal: /#/
         }
-    }), Lr)),Cs.registerLanguage("r", (Pr || (Pr = 1, wr = function (e) {
+    }), Mr)),fs.registerLanguage("r", (Pr || (Pr = 1, wr = function (e) {
         const t = e.regex, a = /(?:(?:[a-zA-Z]|\.[._a-zA-Z])[._a-zA-Z0-9]*)|\.(?!\d)/,
             n = t.either(/0[xX][0-9a-fA-F]+\.[0-9a-fA-F]*[pP][+-]?\d+i?/, /0[xX][0-9a-fA-F]+(?:[pP][+-]?\d+)?[Li]?/, /(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?[Li]?/),
             i = /[=!<>:]=|\|\||&&|:::?|<-|<<-|->>|->|\|>|[-+*\/?!$&|:<=>@^~]|\*\*/,
@@ -6730,7 +6788,7 @@
                 variants: [{match: i}, {match: /%[^%]*%/}]
             }, {scope: "punctuation", relevance: 0, match: r}, {begin: "`", end: "`", contains: [{begin: /\\./}]}]
         }
-    }), wr)),Cs.registerLanguage("reasonml", (Ur || (Ur = 1, kr = function (e) {
+    }), wr)),fs.registerLanguage("reasonml", (Fr || (Fr = 1, kr = function (e) {
         return {
             name: "ReasonML",
             aliases: ["re"],
@@ -6765,14 +6823,14 @@
                 relevance: 0
             }]
         }
-    }), kr)),Cs.registerLanguage("rib", (Br || (Br = 1, Fr = function (e) {
+    }), kr)),fs.registerLanguage("rib", (Br || (Br = 1, Ur = function (e) {
         return {
             name: "RenderMan RIB",
             keywords: "ArchiveRecord AreaLightSource Atmosphere Attribute AttributeBegin AttributeEnd Basis Begin Blobby Bound Clipping ClippingPlane Color ColorSamples ConcatTransform Cone CoordinateSystem CoordSysTransform CropWindow Curves Cylinder DepthOfField Detail DetailRange Disk Displacement Display End ErrorHandler Exposure Exterior Format FrameAspectRatio FrameBegin FrameEnd GeneralPolygon GeometricApproximation Geometry Hider Hyperboloid Identity Illuminate Imager Interior LightSource MakeCubeFaceEnvironment MakeLatLongEnvironment MakeShadow MakeTexture Matte MotionBegin MotionEnd NuPatch ObjectBegin ObjectEnd ObjectInstance Opacity Option Orientation Paraboloid Patch PatchMesh Perspective PixelFilter PixelSamples PixelVariance Points PointsGeneralPolygons PointsPolygons Polygon Procedural Projection Quantize ReadArchive RelativeDetail ReverseOrientation Rotate Scale ScreenWindow ShadingInterpolation ShadingRate Shutter Sides Skew SolidBegin SolidEnd Sphere SubdivisionMesh Surface TextureCoordinates Torus Transform TransformBegin TransformEnd TransformPoints Translate TrimCurve WorldBegin WorldEnd",
             illegal: "</",
             contains: [e.HASH_COMMENT_MODE, e.C_NUMBER_MODE, e.APOS_STRING_MODE, e.QUOTE_STRING_MODE]
         }
-    }), Fr)),Cs.registerLanguage("roboconf", (Yr || (Yr = 1, Gr = function (e) {
+    }), Ur)),fs.registerLanguage("roboconf", (Yr || (Yr = 1, Gr = function (e) {
         const t = "[a-zA-Z-_][^\\n{]+\\{", a = {
             className: "attribute",
             begin: /[a-zA-Z-_]+/,
@@ -6805,7 +6863,7 @@
                 contains: ["self", a, e.HASH_COMMENT_MODE]
             }, {begin: "^" + t, end: /\}/, contains: [a, e.HASH_COMMENT_MODE]}, e.HASH_COMMENT_MODE]
         }
-    }), Gr)),Cs.registerLanguage("routeros", (Vr || (Vr = 1, Hr = function (e) {
+    }), Gr)),fs.registerLanguage("routeros", (Vr || (Vr = 1, Hr = function (e) {
         const t = "foreach do while for if from to step else on-error and or not in",
             a = "true false yes no nothing nil null",
             n = {className: "variable", variants: [{begin: /\$[\w\d#@][\w\d_]*/}, {begin: /\$\{(.*?)\}/}]}, i = {
@@ -6859,7 +6917,7 @@
                 }]
             }]
         }
-    }), Hr)),Cs.registerLanguage("rsl", (zr || (zr = 1, qr = function (e) {
+    }), Hr)),fs.registerLanguage("rsl", (zr || (zr = 1, qr = function (e) {
         const t = {
             match: [/(surface|displacement|light|volume|imager)/, /\s+/, e.IDENT_RE],
             scope: {1: "keyword", 3: "title.class"}
@@ -6878,7 +6936,7 @@
                 end: "$"
             }, t, {beginKeywords: "illuminate illuminance gather", end: "\\("}]
         }
-    }), qr)),Cs.registerLanguage("ruleslanguage", (Wr || (Wr = 1, $r = function (e) {
+    }), qr)),fs.registerLanguage("ruleslanguage", (Wr || (Wr = 1, $r = function (e) {
         return {
             name: "Oracle Rules Language",
             keywords: {
@@ -6890,23 +6948,23 @@
                 variants: [{begin: "#\\s+", relevance: 0}, {begin: "#[a-zA-Z .]+"}]
             }]
         }
-    }), $r)),Cs.registerLanguage("rust", (Kr || (Kr = 1, Qr = function (e) {
-        const t = e.regex, a = {
+    }), $r)),fs.registerLanguage("rust", (Kr || (Kr = 1, Qr = function (e) {
+        const t = e.regex, a = /(r#)?/, n = t.concat(a, e.UNDERSCORE_IDENT_RE), i = t.concat(a, e.IDENT_RE), r = {
                 className: "title.function.invoke",
                 relevance: 0,
-                begin: t.concat(/\b/, /(?!let|for|while|if|else|match\b)/, e.IDENT_RE, t.lookahead(/\s*\(/))
-            }, n = "([ui](8|16|32|64|128|size)|f(32|64))?",
-            i = ["drop ", "Copy", "Send", "Sized", "Sync", "Drop", "Fn", "FnMut", "FnOnce", "ToOwned", "Clone", "Debug", "PartialEq", "PartialOrd", "Eq", "Ord", "AsRef", "AsMut", "Into", "From", "Default", "Iterator", "Extend", "IntoIterator", "DoubleEndedIterator", "ExactSizeIterator", "SliceConcatExt", "ToString", "assert!", "assert_eq!", "bitflags!", "bytes!", "cfg!", "col!", "concat!", "concat_idents!", "debug_assert!", "debug_assert_eq!", "env!", "eprintln!", "panic!", "file!", "format!", "format_args!", "include_bytes!", "include_str!", "line!", "local_data_key!", "module_path!", "option_env!", "print!", "println!", "select!", "stringify!", "try!", "unimplemented!", "unreachable!", "vec!", "write!", "writeln!", "macro_rules!", "assert_ne!", "debug_assert_ne!"],
-            r = ["i8", "i16", "i32", "i64", "i128", "isize", "u8", "u16", "u32", "u64", "u128", "usize", "f32", "f64", "str", "char", "bool", "Box", "Option", "Result", "String", "Vec"];
+                begin: t.concat(/\b/, /(?!let|for|while|if|else|match\b)/, i, t.lookahead(/\s*\(/))
+            }, o = "([ui](8|16|32|64|128|size)|f(32|64))?",
+            s = ["drop ", "Copy", "Send", "Sized", "Sync", "Drop", "Fn", "FnMut", "FnOnce", "ToOwned", "Clone", "Debug", "PartialEq", "PartialOrd", "Eq", "Ord", "AsRef", "AsMut", "Into", "From", "Default", "Iterator", "Extend", "IntoIterator", "DoubleEndedIterator", "ExactSizeIterator", "SliceConcatExt", "ToString", "assert!", "assert_eq!", "bitflags!", "bytes!", "cfg!", "col!", "concat!", "concat_idents!", "debug_assert!", "debug_assert_eq!", "env!", "eprintln!", "panic!", "file!", "format!", "format_args!", "include_bytes!", "include_str!", "line!", "local_data_key!", "module_path!", "option_env!", "print!", "println!", "select!", "stringify!", "try!", "unimplemented!", "unreachable!", "vec!", "write!", "writeln!", "macro_rules!", "assert_ne!", "debug_assert_ne!"],
+            l = ["i8", "i16", "i32", "i64", "i128", "isize", "u8", "u16", "u32", "u64", "u128", "usize", "f32", "f64", "str", "char", "bool", "Box", "Option", "Result", "String", "Vec"];
         return {
             name: "Rust",
             aliases: ["rs"],
             keywords: {
                 $pattern: e.IDENT_RE + "!?",
-                type: r,
-                keyword: ["abstract", "as", "async", "await", "become", "box", "break", "const", "continue", "crate", "do", "dyn", "else", "enum", "extern", "false", "final", "fn", "for", "if", "impl", "in", "let", "loop", "macro", "match", "mod", "move", "mut", "override", "priv", "pub", "ref", "return", "self", "Self", "static", "struct", "super", "trait", "true", "try", "type", "typeof", "unsafe", "unsized", "use", "virtual", "where", "while", "yield"],
+                type: l,
+                keyword: ["abstract", "as", "async", "await", "become", "box", "break", "const", "continue", "crate", "do", "dyn", "else", "enum", "extern", "false", "final", "fn", "for", "if", "impl", "in", "let", "loop", "macro", "match", "mod", "move", "mut", "override", "priv", "pub", "ref", "return", "self", "Self", "static", "struct", "super", "trait", "true", "try", "type", "typeof", "union", "unsafe", "unsized", "use", "virtual", "where", "while", "yield"],
                 literal: ["true", "false", "Some", "None", "Ok", "Err"],
-                built_in: i
+                built_in: s
             },
             illegal: "</",
             contains: [e.C_LINE_COMMENT_MODE, e.COMMENT("/\\*", "\\*/", {contains: ["self"]}), e.inherit(e.QUOTE_STRING_MODE, {
@@ -6917,34 +6975,31 @@
                 variants: [{begin: /b?r(#*)"(.|\n)*?"\1(?!#)/}, {begin: /b?'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/}]
             }, {className: "symbol", begin: /'[a-zA-Z_][a-zA-Z0-9_]*/}, {
                 className: "number",
-                variants: [{begin: "\\b0b([01_]+)" + n}, {begin: "\\b0o([0-7_]+)" + n}, {begin: "\\b0x([A-Fa-f0-9_]+)" + n}, {begin: "\\b(\\d[\\d_]*(\\.[0-9_]+)?([eE][+-]?[0-9_]+)?)" + n}],
+                variants: [{begin: "\\b0b([01_]+)" + o}, {begin: "\\b0o([0-7_]+)" + o}, {begin: "\\b0x([A-Fa-f0-9_]+)" + o}, {begin: "\\b(\\d[\\d_]*(\\.[0-9_]+)?([eE][+-]?[0-9_]+)?)" + o}],
                 relevance: 0
-            }, {
-                begin: [/fn/, /\s+/, e.UNDERSCORE_IDENT_RE],
-                className: {1: "keyword", 3: "title.function"}
-            }, {
+            }, {begin: [/fn/, /\s+/, n], className: {1: "keyword", 3: "title.function"}}, {
                 className: "meta",
                 begin: "#!?\\[",
                 end: "\\]",
-                contains: [{className: "string", begin: /"/, end: /"/}]
+                contains: [{className: "string", begin: /"/, end: /"/, contains: [e.BACKSLASH_ESCAPE]}]
             }, {
-                begin: [/let/, /\s+/, /(?:mut\s+)?/, e.UNDERSCORE_IDENT_RE],
+                begin: [/let/, /\s+/, /(?:mut\s+)?/, n],
                 className: {1: "keyword", 3: "keyword", 4: "variable"}
             }, {
-                begin: [/for/, /\s+/, e.UNDERSCORE_IDENT_RE, /\s+/, /in/],
+                begin: [/for/, /\s+/, n, /\s+/, /in/],
                 className: {1: "keyword", 3: "variable", 5: "keyword"}
             }, {
-                begin: [/type/, /\s+/, e.UNDERSCORE_IDENT_RE],
+                begin: [/type/, /\s+/, n],
                 className: {1: "keyword", 3: "title.class"}
             }, {
-                begin: [/(?:trait|enum|struct|union|impl|for)/, /\s+/, e.UNDERSCORE_IDENT_RE],
+                begin: [/(?:trait|enum|struct|union|impl|for)/, /\s+/, n],
                 className: {1: "keyword", 3: "title.class"}
-            }, {begin: e.IDENT_RE + "::", keywords: {keyword: "Self", built_in: i, type: r}}, {
+            }, {begin: e.IDENT_RE + "::", keywords: {keyword: "Self", built_in: s, type: l}}, {
                 className: "punctuation",
                 begin: "->"
-            }, a]
+            }, r]
         }
-    }), Qr)),Cs.registerLanguage("sas", (Xr || (Xr = 1, jr = function (e) {
+    }), Qr)),fs.registerLanguage("sas", (Xr || (Xr = 1, jr = function (e) {
         const t = e.regex;
         return {
             name: "SAS",
@@ -6973,7 +7028,7 @@
                 variants: [e.APOS_STRING_MODE, e.QUOTE_STRING_MODE]
             }, e.COMMENT("\\*", ";"), e.C_BLOCK_COMMENT_MODE]
         }
-    }), jr)),Cs.registerLanguage("scala", (Jr || (Jr = 1, Zr = function (e) {
+    }), jr)),fs.registerLanguage("scala", (Jr || (Jr = 1, Zr = function (e) {
         const t = e.regex,
             a = {className: "subst", variants: [{begin: "\\$[A-Za-z0-9_]+"}, {begin: /\$\{/, end: /\}/}]}, n = {
                 className: "string",
@@ -7043,7 +7098,7 @@
                 begin: "@[A-Za-z]+"
             }]
         }
-    }), Zr)),Cs.registerLanguage("scheme", (to || (to = 1, eo = function (e) {
+    }), Zr)),fs.registerLanguage("scheme", (to || (to = 1, eo = function (e) {
         const t = "[^\\(\\)\\[\\]\\{\\}\",'`;#|\\\\\\s]+", a = "(-|\\+)?\\d+([./]\\d+)?", n = {
                 $pattern: t,
                 built_in: "case-lambda call/cc class define-class exit-handler field import inherit init-field interface let*-values let-values let/ec mixin opt-lambda override protect provide public rename require require-for-syntax syntax syntax-case syntax-error unit/sig unless when with-syntax and begin call-with-current-continuation call-with-input-file call-with-output-file case cond define define-syntax delay do dynamic-wind else for-each if lambda let let* let-syntax letrec letrec-syntax map or syntax-rules ' * + , ,@ - ... / ; < <= = => > >= ` abs acos angle append apply asin assoc assq assv atan boolean? caar cadr call-with-input-file call-with-output-file call-with-values car cdddar cddddr cdr ceiling char->integer char-alphabetic? char-ci<=? char-ci<? char-ci=? char-ci>=? char-ci>? char-downcase char-lower-case? char-numeric? char-ready? char-upcase char-upper-case? char-whitespace? char<=? char<? char=? char>=? char>? char? close-input-port close-output-port complex? cons cos current-input-port current-output-port denominator display eof-object? eq? equal? eqv? eval even? exact->inexact exact? exp expt floor force gcd imag-part inexact->exact inexact? input-port? integer->char integer? interaction-environment lcm length list list->string list->vector list-ref list-tail list? load log magnitude make-polar make-rectangular make-string make-vector max member memq memv min modulo negative? newline not null-environment null? number->string number? numerator odd? open-input-file open-output-file output-port? pair? peek-char port? positive? procedure? quasiquote quote quotient rational? rationalize read read-char real-part real? remainder reverse round scheme-report-environment set! set-car! set-cdr! sin sqrt string string->list string->number string->symbol string-append string-ci<=? string-ci<? string-ci=? string-ci>=? string-ci>? string-copy string-fill! string-length string-ref string-set! string<=? string<? string=? string>=? string>? string? substring symbol->string symbol? tan transcript-off transcript-on truncate values vector vector->list vector-fill! vector-length vector-ref vector-set! with-input-from-file with-output-to-file write write-char zero?"
@@ -7077,7 +7132,7 @@
             illegal: /\S/,
             contains: [e.SHEBANG(), r, o, c, d, p].concat(s)
         }
-    }), eo)),Cs.registerLanguage("scilab", (no || (no = 1, ao = function (e) {
+    }), eo)),fs.registerLanguage("scilab", (no || (no = 1, ao = function (e) {
         const t = [e.C_NUMBER_MODE, {
             className: "string",
             begin: "'|\"",
@@ -7106,14 +7161,14 @@
                 contains: t
             }, e.COMMENT("//", "$")].concat(t)
         }
-    }), ao)),Cs.registerLanguage("scss", function () {
+    }), ao)),fs.registerLanguage("scss", function () {
         if (ro) return io;
         ro = 1;
-        const e = ["a", "abbr", "address", "article", "aside", "audio", "b", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "p", "q", "quote", "samp", "section", "span", "strong", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "ul", "var", "video"],
-            t = ["any-hover", "any-pointer", "aspect-ratio", "color", "color-gamut", "color-index", "device-aspect-ratio", "device-height", "device-width", "display-mode", "forced-colors", "grid", "height", "hover", "inverted-colors", "monochrome", "orientation", "overflow-block", "overflow-inline", "pointer", "prefers-color-scheme", "prefers-contrast", "prefers-reduced-motion", "prefers-reduced-transparency", "resolution", "scan", "scripting", "update", "width", "min-width", "max-width", "min-height", "max-height"],
-            a = ["active", "any-link", "blank", "checked", "current", "default", "defined", "dir", "disabled", "drop", "empty", "enabled", "first", "first-child", "first-of-type", "fullscreen", "future", "focus", "focus-visible", "focus-within", "has", "host", "host-context", "hover", "indeterminate", "in-range", "invalid", "is", "lang", "last-child", "last-of-type", "left", "link", "local-link", "not", "nth-child", "nth-col", "nth-last-child", "nth-last-col", "nth-last-of-type", "nth-of-type", "only-child", "only-of-type", "optional", "out-of-range", "past", "placeholder-shown", "read-only", "read-write", "required", "right", "root", "scope", "target", "target-within", "user-invalid", "valid", "visited", "where"],
-            n = ["after", "backdrop", "before", "cue", "cue-region", "first-letter", "first-line", "grammar-error", "marker", "part", "placeholder", "selection", "slotted", "spelling-error"],
-            i = ["align-content", "align-items", "align-self", "all", "animation", "animation-delay", "animation-direction", "animation-duration", "animation-fill-mode", "animation-iteration-count", "animation-name", "animation-play-state", "animation-timing-function", "backface-visibility", "background", "background-attachment", "background-blend-mode", "background-clip", "background-color", "background-image", "background-origin", "background-position", "background-repeat", "background-size", "block-size", "border", "border-block", "border-block-color", "border-block-end", "border-block-end-color", "border-block-end-style", "border-block-end-width", "border-block-start", "border-block-start-color", "border-block-start-style", "border-block-start-width", "border-block-style", "border-block-width", "border-bottom", "border-bottom-color", "border-bottom-left-radius", "border-bottom-right-radius", "border-bottom-style", "border-bottom-width", "border-collapse", "border-color", "border-image", "border-image-outset", "border-image-repeat", "border-image-slice", "border-image-source", "border-image-width", "border-inline", "border-inline-color", "border-inline-end", "border-inline-end-color", "border-inline-end-style", "border-inline-end-width", "border-inline-start", "border-inline-start-color", "border-inline-start-style", "border-inline-start-width", "border-inline-style", "border-inline-width", "border-left", "border-left-color", "border-left-style", "border-left-width", "border-radius", "border-right", "border-right-color", "border-right-style", "border-right-width", "border-spacing", "border-style", "border-top", "border-top-color", "border-top-left-radius", "border-top-right-radius", "border-top-style", "border-top-width", "border-width", "bottom", "box-decoration-break", "box-shadow", "box-sizing", "break-after", "break-before", "break-inside", "caption-side", "caret-color", "clear", "clip", "clip-path", "clip-rule", "color", "column-count", "column-fill", "column-gap", "column-rule", "column-rule-color", "column-rule-style", "column-rule-width", "column-span", "column-width", "columns", "contain", "content", "content-visibility", "counter-increment", "counter-reset", "cue", "cue-after", "cue-before", "cursor", "direction", "display", "empty-cells", "filter", "flex", "flex-basis", "flex-direction", "flex-flow", "flex-grow", "flex-shrink", "flex-wrap", "float", "flow", "font", "font-display", "font-family", "font-feature-settings", "font-kerning", "font-language-override", "font-size", "font-size-adjust", "font-smoothing", "font-stretch", "font-style", "font-synthesis", "font-variant", "font-variant-caps", "font-variant-east-asian", "font-variant-ligatures", "font-variant-numeric", "font-variant-position", "font-variation-settings", "font-weight", "gap", "glyph-orientation-vertical", "grid", "grid-area", "grid-auto-columns", "grid-auto-flow", "grid-auto-rows", "grid-column", "grid-column-end", "grid-column-start", "grid-gap", "grid-row", "grid-row-end", "grid-row-start", "grid-template", "grid-template-areas", "grid-template-columns", "grid-template-rows", "hanging-punctuation", "height", "hyphens", "icon", "image-orientation", "image-rendering", "image-resolution", "ime-mode", "inline-size", "isolation", "justify-content", "left", "letter-spacing", "line-break", "line-height", "list-style", "list-style-image", "list-style-position", "list-style-type", "margin", "margin-block", "margin-block-end", "margin-block-start", "margin-bottom", "margin-inline", "margin-inline-end", "margin-inline-start", "margin-left", "margin-right", "margin-top", "marks", "mask", "mask-border", "mask-border-mode", "mask-border-outset", "mask-border-repeat", "mask-border-slice", "mask-border-source", "mask-border-width", "mask-clip", "mask-composite", "mask-image", "mask-mode", "mask-origin", "mask-position", "mask-repeat", "mask-size", "mask-type", "max-block-size", "max-height", "max-inline-size", "max-width", "min-block-size", "min-height", "min-inline-size", "min-width", "mix-blend-mode", "nav-down", "nav-index", "nav-left", "nav-right", "nav-up", "none", "normal", "object-fit", "object-position", "opacity", "order", "orphans", "outline", "outline-color", "outline-offset", "outline-style", "outline-width", "overflow", "overflow-wrap", "overflow-x", "overflow-y", "padding", "padding-block", "padding-block-end", "padding-block-start", "padding-bottom", "padding-inline", "padding-inline-end", "padding-inline-start", "padding-left", "padding-right", "padding-top", "page-break-after", "page-break-before", "page-break-inside", "pause", "pause-after", "pause-before", "perspective", "perspective-origin", "pointer-events", "position", "quotes", "resize", "rest", "rest-after", "rest-before", "right", "row-gap", "scroll-margin", "scroll-margin-block", "scroll-margin-block-end", "scroll-margin-block-start", "scroll-margin-bottom", "scroll-margin-inline", "scroll-margin-inline-end", "scroll-margin-inline-start", "scroll-margin-left", "scroll-margin-right", "scroll-margin-top", "scroll-padding", "scroll-padding-block", "scroll-padding-block-end", "scroll-padding-block-start", "scroll-padding-bottom", "scroll-padding-inline", "scroll-padding-inline-end", "scroll-padding-inline-start", "scroll-padding-left", "scroll-padding-right", "scroll-padding-top", "scroll-snap-align", "scroll-snap-stop", "scroll-snap-type", "scrollbar-color", "scrollbar-gutter", "scrollbar-width", "shape-image-threshold", "shape-margin", "shape-outside", "speak", "speak-as", "src", "tab-size", "table-layout", "text-align", "text-align-all", "text-align-last", "text-combine-upright", "text-decoration", "text-decoration-color", "text-decoration-line", "text-decoration-style", "text-emphasis", "text-emphasis-color", "text-emphasis-position", "text-emphasis-style", "text-indent", "text-justify", "text-orientation", "text-overflow", "text-rendering", "text-shadow", "text-transform", "text-underline-position", "top", "transform", "transform-box", "transform-origin", "transform-style", "transition", "transition-delay", "transition-duration", "transition-property", "transition-timing-function", "unicode-bidi", "vertical-align", "visibility", "voice-balance", "voice-duration", "voice-family", "voice-pitch", "voice-range", "voice-rate", "voice-stress", "voice-volume", "white-space", "widows", "width", "will-change", "word-break", "word-spacing", "word-wrap", "writing-mode", "z-index"].reverse();
+        const e = ["a", "abbr", "address", "article", "aside", "audio", "b", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "optgroup", "option", "p", "picture", "q", "quote", "samp", "section", "select", "source", "span", "strong", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "ul", "var", "video", "defs", "g", "marker", "mask", "pattern", "svg", "switch", "symbol", "feBlend", "feColorMatrix", "feComponentTransfer", "feComposite", "feConvolveMatrix", "feDiffuseLighting", "feDisplacementMap", "feFlood", "feGaussianBlur", "feImage", "feMerge", "feMorphology", "feOffset", "feSpecularLighting", "feTile", "feTurbulence", "linearGradient", "radialGradient", "stop", "circle", "ellipse", "image", "line", "path", "polygon", "polyline", "rect", "text", "use", "textPath", "tspan", "foreignObject", "clipPath"],
+            t = ["any-hover", "any-pointer", "aspect-ratio", "color", "color-gamut", "color-index", "device-aspect-ratio", "device-height", "device-width", "display-mode", "forced-colors", "grid", "height", "hover", "inverted-colors", "monochrome", "orientation", "overflow-block", "overflow-inline", "pointer", "prefers-color-scheme", "prefers-contrast", "prefers-reduced-motion", "prefers-reduced-transparency", "resolution", "scan", "scripting", "update", "width", "min-width", "max-width", "min-height", "max-height"].sort().reverse(),
+            a = ["active", "any-link", "blank", "checked", "current", "default", "defined", "dir", "disabled", "drop", "empty", "enabled", "first", "first-child", "first-of-type", "fullscreen", "future", "focus", "focus-visible", "focus-within", "has", "host", "host-context", "hover", "indeterminate", "in-range", "invalid", "is", "lang", "last-child", "last-of-type", "left", "link", "local-link", "not", "nth-child", "nth-col", "nth-last-child", "nth-last-col", "nth-last-of-type", "nth-of-type", "only-child", "only-of-type", "optional", "out-of-range", "past", "placeholder-shown", "read-only", "read-write", "required", "right", "root", "scope", "target", "target-within", "user-invalid", "valid", "visited", "where"].sort().reverse(),
+            n = ["after", "backdrop", "before", "cue", "cue-region", "first-letter", "first-line", "grammar-error", "marker", "part", "placeholder", "selection", "slotted", "spelling-error"].sort().reverse(),
+            i = ["accent-color", "align-content", "align-items", "align-self", "alignment-baseline", "all", "anchor-name", "animation", "animation-composition", "animation-delay", "animation-direction", "animation-duration", "animation-fill-mode", "animation-iteration-count", "animation-name", "animation-play-state", "animation-range", "animation-range-end", "animation-range-start", "animation-timeline", "animation-timing-function", "appearance", "aspect-ratio", "backdrop-filter", "backface-visibility", "background", "background-attachment", "background-blend-mode", "background-clip", "background-color", "background-image", "background-origin", "background-position", "background-position-x", "background-position-y", "background-repeat", "background-size", "baseline-shift", "block-size", "border", "border-block", "border-block-color", "border-block-end", "border-block-end-color", "border-block-end-style", "border-block-end-width", "border-block-start", "border-block-start-color", "border-block-start-style", "border-block-start-width", "border-block-style", "border-block-width", "border-bottom", "border-bottom-color", "border-bottom-left-radius", "border-bottom-right-radius", "border-bottom-style", "border-bottom-width", "border-collapse", "border-color", "border-end-end-radius", "border-end-start-radius", "border-image", "border-image-outset", "border-image-repeat", "border-image-slice", "border-image-source", "border-image-width", "border-inline", "border-inline-color", "border-inline-end", "border-inline-end-color", "border-inline-end-style", "border-inline-end-width", "border-inline-start", "border-inline-start-color", "border-inline-start-style", "border-inline-start-width", "border-inline-style", "border-inline-width", "border-left", "border-left-color", "border-left-style", "border-left-width", "border-radius", "border-right", "border-right-color", "border-right-style", "border-right-width", "border-spacing", "border-start-end-radius", "border-start-start-radius", "border-style", "border-top", "border-top-color", "border-top-left-radius", "border-top-right-radius", "border-top-style", "border-top-width", "border-width", "bottom", "box-align", "box-decoration-break", "box-direction", "box-flex", "box-flex-group", "box-lines", "box-ordinal-group", "box-orient", "box-pack", "box-shadow", "box-sizing", "break-after", "break-before", "break-inside", "caption-side", "caret-color", "clear", "clip", "clip-path", "clip-rule", "color", "color-interpolation", "color-interpolation-filters", "color-profile", "color-rendering", "color-scheme", "column-count", "column-fill", "column-gap", "column-rule", "column-rule-color", "column-rule-style", "column-rule-width", "column-span", "column-width", "columns", "contain", "contain-intrinsic-block-size", "contain-intrinsic-height", "contain-intrinsic-inline-size", "contain-intrinsic-size", "contain-intrinsic-width", "container", "container-name", "container-type", "content", "content-visibility", "counter-increment", "counter-reset", "counter-set", "cue", "cue-after", "cue-before", "cursor", "cx", "cy", "direction", "display", "dominant-baseline", "empty-cells", "enable-background", "field-sizing", "fill", "fill-opacity", "fill-rule", "filter", "flex", "flex-basis", "flex-direction", "flex-flow", "flex-grow", "flex-shrink", "flex-wrap", "float", "flood-color", "flood-opacity", "flow", "font", "font-display", "font-family", "font-feature-settings", "font-kerning", "font-language-override", "font-optical-sizing", "font-palette", "font-size", "font-size-adjust", "font-smooth", "font-smoothing", "font-stretch", "font-style", "font-synthesis", "font-synthesis-position", "font-synthesis-small-caps", "font-synthesis-style", "font-synthesis-weight", "font-variant", "font-variant-alternates", "font-variant-caps", "font-variant-east-asian", "font-variant-emoji", "font-variant-ligatures", "font-variant-numeric", "font-variant-position", "font-variation-settings", "font-weight", "forced-color-adjust", "gap", "glyph-orientation-horizontal", "glyph-orientation-vertical", "grid", "grid-area", "grid-auto-columns", "grid-auto-flow", "grid-auto-rows", "grid-column", "grid-column-end", "grid-column-start", "grid-gap", "grid-row", "grid-row-end", "grid-row-start", "grid-template", "grid-template-areas", "grid-template-columns", "grid-template-rows", "hanging-punctuation", "height", "hyphenate-character", "hyphenate-limit-chars", "hyphens", "icon", "image-orientation", "image-rendering", "image-resolution", "ime-mode", "initial-letter", "initial-letter-align", "inline-size", "inset", "inset-area", "inset-block", "inset-block-end", "inset-block-start", "inset-inline", "inset-inline-end", "inset-inline-start", "isolation", "justify-content", "justify-items", "justify-self", "kerning", "left", "letter-spacing", "lighting-color", "line-break", "line-height", "line-height-step", "list-style", "list-style-image", "list-style-position", "list-style-type", "margin", "margin-block", "margin-block-end", "margin-block-start", "margin-bottom", "margin-inline", "margin-inline-end", "margin-inline-start", "margin-left", "margin-right", "margin-top", "margin-trim", "marker", "marker-end", "marker-mid", "marker-start", "marks", "mask", "mask-border", "mask-border-mode", "mask-border-outset", "mask-border-repeat", "mask-border-slice", "mask-border-source", "mask-border-width", "mask-clip", "mask-composite", "mask-image", "mask-mode", "mask-origin", "mask-position", "mask-repeat", "mask-size", "mask-type", "masonry-auto-flow", "math-depth", "math-shift", "math-style", "max-block-size", "max-height", "max-inline-size", "max-width", "min-block-size", "min-height", "min-inline-size", "min-width", "mix-blend-mode", "nav-down", "nav-index", "nav-left", "nav-right", "nav-up", "none", "normal", "object-fit", "object-position", "offset", "offset-anchor", "offset-distance", "offset-path", "offset-position", "offset-rotate", "opacity", "order", "orphans", "outline", "outline-color", "outline-offset", "outline-style", "outline-width", "overflow", "overflow-anchor", "overflow-block", "overflow-clip-margin", "overflow-inline", "overflow-wrap", "overflow-x", "overflow-y", "overlay", "overscroll-behavior", "overscroll-behavior-block", "overscroll-behavior-inline", "overscroll-behavior-x", "overscroll-behavior-y", "padding", "padding-block", "padding-block-end", "padding-block-start", "padding-bottom", "padding-inline", "padding-inline-end", "padding-inline-start", "padding-left", "padding-right", "padding-top", "page", "page-break-after", "page-break-before", "page-break-inside", "paint-order", "pause", "pause-after", "pause-before", "perspective", "perspective-origin", "place-content", "place-items", "place-self", "pointer-events", "position", "position-anchor", "position-visibility", "print-color-adjust", "quotes", "r", "resize", "rest", "rest-after", "rest-before", "right", "rotate", "row-gap", "ruby-align", "ruby-position", "scale", "scroll-behavior", "scroll-margin", "scroll-margin-block", "scroll-margin-block-end", "scroll-margin-block-start", "scroll-margin-bottom", "scroll-margin-inline", "scroll-margin-inline-end", "scroll-margin-inline-start", "scroll-margin-left", "scroll-margin-right", "scroll-margin-top", "scroll-padding", "scroll-padding-block", "scroll-padding-block-end", "scroll-padding-block-start", "scroll-padding-bottom", "scroll-padding-inline", "scroll-padding-inline-end", "scroll-padding-inline-start", "scroll-padding-left", "scroll-padding-right", "scroll-padding-top", "scroll-snap-align", "scroll-snap-stop", "scroll-snap-type", "scroll-timeline", "scroll-timeline-axis", "scroll-timeline-name", "scrollbar-color", "scrollbar-gutter", "scrollbar-width", "shape-image-threshold", "shape-margin", "shape-outside", "shape-rendering", "speak", "speak-as", "src", "stop-color", "stop-opacity", "stroke", "stroke-dasharray", "stroke-dashoffset", "stroke-linecap", "stroke-linejoin", "stroke-miterlimit", "stroke-opacity", "stroke-width", "tab-size", "table-layout", "text-align", "text-align-all", "text-align-last", "text-anchor", "text-combine-upright", "text-decoration", "text-decoration-color", "text-decoration-line", "text-decoration-skip", "text-decoration-skip-ink", "text-decoration-style", "text-decoration-thickness", "text-emphasis", "text-emphasis-color", "text-emphasis-position", "text-emphasis-style", "text-indent", "text-justify", "text-orientation", "text-overflow", "text-rendering", "text-shadow", "text-size-adjust", "text-transform", "text-underline-offset", "text-underline-position", "text-wrap", "text-wrap-mode", "text-wrap-style", "timeline-scope", "top", "touch-action", "transform", "transform-box", "transform-origin", "transform-style", "transition", "transition-behavior", "transition-delay", "transition-duration", "transition-property", "transition-timing-function", "translate", "unicode-bidi", "user-modify", "user-select", "vector-effect", "vertical-align", "view-timeline", "view-timeline-axis", "view-timeline-inset", "view-timeline-name", "view-transition-name", "visibility", "voice-balance", "voice-duration", "voice-family", "voice-pitch", "voice-range", "voice-rate", "voice-stress", "voice-volume", "white-space", "white-space-collapse", "widows", "width", "will-change", "word-break", "word-spacing", "word-wrap", "writing-mode", "x", "y", "z-index", "zoom"].sort().reverse();
         return io = function (r) {
             const o = (e => ({
                     IMPORTANT: {scope: "meta", begin: "!important"},
@@ -7174,7 +7229,7 @@
                 }, o.FUNCTION_DISPATCH]
             }
         }, io
-    }()),Cs.registerLanguage("shell", so ? oo : (so = 1, oo = function (e) {
+    }()),fs.registerLanguage("shell", so ? oo : (so = 1, oo = function (e) {
         return {
             name: "Shell Session",
             aliases: ["console", "shellsession"],
@@ -7184,7 +7239,7 @@
                 starts: {end: /[^\\](?=\s*$)/, subLanguage: "bash"}
             }]
         }
-    })),Cs.registerLanguage("smali", (co || (co = 1, lo = function (e) {
+    })),fs.registerLanguage("smali", (co || (co = 1, lo = function (e) {
         const t = ["add", "and", "cmp", "cmpg", "cmpl", "const", "div", "double", "float", "goto", "if", "int", "long", "move", "mul", "neg", "new", "nop", "not", "or", "rem", "return", "shl", "shr", "sput", "sub", "throw", "ushr", "xor"];
         return {
             name: "Smali",
@@ -7213,7 +7268,7 @@
                 }]
             }, {className: "class", begin: "L[^(;:\n]*;", relevance: 0}, {begin: "[vp][0-9]+"}]
         }
-    }), lo)),Cs.registerLanguage("smalltalk", (mo || (mo = 1, _o = function (e) {
+    }), lo)),fs.registerLanguage("smalltalk", (mo || (mo = 1, _o = function (e) {
         const t = "[a-z][a-zA-Z0-9_]*", a = {className: "string", begin: "\\$.{1}"},
             n = {className: "symbol", begin: "#" + e.UNDERSCORE_IDENT_RE};
         return {
@@ -7232,7 +7287,7 @@
                 contains: [{begin: "(\\|[ ]*)?" + t}]
             }, {begin: "#\\(", end: "\\)", contains: [e.APOS_STRING_MODE, a, e.C_NUMBER_MODE, n]}]
         }
-    }), _o)),Cs.registerLanguage("sml", (uo || (uo = 1, po = function (e) {
+    }), _o)),fs.registerLanguage("sml", (uo || (uo = 1, po = function (e) {
         return {
             name: "SML (Standard ML)",
             aliases: ["ml"],
@@ -7263,7 +7318,7 @@
                 relevance: 0
             }, {begin: /[-=]>/}]
         }
-    }), po)),Cs.registerLanguage("sqf", (Eo || (Eo = 1, go = function (e) {
+    }), po)),fs.registerLanguage("sqf", (Eo || (Eo = 1, go = function (e) {
         const t = {
             className: "string",
             variants: [{begin: '"', end: '"', contains: [{begin: '""', relevance: 0}]}, {
@@ -7296,7 +7351,7 @@
             }, {className: "title", begin: /[a-zA-Z][a-zA-Z_0-9]*_fnc_[a-zA-Z_0-9]+/}, t, a],
             illegal: [/\$[^a-fA-F0-9]/, /\w\$/, /\?/, /@/, / \| /, /[a-zA-Z_]\./, /\:\=/, /\[\:/]
         }
-    }), go)),Cs.registerLanguage("sql", (bo || (bo = 1, So = function (e) {
+    }), go)),fs.registerLanguage("sql", (bo || (bo = 1, So = function (e) {
         const t = e.regex, a = e.COMMENT("--", "$"), n = ["true", "false", "unknown"],
             i = ["bigint", "binary", "blob", "boolean", "char", "character", "clob", "date", "dec", "decfloat", "decimal", "float", "int", "integer", "interval", "nchar", "nclob", "national", "numeric", "real", "row", "smallint", "time", "timestamp", "varchar", "varying", "varbinary"],
             r = ["abs", "acos", "array_agg", "asin", "atan", "avg", "cast", "ceil", "ceiling", "coalesce", "corr", "cos", "cosh", "count", "covar_pop", "covar_samp", "cume_dist", "dense_rank", "deref", "element", "exp", "extract", "first_value", "floor", "json_array", "json_arrayagg", "json_exists", "json_object", "json_objectagg", "json_query", "json_table", "json_table_primitive", "json_value", "lag", "last_value", "lead", "listagg", "ln", "log", "log10", "lower", "max", "min", "mod", "nth_value", "ntile", "nullif", "percent_rank", "percentile_cont", "percentile_disc", "position", "position_regex", "power", "rank", "regr_avgx", "regr_avgy", "regr_count", "regr_intercept", "regr_r2", "regr_slope", "regr_sxx", "regr_sxy", "regr_syy", "row_number", "sin", "sinh", "sqrt", "stddev_pop", "stddev_samp", "substring", "substring_regex", "sum", "tan", "tanh", "translate", "translate_regex", "treat", "trim", "trim_array", "unnest", "upper", "value_of", "var_pop", "var_samp", "width_bucket"],
@@ -7338,7 +7393,7 @@
                 relevance: 0
             }]
         }
-    }), So)),Cs.registerLanguage("stan", (Co || (Co = 1, To = function (e) {
+    }), So)),fs.registerLanguage("stan", (fo || (fo = 1, To = function (e) {
         const t = e.regex,
             a = ["bernoulli", "bernoulli_logit", "bernoulli_logit_glm", "beta", "beta_binomial", "beta_proportion", "binomial", "binomial_logit", "categorical", "categorical_logit", "categorical_logit_glm", "cauchy", "chi_square", "dirichlet", "discrete_range", "double_exponential", "exp_mod_normal", "exponential", "frechet", "gamma", "gaussian_dlm_obs", "gumbel", "hmm_latent", "hypergeometric", "inv_chi_square", "inv_gamma", "inv_wishart", "inv_wishart_cholesky", "lkj_corr", "lkj_corr_cholesky", "logistic", "loglogistic", "lognormal", "multi_gp", "multi_gp_cholesky", "multinomial", "multinomial_logit", "multi_normal", "multi_normal_cholesky", "multi_normal_prec", "multi_student_cholesky_t", "multi_student_t", "multi_student_t_cholesky", "neg_binomial", "neg_binomial_2", "neg_binomial_2_log", "neg_binomial_2_log_glm", "normal", "normal_id_glm", "ordered_logistic", "ordered_logistic_glm", "ordered_probit", "pareto", "pareto_type_2", "poisson", "poisson_log", "poisson_log_glm", "rayleigh", "scaled_inv_chi_square", "skew_double_exponential", "skew_normal", "std_normal", "std_normal_log", "student_t", "uniform", "von_mises", "weibull", "wiener", "wishart", "wishart_cholesky"],
             n = e.COMMENT(/\/\*/, /\*\//, {relevance: 0, contains: [{scope: "doctag", match: /@(return|param)/}]}),
@@ -7387,7 +7442,7 @@
                 relevance: 0
             }, {scope: "string", begin: /"/, end: /"/}]
         }
-    }), To)),Cs.registerLanguage("stata", (Ro || (Ro = 1, fo = function (e) {
+    }), To)),fs.registerLanguage("stata", (Ro || (Ro = 1, Co = function (e) {
         return {
             name: "Stata",
             aliases: ["do", "ado"],
@@ -7402,7 +7457,7 @@
                 variants: [{begin: "\\b(abs|acos|asin|atan|atan2|atanh|ceil|cloglog|comb|cos|digamma|exp|floor|invcloglog|invlogit|ln|lnfact|lnfactorial|lngamma|log|log10|max|min|mod|reldif|round|sign|sin|sqrt|sum|tan|tanh|trigamma|trunc|betaden|Binomial|binorm|binormal|chi2|chi2tail|dgammapda|dgammapdada|dgammapdadx|dgammapdx|dgammapdxdx|F|Fden|Ftail|gammaden|gammap|ibeta|invbinomial|invchi2|invchi2tail|invF|invFtail|invgammap|invibeta|invnchi2|invnFtail|invnibeta|invnorm|invnormal|invttail|nbetaden|nchi2|nFden|nFtail|nibeta|norm|normal|normalden|normd|npnchi2|tden|ttail|uniform|abbrev|char|index|indexnot|length|lower|ltrim|match|plural|proper|real|regexm|regexr|regexs|reverse|rtrim|string|strlen|strlower|strltrim|strmatch|strofreal|strpos|strproper|strreverse|strrtrim|strtrim|strupper|subinstr|subinword|substr|trim|upper|word|wordcount|_caller|autocode|byteorder|chop|clip|cond|e|epsdouble|epsfloat|group|inlist|inrange|irecode|matrix|maxbyte|maxdouble|maxfloat|maxint|maxlong|mi|minbyte|mindouble|minfloat|minint|minlong|missing|r|recode|replay|return|s|scalar|d|date|day|dow|doy|halfyear|mdy|month|quarter|week|year|d|daily|dofd|dofh|dofm|dofq|dofw|dofy|h|halfyearly|hofd|m|mofd|monthly|q|qofd|quarterly|tin|twithin|w|weekly|wofd|y|yearly|yh|ym|yofd|yq|yw|cholesky|colnumb|colsof|corr|det|diag|diag0cnt|el|get|hadamard|I|inv|invsym|issym|issymmetric|J|matmissing|matuniform|mreldif|nullmat|rownumb|rowsof|sweep|syminv|trace|vec|vecdiag)(?=\\()"}]
             }, e.COMMENT("^[ \t]*\\*.*$", !1), e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE]
         }
-    }), fo)),Cs.registerLanguage("step21", (Oo || (Oo = 1, No = function (e) {
+    }), Co)),fs.registerLanguage("step21", (ho || (ho = 1, No = function (e) {
         return {
             name: "STEP Part 21",
             aliases: ["p21", "step", "stp"],
@@ -7418,15 +7473,15 @@
                 end: "'"
             }, {className: "symbol", variants: [{begin: "#", end: "\\d+", illegal: "\\W"}]}]
         }
-    }), No)),Cs.registerLanguage("stylus", function () {
-        if (vo) return ho;
+    }), No)),fs.registerLanguage("stylus", function () {
+        if (vo) return Oo;
         vo = 1;
-        const e = ["a", "abbr", "address", "article", "aside", "audio", "b", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "p", "q", "quote", "samp", "section", "span", "strong", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "ul", "var", "video"],
-            t = ["any-hover", "any-pointer", "aspect-ratio", "color", "color-gamut", "color-index", "device-aspect-ratio", "device-height", "device-width", "display-mode", "forced-colors", "grid", "height", "hover", "inverted-colors", "monochrome", "orientation", "overflow-block", "overflow-inline", "pointer", "prefers-color-scheme", "prefers-contrast", "prefers-reduced-motion", "prefers-reduced-transparency", "resolution", "scan", "scripting", "update", "width", "min-width", "max-width", "min-height", "max-height"],
-            a = ["active", "any-link", "blank", "checked", "current", "default", "defined", "dir", "disabled", "drop", "empty", "enabled", "first", "first-child", "first-of-type", "fullscreen", "future", "focus", "focus-visible", "focus-within", "has", "host", "host-context", "hover", "indeterminate", "in-range", "invalid", "is", "lang", "last-child", "last-of-type", "left", "link", "local-link", "not", "nth-child", "nth-col", "nth-last-child", "nth-last-col", "nth-last-of-type", "nth-of-type", "only-child", "only-of-type", "optional", "out-of-range", "past", "placeholder-shown", "read-only", "read-write", "required", "right", "root", "scope", "target", "target-within", "user-invalid", "valid", "visited", "where"],
-            n = ["after", "backdrop", "before", "cue", "cue-region", "first-letter", "first-line", "grammar-error", "marker", "part", "placeholder", "selection", "slotted", "spelling-error"],
-            i = ["align-content", "align-items", "align-self", "all", "animation", "animation-delay", "animation-direction", "animation-duration", "animation-fill-mode", "animation-iteration-count", "animation-name", "animation-play-state", "animation-timing-function", "backface-visibility", "background", "background-attachment", "background-blend-mode", "background-clip", "background-color", "background-image", "background-origin", "background-position", "background-repeat", "background-size", "block-size", "border", "border-block", "border-block-color", "border-block-end", "border-block-end-color", "border-block-end-style", "border-block-end-width", "border-block-start", "border-block-start-color", "border-block-start-style", "border-block-start-width", "border-block-style", "border-block-width", "border-bottom", "border-bottom-color", "border-bottom-left-radius", "border-bottom-right-radius", "border-bottom-style", "border-bottom-width", "border-collapse", "border-color", "border-image", "border-image-outset", "border-image-repeat", "border-image-slice", "border-image-source", "border-image-width", "border-inline", "border-inline-color", "border-inline-end", "border-inline-end-color", "border-inline-end-style", "border-inline-end-width", "border-inline-start", "border-inline-start-color", "border-inline-start-style", "border-inline-start-width", "border-inline-style", "border-inline-width", "border-left", "border-left-color", "border-left-style", "border-left-width", "border-radius", "border-right", "border-right-color", "border-right-style", "border-right-width", "border-spacing", "border-style", "border-top", "border-top-color", "border-top-left-radius", "border-top-right-radius", "border-top-style", "border-top-width", "border-width", "bottom", "box-decoration-break", "box-shadow", "box-sizing", "break-after", "break-before", "break-inside", "caption-side", "caret-color", "clear", "clip", "clip-path", "clip-rule", "color", "column-count", "column-fill", "column-gap", "column-rule", "column-rule-color", "column-rule-style", "column-rule-width", "column-span", "column-width", "columns", "contain", "content", "content-visibility", "counter-increment", "counter-reset", "cue", "cue-after", "cue-before", "cursor", "direction", "display", "empty-cells", "filter", "flex", "flex-basis", "flex-direction", "flex-flow", "flex-grow", "flex-shrink", "flex-wrap", "float", "flow", "font", "font-display", "font-family", "font-feature-settings", "font-kerning", "font-language-override", "font-size", "font-size-adjust", "font-smoothing", "font-stretch", "font-style", "font-synthesis", "font-variant", "font-variant-caps", "font-variant-east-asian", "font-variant-ligatures", "font-variant-numeric", "font-variant-position", "font-variation-settings", "font-weight", "gap", "glyph-orientation-vertical", "grid", "grid-area", "grid-auto-columns", "grid-auto-flow", "grid-auto-rows", "grid-column", "grid-column-end", "grid-column-start", "grid-gap", "grid-row", "grid-row-end", "grid-row-start", "grid-template", "grid-template-areas", "grid-template-columns", "grid-template-rows", "hanging-punctuation", "height", "hyphens", "icon", "image-orientation", "image-rendering", "image-resolution", "ime-mode", "inline-size", "isolation", "justify-content", "left", "letter-spacing", "line-break", "line-height", "list-style", "list-style-image", "list-style-position", "list-style-type", "margin", "margin-block", "margin-block-end", "margin-block-start", "margin-bottom", "margin-inline", "margin-inline-end", "margin-inline-start", "margin-left", "margin-right", "margin-top", "marks", "mask", "mask-border", "mask-border-mode", "mask-border-outset", "mask-border-repeat", "mask-border-slice", "mask-border-source", "mask-border-width", "mask-clip", "mask-composite", "mask-image", "mask-mode", "mask-origin", "mask-position", "mask-repeat", "mask-size", "mask-type", "max-block-size", "max-height", "max-inline-size", "max-width", "min-block-size", "min-height", "min-inline-size", "min-width", "mix-blend-mode", "nav-down", "nav-index", "nav-left", "nav-right", "nav-up", "none", "normal", "object-fit", "object-position", "opacity", "order", "orphans", "outline", "outline-color", "outline-offset", "outline-style", "outline-width", "overflow", "overflow-wrap", "overflow-x", "overflow-y", "padding", "padding-block", "padding-block-end", "padding-block-start", "padding-bottom", "padding-inline", "padding-inline-end", "padding-inline-start", "padding-left", "padding-right", "padding-top", "page-break-after", "page-break-before", "page-break-inside", "pause", "pause-after", "pause-before", "perspective", "perspective-origin", "pointer-events", "position", "quotes", "resize", "rest", "rest-after", "rest-before", "right", "row-gap", "scroll-margin", "scroll-margin-block", "scroll-margin-block-end", "scroll-margin-block-start", "scroll-margin-bottom", "scroll-margin-inline", "scroll-margin-inline-end", "scroll-margin-inline-start", "scroll-margin-left", "scroll-margin-right", "scroll-margin-top", "scroll-padding", "scroll-padding-block", "scroll-padding-block-end", "scroll-padding-block-start", "scroll-padding-bottom", "scroll-padding-inline", "scroll-padding-inline-end", "scroll-padding-inline-start", "scroll-padding-left", "scroll-padding-right", "scroll-padding-top", "scroll-snap-align", "scroll-snap-stop", "scroll-snap-type", "scrollbar-color", "scrollbar-gutter", "scrollbar-width", "shape-image-threshold", "shape-margin", "shape-outside", "speak", "speak-as", "src", "tab-size", "table-layout", "text-align", "text-align-all", "text-align-last", "text-combine-upright", "text-decoration", "text-decoration-color", "text-decoration-line", "text-decoration-style", "text-emphasis", "text-emphasis-color", "text-emphasis-position", "text-emphasis-style", "text-indent", "text-justify", "text-orientation", "text-overflow", "text-rendering", "text-shadow", "text-transform", "text-underline-position", "top", "transform", "transform-box", "transform-origin", "transform-style", "transition", "transition-delay", "transition-duration", "transition-property", "transition-timing-function", "unicode-bidi", "vertical-align", "visibility", "voice-balance", "voice-duration", "voice-family", "voice-pitch", "voice-range", "voice-rate", "voice-stress", "voice-volume", "white-space", "widows", "width", "will-change", "word-break", "word-spacing", "word-wrap", "writing-mode", "z-index"].reverse();
-        return ho = function (r) {
+        const e = ["a", "abbr", "address", "article", "aside", "audio", "b", "blockquote", "body", "button", "canvas", "caption", "cite", "code", "dd", "del", "details", "dfn", "div", "dl", "dt", "em", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hgroup", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "main", "mark", "menu", "nav", "object", "ol", "optgroup", "option", "p", "picture", "q", "quote", "samp", "section", "select", "source", "span", "strong", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "tr", "ul", "var", "video", "defs", "g", "marker", "mask", "pattern", "svg", "switch", "symbol", "feBlend", "feColorMatrix", "feComponentTransfer", "feComposite", "feConvolveMatrix", "feDiffuseLighting", "feDisplacementMap", "feFlood", "feGaussianBlur", "feImage", "feMerge", "feMorphology", "feOffset", "feSpecularLighting", "feTile", "feTurbulence", "linearGradient", "radialGradient", "stop", "circle", "ellipse", "image", "line", "path", "polygon", "polyline", "rect", "text", "use", "textPath", "tspan", "foreignObject", "clipPath"],
+            t = ["any-hover", "any-pointer", "aspect-ratio", "color", "color-gamut", "color-index", "device-aspect-ratio", "device-height", "device-width", "display-mode", "forced-colors", "grid", "height", "hover", "inverted-colors", "monochrome", "orientation", "overflow-block", "overflow-inline", "pointer", "prefers-color-scheme", "prefers-contrast", "prefers-reduced-motion", "prefers-reduced-transparency", "resolution", "scan", "scripting", "update", "width", "min-width", "max-width", "min-height", "max-height"].sort().reverse(),
+            a = ["active", "any-link", "blank", "checked", "current", "default", "defined", "dir", "disabled", "drop", "empty", "enabled", "first", "first-child", "first-of-type", "fullscreen", "future", "focus", "focus-visible", "focus-within", "has", "host", "host-context", "hover", "indeterminate", "in-range", "invalid", "is", "lang", "last-child", "last-of-type", "left", "link", "local-link", "not", "nth-child", "nth-col", "nth-last-child", "nth-last-col", "nth-last-of-type", "nth-of-type", "only-child", "only-of-type", "optional", "out-of-range", "past", "placeholder-shown", "read-only", "read-write", "required", "right", "root", "scope", "target", "target-within", "user-invalid", "valid", "visited", "where"].sort().reverse(),
+            n = ["after", "backdrop", "before", "cue", "cue-region", "first-letter", "first-line", "grammar-error", "marker", "part", "placeholder", "selection", "slotted", "spelling-error"].sort().reverse(),
+            i = ["accent-color", "align-content", "align-items", "align-self", "alignment-baseline", "all", "anchor-name", "animation", "animation-composition", "animation-delay", "animation-direction", "animation-duration", "animation-fill-mode", "animation-iteration-count", "animation-name", "animation-play-state", "animation-range", "animation-range-end", "animation-range-start", "animation-timeline", "animation-timing-function", "appearance", "aspect-ratio", "backdrop-filter", "backface-visibility", "background", "background-attachment", "background-blend-mode", "background-clip", "background-color", "background-image", "background-origin", "background-position", "background-position-x", "background-position-y", "background-repeat", "background-size", "baseline-shift", "block-size", "border", "border-block", "border-block-color", "border-block-end", "border-block-end-color", "border-block-end-style", "border-block-end-width", "border-block-start", "border-block-start-color", "border-block-start-style", "border-block-start-width", "border-block-style", "border-block-width", "border-bottom", "border-bottom-color", "border-bottom-left-radius", "border-bottom-right-radius", "border-bottom-style", "border-bottom-width", "border-collapse", "border-color", "border-end-end-radius", "border-end-start-radius", "border-image", "border-image-outset", "border-image-repeat", "border-image-slice", "border-image-source", "border-image-width", "border-inline", "border-inline-color", "border-inline-end", "border-inline-end-color", "border-inline-end-style", "border-inline-end-width", "border-inline-start", "border-inline-start-color", "border-inline-start-style", "border-inline-start-width", "border-inline-style", "border-inline-width", "border-left", "border-left-color", "border-left-style", "border-left-width", "border-radius", "border-right", "border-right-color", "border-right-style", "border-right-width", "border-spacing", "border-start-end-radius", "border-start-start-radius", "border-style", "border-top", "border-top-color", "border-top-left-radius", "border-top-right-radius", "border-top-style", "border-top-width", "border-width", "bottom", "box-align", "box-decoration-break", "box-direction", "box-flex", "box-flex-group", "box-lines", "box-ordinal-group", "box-orient", "box-pack", "box-shadow", "box-sizing", "break-after", "break-before", "break-inside", "caption-side", "caret-color", "clear", "clip", "clip-path", "clip-rule", "color", "color-interpolation", "color-interpolation-filters", "color-profile", "color-rendering", "color-scheme", "column-count", "column-fill", "column-gap", "column-rule", "column-rule-color", "column-rule-style", "column-rule-width", "column-span", "column-width", "columns", "contain", "contain-intrinsic-block-size", "contain-intrinsic-height", "contain-intrinsic-inline-size", "contain-intrinsic-size", "contain-intrinsic-width", "container", "container-name", "container-type", "content", "content-visibility", "counter-increment", "counter-reset", "counter-set", "cue", "cue-after", "cue-before", "cursor", "cx", "cy", "direction", "display", "dominant-baseline", "empty-cells", "enable-background", "field-sizing", "fill", "fill-opacity", "fill-rule", "filter", "flex", "flex-basis", "flex-direction", "flex-flow", "flex-grow", "flex-shrink", "flex-wrap", "float", "flood-color", "flood-opacity", "flow", "font", "font-display", "font-family", "font-feature-settings", "font-kerning", "font-language-override", "font-optical-sizing", "font-palette", "font-size", "font-size-adjust", "font-smooth", "font-smoothing", "font-stretch", "font-style", "font-synthesis", "font-synthesis-position", "font-synthesis-small-caps", "font-synthesis-style", "font-synthesis-weight", "font-variant", "font-variant-alternates", "font-variant-caps", "font-variant-east-asian", "font-variant-emoji", "font-variant-ligatures", "font-variant-numeric", "font-variant-position", "font-variation-settings", "font-weight", "forced-color-adjust", "gap", "glyph-orientation-horizontal", "glyph-orientation-vertical", "grid", "grid-area", "grid-auto-columns", "grid-auto-flow", "grid-auto-rows", "grid-column", "grid-column-end", "grid-column-start", "grid-gap", "grid-row", "grid-row-end", "grid-row-start", "grid-template", "grid-template-areas", "grid-template-columns", "grid-template-rows", "hanging-punctuation", "height", "hyphenate-character", "hyphenate-limit-chars", "hyphens", "icon", "image-orientation", "image-rendering", "image-resolution", "ime-mode", "initial-letter", "initial-letter-align", "inline-size", "inset", "inset-area", "inset-block", "inset-block-end", "inset-block-start", "inset-inline", "inset-inline-end", "inset-inline-start", "isolation", "justify-content", "justify-items", "justify-self", "kerning", "left", "letter-spacing", "lighting-color", "line-break", "line-height", "line-height-step", "list-style", "list-style-image", "list-style-position", "list-style-type", "margin", "margin-block", "margin-block-end", "margin-block-start", "margin-bottom", "margin-inline", "margin-inline-end", "margin-inline-start", "margin-left", "margin-right", "margin-top", "margin-trim", "marker", "marker-end", "marker-mid", "marker-start", "marks", "mask", "mask-border", "mask-border-mode", "mask-border-outset", "mask-border-repeat", "mask-border-slice", "mask-border-source", "mask-border-width", "mask-clip", "mask-composite", "mask-image", "mask-mode", "mask-origin", "mask-position", "mask-repeat", "mask-size", "mask-type", "masonry-auto-flow", "math-depth", "math-shift", "math-style", "max-block-size", "max-height", "max-inline-size", "max-width", "min-block-size", "min-height", "min-inline-size", "min-width", "mix-blend-mode", "nav-down", "nav-index", "nav-left", "nav-right", "nav-up", "none", "normal", "object-fit", "object-position", "offset", "offset-anchor", "offset-distance", "offset-path", "offset-position", "offset-rotate", "opacity", "order", "orphans", "outline", "outline-color", "outline-offset", "outline-style", "outline-width", "overflow", "overflow-anchor", "overflow-block", "overflow-clip-margin", "overflow-inline", "overflow-wrap", "overflow-x", "overflow-y", "overlay", "overscroll-behavior", "overscroll-behavior-block", "overscroll-behavior-inline", "overscroll-behavior-x", "overscroll-behavior-y", "padding", "padding-block", "padding-block-end", "padding-block-start", "padding-bottom", "padding-inline", "padding-inline-end", "padding-inline-start", "padding-left", "padding-right", "padding-top", "page", "page-break-after", "page-break-before", "page-break-inside", "paint-order", "pause", "pause-after", "pause-before", "perspective", "perspective-origin", "place-content", "place-items", "place-self", "pointer-events", "position", "position-anchor", "position-visibility", "print-color-adjust", "quotes", "r", "resize", "rest", "rest-after", "rest-before", "right", "rotate", "row-gap", "ruby-align", "ruby-position", "scale", "scroll-behavior", "scroll-margin", "scroll-margin-block", "scroll-margin-block-end", "scroll-margin-block-start", "scroll-margin-bottom", "scroll-margin-inline", "scroll-margin-inline-end", "scroll-margin-inline-start", "scroll-margin-left", "scroll-margin-right", "scroll-margin-top", "scroll-padding", "scroll-padding-block", "scroll-padding-block-end", "scroll-padding-block-start", "scroll-padding-bottom", "scroll-padding-inline", "scroll-padding-inline-end", "scroll-padding-inline-start", "scroll-padding-left", "scroll-padding-right", "scroll-padding-top", "scroll-snap-align", "scroll-snap-stop", "scroll-snap-type", "scroll-timeline", "scroll-timeline-axis", "scroll-timeline-name", "scrollbar-color", "scrollbar-gutter", "scrollbar-width", "shape-image-threshold", "shape-margin", "shape-outside", "shape-rendering", "speak", "speak-as", "src", "stop-color", "stop-opacity", "stroke", "stroke-dasharray", "stroke-dashoffset", "stroke-linecap", "stroke-linejoin", "stroke-miterlimit", "stroke-opacity", "stroke-width", "tab-size", "table-layout", "text-align", "text-align-all", "text-align-last", "text-anchor", "text-combine-upright", "text-decoration", "text-decoration-color", "text-decoration-line", "text-decoration-skip", "text-decoration-skip-ink", "text-decoration-style", "text-decoration-thickness", "text-emphasis", "text-emphasis-color", "text-emphasis-position", "text-emphasis-style", "text-indent", "text-justify", "text-orientation", "text-overflow", "text-rendering", "text-shadow", "text-size-adjust", "text-transform", "text-underline-offset", "text-underline-position", "text-wrap", "text-wrap-mode", "text-wrap-style", "timeline-scope", "top", "touch-action", "transform", "transform-box", "transform-origin", "transform-style", "transition", "transition-behavior", "transition-delay", "transition-duration", "transition-property", "transition-timing-function", "translate", "unicode-bidi", "user-modify", "user-select", "vector-effect", "vertical-align", "view-timeline", "view-timeline-axis", "view-timeline-inset", "view-timeline-name", "view-transition-name", "visibility", "voice-balance", "voice-duration", "voice-family", "voice-pitch", "voice-range", "voice-rate", "voice-stress", "voice-volume", "white-space", "white-space-collapse", "widows", "width", "will-change", "word-break", "word-spacing", "word-wrap", "writing-mode", "x", "y", "z-index", "zoom"].sort().reverse();
+        return Oo = function (r) {
             const o = (e => ({
                 IMPORTANT: {scope: "meta", begin: "!important"},
                 BLOCK_COMMENT: e.C_BLOCK_COMMENT_MODE,
@@ -7497,8 +7552,8 @@
                     }
                 }, o.FUNCTION_DISPATCH]
             }
-        }, ho
-    }()),Cs.registerLanguage("subunit", Ao ? Io : (Ao = 1, Io = function (e) {
+        }, Oo
+    }()),fs.registerLanguage("subunit", Io ? yo : (Io = 1, yo = function (e) {
         return {
             name: "SubUnit",
             case_insensitive: !0,
@@ -7511,8 +7566,8 @@
                 variants: [{begin: "^(test|testing|success|successful|failure|error|skip|xfail|uxsuccess)(:?)\\s+(test)?"}, {begin: "^progress(:?)(\\s+)?(pop|push)?"}, {begin: "^tags:"}, {begin: "^time:"}]
             }]
         }
-    })),Cs.registerLanguage("swift", function () {
-        if (Do) return yo;
+    })),fs.registerLanguage("swift", function () {
+        if (Do) return Ao;
 
         function e(e) {
             return e ? "string" == typeof e ? e : e.source : null
@@ -7537,7 +7592,7 @@
         Do = 1;
         const i = e => a(/\b/, e, /\w$/.test(e) ? /\b/ : /\B/), r = ["Protocol", "Type"].map(i),
             o = ["init", "self"].map(i), s = ["Any", "Self"],
-            l = ["actor", "any", "associatedtype", "async", "await", /as\?/, /as!/, "as", "borrowing", "break", "case", "catch", "class", "consume", "consuming", "continue", "convenience", "copy", "default", "defer", "deinit", "didSet", "distributed", "do", "dynamic", "each", "else", "enum", "extension", "fallthrough", /fileprivate\(set\)/, "fileprivate", "final", "for", "func", "get", "guard", "if", "import", "indirect", "infix", /init\?/, /init!/, "inout", /internal\(set\)/, "internal", "in", "is", "isolated", "nonisolated", "lazy", "let", "macro", "mutating", "nonmutating", /open\(set\)/, "open", "operator", "optional", "override", "postfix", "precedencegroup", "prefix", /private\(set\)/, "private", "protocol", /public\(set\)/, "public", "repeat", "required", "rethrows", "return", "set", "some", "static", "struct", "subscript", "super", "switch", "throws", "throw", /try\?/, /try!/, "try", "typealias", /unowned\(safe\)/, /unowned\(unsafe\)/, "unowned", "var", "weak", "where", "while", "willSet"],
+            l = ["actor", "any", "associatedtype", "async", "await", /as\?/, /as!/, "as", "borrowing", "break", "case", "catch", "class", "consume", "consuming", "continue", "convenience", "copy", "default", "defer", "deinit", "didSet", "distributed", "do", "dynamic", "each", "else", "enum", "extension", "fallthrough", /fileprivate\(set\)/, "fileprivate", "final", "for", "func", "get", "guard", "if", "import", "indirect", "infix", /init\?/, /init!/, "inout", /internal\(set\)/, "internal", "in", "is", "isolated", "nonisolated", "lazy", "let", "macro", "mutating", "nonmutating", /open\(set\)/, "open", "operator", "optional", "override", "package", "postfix", "precedencegroup", "prefix", /private\(set\)/, "private", "protocol", /public\(set\)/, "public", "repeat", "required", "rethrows", "return", "set", "some", "static", "struct", "subscript", "super", "switch", "throws", "throw", /try\?/, /try!/, "try", "typealias", /unowned\(safe\)/, /unowned\(unsafe\)/, "unowned", "var", "weak", "where", "while", "willSet"],
             c = ["false", "nil", "true"],
             _ = ["assignment", "associativity", "higherThan", "left", "lowerThan", "none", "right"],
             d = ["#colorLiteral", "#column", "#dsohandle", "#else", "#elseif", "#endif", "#error", "#file", "#fileID", "#fileLiteral", "#filePath", "#function", "#if", "#imageLiteral", "#keyPath", "#line", "#selector", "#sourceLocation", "#warning"],
@@ -7548,35 +7603,35 @@
             E = n(/[a-zA-Z_]/, /[\u00A8\u00AA\u00AD\u00AF\u00B2-\u00B5\u00B7-\u00BA]/, /[\u00BC-\u00BE\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]/, /[\u0100-\u02FF\u0370-\u167F\u1681-\u180D\u180F-\u1DBF]/, /[\u1E00-\u1FFF]/, /[\u200B-\u200D\u202A-\u202E\u203F-\u2040\u2054\u2060-\u206F]/, /[\u2070-\u20CF\u2100-\u218F\u2460-\u24FF\u2776-\u2793]/, /[\u2C00-\u2DFF\u2E80-\u2FFF]/, /[\u3004-\u3007\u3021-\u302F\u3031-\u303F\u3040-\uD7FF]/, /[\uF900-\uFD3D\uFD40-\uFDCF\uFDF0-\uFE1F\uFE30-\uFE44]/, /[\uFE47-\uFEFE\uFF00-\uFFFD]/),
             S = n(E, /\d/, /[\u0300-\u036F\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]/), b = a(E, S, "*"),
             T = a(/[A-Z]/, S, "*"),
-            C = ["attached", "autoclosure", a(/convention\(/, n("swift", "block", "c"), /\)/), "discardableResult", "dynamicCallable", "dynamicMemberLookup", "escaping", "freestanding", "frozen", "GKInspectable", "IBAction", "IBDesignable", "IBInspectable", "IBOutlet", "IBSegueAction", "inlinable", "main", "nonobjc", "NSApplicationMain", "NSCopying", "NSManaged", a(/objc\(/, b, /\)/), "objc", "objcMembers", "propertyWrapper", "requires_stored_property_inits", "resultBuilder", "Sendable", "testable", "UIApplicationMain", "unchecked", "unknown", "usableFromInline", "warn_unqualified_access"],
-            f = ["iOS", "iOSApplicationExtension", "macOS", "macOSApplicationExtension", "macCatalyst", "macCatalystApplicationExtension", "watchOS", "watchOSApplicationExtension", "tvOS", "tvOSApplicationExtension", "swift"];
-        return yo = function (e) {
+            f = ["attached", "autoclosure", a(/convention\(/, n("swift", "block", "c"), /\)/), "discardableResult", "dynamicCallable", "dynamicMemberLookup", "escaping", "freestanding", "frozen", "GKInspectable", "IBAction", "IBDesignable", "IBInspectable", "IBOutlet", "IBSegueAction", "inlinable", "main", "nonobjc", "NSApplicationMain", "NSCopying", "NSManaged", a(/objc\(/, b, /\)/), "objc", "objcMembers", "propertyWrapper", "requires_stored_property_inits", "resultBuilder", "Sendable", "testable", "UIApplicationMain", "unchecked", "unknown", "usableFromInline", "warn_unqualified_access"],
+            C = ["iOS", "iOSApplicationExtension", "macOS", "macOSApplicationExtension", "macCatalyst", "macCatalystApplicationExtension", "watchOS", "watchOSApplicationExtension", "tvOS", "tvOSApplicationExtension", "swift"];
+        return Ao = function (e) {
             const p = {match: /\s+/, relevance: 0}, E = e.COMMENT("/\\*", "\\*/", {contains: ["self"]}),
                 R = [e.C_LINE_COMMENT_MODE, E], N = {match: [/\./, n(...r, ...o)], className: {2: "keyword"}},
-                O = {match: a(/\./, n(...l)), relevance: 0}, h = l.filter((e => "string" == typeof e)).concat(["_|0"]),
+                h = {match: a(/\./, n(...l)), relevance: 0}, O = l.filter((e => "string" == typeof e)).concat(["_|0"]),
                 v = {
                     variants: [{
                         className: "keyword",
                         match: n(...l.filter((e => "string" != typeof e)).concat(s).map(i), ...o)
                     }]
-                }, I = {$pattern: n(/\b\w+/, /#\w+/), keyword: h.concat(d), literal: c}, A = [N, O, v],
-                y = [{match: a(/\./, n(...m)), relevance: 0}, {
+                }, y = {$pattern: n(/\b\w+/, /#\w+/), keyword: O.concat(d), literal: c}, I = [N, h, v],
+                A = [{match: a(/\./, n(...m)), relevance: 0}, {
                     className: "built_in",
                     match: a(/\b/, n(...m), /(?=\()/)
                 }], D = {match: /->/, relevance: 0},
-                M = [D, {className: "operator", relevance: 0, variants: [{match: g}, {match: `\\.(\\.|${u})+`}]}],
-                L = "([0-9]_*)+", x = "([0-9a-fA-F]_*)+", w = {
+                x = [D, {className: "operator", relevance: 0, variants: [{match: g}, {match: `\\.(\\.|${u})+`}]}],
+                M = "([0-9]_*)+", L = "([0-9a-fA-F]_*)+", w = {
                     className: "number",
                     relevance: 0,
-                    variants: [{match: `\\b(${L})(\\.(${L}))?([eE][+-]?(${L}))?\\b`}, {match: `\\b0x(${x})(\\.(${x}))?([pP][+-]?(${L}))?\\b`}, {match: /\b0o([0-7]_*)+\b/}, {match: /\b0b([01]_*)+\b/}]
+                    variants: [{match: `\\b(${M})(\\.(${M}))?([eE][+-]?(${M}))?\\b`}, {match: `\\b0x(${L})(\\.(${L}))?([pP][+-]?(${M}))?\\b`}, {match: /\b0o([0-7]_*)+\b/}, {match: /\b0b([01]_*)+\b/}]
                 }, P = (e = "") => ({
                     className: "subst",
                     variants: [{match: a(/\\/, e, /[0\\tnr"']/)}, {match: a(/\\/, e, /u\{[0-9a-fA-F]{1,8}\}/)}]
                 }), k = (e = "") => ({className: "subst", match: a(/\\/, e, /[\t ]*(?:[\r\n]|\r\n)/)}),
-                U = (e = "") => ({className: "subst", label: "interpol", begin: a(/\\/, e, /\(/), end: /\)/}),
-                F = (e = "") => ({begin: a(e, /"""/), end: a(/"""/, e), contains: [P(e), k(e), U(e)]}),
-                B = (e = "") => ({begin: a(e, /"/), end: a(/"/, e), contains: [P(e), U(e)]}),
-                G = {className: "string", variants: [F(), F("#"), F("##"), F("###"), B(), B("#"), B("##"), B("###")]},
+                F = (e = "") => ({className: "subst", label: "interpol", begin: a(/\\/, e, /\(/), end: /\)/}),
+                U = (e = "") => ({begin: a(e, /"""/), end: a(/"""/, e), contains: [P(e), k(e), F(e)]}),
+                B = (e = "") => ({begin: a(e, /"/), end: a(/"/, e), contains: [P(e), F(e)]}),
+                G = {className: "string", variants: [U(), U("#"), U("##"), U("###"), B(), B("#"), B("##"), B("###")]},
                 Y = [e.BACKSLASH_ESCAPE, {begin: /\[/, end: /\]/, relevance: 0, contains: [e.BACKSLASH_ESCAPE]}],
                 H = {begin: /\/[^\s](?=[^/\n]*\/)/, end: /\//, contains: Y}, V = e => {
                     const t = a(e, /\//), n = a(/\//, e);
@@ -7585,8 +7640,8 @@
                 $ = [z, {className: "variable", match: /\$\d+/}, {className: "variable", match: `\\$${S}+`}], W = [{
                     match: /(@|#(un)?)available/,
                     scope: "keyword",
-                    starts: {contains: [{begin: /\(/, end: /\)/, keywords: f, contains: [...M, w, G]}]}
-                }, {scope: "keyword", match: a(/@/, n(...C))}, {scope: "meta", match: a(/@/, b)}], Q = {
+                    starts: {contains: [{begin: /\(/, end: /\)/, keywords: C, contains: [...x, w, G]}]}
+                }, {scope: "keyword", match: a(/@/, n(...f), t(n(/\(/, /\s+/)))}, {scope: "meta", match: a(/@/, b)}], Q = {
                     match: t(/\b[A-Z]/),
                     relevance: 0,
                     contains: [{
@@ -7596,28 +7651,28 @@
                         match: /\.\.\./,
                         relevance: 0
                     }, {match: a(/\s+&\s+/, t(T)), relevance: 0}]
-                }, K = {begin: /</, end: />/, keywords: I, contains: [...R, ...A, ...W, D, Q]};
+                }, K = {begin: /</, end: />/, keywords: y, contains: [...R, ...I, ...W, D, Q]};
             Q.contains.push(K);
             const j = {
                 begin: /\(/,
                 end: /\)/,
                 relevance: 0,
-                keywords: I,
+                keywords: y,
                 contains: ["self", {
                     match: a(b, /\s*:/),
                     keywords: "_|0",
                     relevance: 0
-                }, ...R, q, ...A, ...y, ...M, w, G, ...$, ...W, Q]
+                }, ...R, q, ...I, ...A, ...x, w, G, ...$, ...W, Q]
             }, X = {begin: /</, end: />/, keywords: "repeat each", contains: [...R, Q]}, Z = {
                 begin: /\(/,
                 end: /\)/,
-                keywords: I,
+                keywords: y,
                 contains: [{
                     begin: n(t(a(b, /\s*:/)), t(a(b, /\s+/, b, /\s*:/))),
                     end: /:/,
                     relevance: 0,
                     contains: [{className: "keyword", match: /\b_\b/}, {className: "params", match: b}]
-                }, ...R, ...A, ...M, w, G, ...W, Q, j],
+                }, ...R, ...I, ...x, w, G, ...W, Q, j],
                 endsParent: !0,
                 illegal: /["']/
             }, J = {
@@ -7636,34 +7691,36 @@
                 contains: [Q],
                 keywords: [..._, ...c],
                 end: /}/
+            }, ne = {
+                begin: [/(struct|protocol|class|extension|enum|actor)/, /\s+/, b, /\s*/],
+                beginScope: {1: "keyword", 3: "title.class"},
+                keywords: y,
+                contains: [X, ...I, {
+                    begin: /:/,
+                    end: /\{/,
+                    keywords: y,
+                    contains: [{scope: "title.class.inherited", match: T}, ...I],
+                    relevance: 0
+                }]
             };
             for (const e of G.variants) {
                 const t = e.contains.find((e => "interpol" === e.label));
-                t.keywords = I;
-                const a = [...A, ...y, ...M, w, G, ...$];
+                t.keywords = y;
+                const a = [...I, ...A, ...x, w, G, ...$];
                 t.contains = [...a, {begin: /\(/, end: /\)/, contains: ["self", ...a]}]
             }
             return {
                 name: "Swift",
-                keywords: I,
-                contains: [...R, J, ee, {
-                    beginKeywords: "struct protocol class extension enum actor",
-                    end: "\\{",
-                    excludeEnd: !0,
-                    keywords: I,
-                    contains: [e.inherit(e.TITLE_MODE, {
-                        className: "title.class",
-                        begin: /[A-Za-z$_][\u00C0-\u02B80-9A-Za-z$_]*/
-                    }), ...A]
-                }, te, ae, {
+                keywords: y,
+                contains: [...R, J, ee, ne, te, ae, {
                     beginKeywords: "import",
                     end: /$/,
                     contains: [...R],
                     relevance: 0
-                }, q, ...A, ...y, ...M, w, G, ...$, ...W, Q, j]
+                }, q, ...I, ...A, ...x, w, G, ...$, ...W, Q, j]
             }
-        }, yo
-    }()),Cs.registerLanguage("taggerscript", Lo ? Mo : (Lo = 1, Mo = function (e) {
+        }, Ao
+    }()),fs.registerLanguage("taggerscript", Mo ? xo : (Mo = 1, xo = function (e) {
         return {
             name: "Tagger Script",
             contains: [{
@@ -7677,7 +7734,7 @@
                 begin: /%[_a-zA-Z0-9:]+%/
             }, {className: "symbol", begin: /\\[\\nt$%,()]/}, {className: "symbol", begin: /\\u[a-fA-F0-9]{4}/}]
         }
-    })),Cs.registerLanguage("yaml", (wo || (wo = 1, xo = function (e) {
+    })),fs.registerLanguage("yaml", (wo || (wo = 1, Lo = function (e) {
         const t = "true false yes no null", a = "[\\w#;/?:@&=+$,.~*'()[\\]]+", n = {
                 className: "string",
                 relevance: 0,
@@ -7694,7 +7751,7 @@
             s = {begin: /\{/, end: /\}/, contains: [o], illegal: "\\n", relevance: 0},
             l = {begin: "\\[", end: "\\]", contains: [o], illegal: "\\n", relevance: 0}, c = [{
                 className: "attr",
-                variants: [{begin: "\\w[\\w :\\/.-]*:(?=[ \t]|$)"}, {begin: '"\\w[\\w :\\/.-]*":(?=[ \t]|$)'}, {begin: "'\\w[\\w :\\/.-]*':(?=[ \t]|$)"}]
+                variants: [{begin: /\w[\w :()\./-]*:(?=[ \t]|$)/}, {begin: /"\w[\w :()\./-]*":(?=[ \t]|$)/}, {begin: /'\w[\w :()\./-]*':(?=[ \t]|$)/}]
             }, {className: "meta", begin: "^---\\s*$", relevance: 10}, {
                 className: "string",
                 begin: "[\\|>]([1-9]?[+-])?[ ]*\\n( +)[^ ][^\\n]*\\n(\\2[^\\n]+\\n?)*"
@@ -7721,7 +7778,7 @@
                 relevance: 0
             }, s, l, n], _ = [...c];
         return _.pop(), _.push(i), o.contains = _, {name: "YAML", case_insensitive: !0, aliases: ["yml"], contains: c}
-    }), xo)),Cs.registerLanguage("tap", (ko || (ko = 1, Po = function (e) {
+    }), Lo)),fs.registerLanguage("tap", (ko || (ko = 1, Po = function (e) {
         return {
             name: "Test Anything Protocol",
             case_insensitive: !0,
@@ -7733,7 +7790,7 @@
                 begin: " (\\d+) "
             }, {className: "symbol", variants: [{begin: "^ok"}, {begin: "^not ok"}]}]
         }
-    }), Po)),Cs.registerLanguage("tcl", (Fo || (Fo = 1, Uo = function (e) {
+    }), Po)),fs.registerLanguage("tcl", (Uo || (Uo = 1, Fo = function (e) {
         const t = e.regex, a = /[a-zA-Z_][a-zA-Z0-9_]*/,
             n = {className: "number", variants: [e.BINARY_NUMBER_MODE, e.C_NUMBER_MODE]};
         return {
@@ -7764,7 +7821,7 @@
                 variants: [e.inherit(e.QUOTE_STRING_MODE, {illegal: null})]
             }, n]
         }
-    }), Uo)),Cs.registerLanguage("thrift", (Go || (Go = 1, Bo = function (e) {
+    }), Fo)),fs.registerLanguage("thrift", (Go || (Go = 1, Bo = function (e) {
         const t = ["bool", "byte", "i16", "i32", "i64", "double", "string", "binary"];
         return {
             name: "Thrift",
@@ -7786,7 +7843,7 @@
                 contains: ["self"]
             }]
         }
-    }), Bo)),Cs.registerLanguage("tp", (Ho || (Ho = 1, Yo = function (e) {
+    }), Bo)),fs.registerLanguage("tp", (Ho || (Ho = 1, Yo = function (e) {
         const t = {className: "number", begin: "[1-9][0-9]*", relevance: 0},
             a = {className: "symbol", begin: ":[^\\]]+"};
         return {
@@ -7821,7 +7878,7 @@
                 end: "'"
             }, e.C_NUMBER_MODE, {className: "variable", begin: "\\$[A-Za-z0-9_]+"}]
         }
-    }), Yo)),Cs.registerLanguage("twig", (qo || (qo = 1, Vo = function (e) {
+    }), Yo)),fs.registerLanguage("twig", (qo || (qo = 1, Vo = function (e) {
         const t = e.regex,
             a = ["absolute_url", "asset|0", "asset_version", "attribute", "block", "constant", "controller|0", "country_timezones", "csrf_token", "cycle", "date", "dump", "expression", "form|0", "form_end", "form_errors", "form_help", "form_label", "form_rest", "form_row", "form_start", "form_widget", "html_classes", "include", "is_granted", "logout_path", "logout_url", "max", "min", "parent", "path|0", "random", "range", "relative_path", "render", "render_esi", "source", "template_from_string", "url|0"];
         let n = ["apply", "autoescape", "block", "cache", "deprecated", "do", "embed", "extends", "filter", "flush", "for", "form_theme", "from", "if", "import", "include", "macro", "sandbox", "set", "stopwatch", "trans", "trans_default_domain", "transchoice", "use", "verbatim", "with"];
@@ -7858,7 +7915,7 @@
                 contains: ["self", l, s, i, r]
             }]
         }
-    }), Vo)),Cs.registerLanguage("typescript", function () {
+    }), Vo)),fs.registerLanguage("typescript", function () {
         if ($o) return zo;
         $o = 1;
         const e = "[A-Za-z$_][0-9A-Za-z$_]*",
@@ -7888,19 +7945,19 @@
                     className: "number",
                     variants: [{begin: `(\\b(${S})((${E})|\\.)?|(${E}))[eE][+-]?(${g})\\b`}, {begin: `\\b(${S})\\b((${E})\\b|\\.)?|(${E})\\b`}, {begin: "\\b(0|[1-9](_?[0-9])*)n\\b"}, {begin: "\\b0[xX][0-9a-fA-F](_?[0-9a-fA-F])*n?\\b"}, {begin: "\\b0[bB][0-1](_?[0-1])*n?\\b"}, {begin: "\\b0[oO][0-7](_?[0-7])*n?\\b"}, {begin: "\\b0[0-7]+n?\\b"}],
                     relevance: 0
-                }, T = {className: "subst", begin: "\\$\\{", end: "\\}", keywords: u, contains: []}, C = {
-                    begin: "html`",
+                }, T = {className: "subst", begin: "\\$\\{", end: "\\}", keywords: u, contains: []}, f = {
+                    begin: ".?html`",
                     end: "",
                     starts: {end: "`", returnEnd: !1, contains: [l.BACKSLASH_ESCAPE, T], subLanguage: "xml"}
-                }, f = {
-                    begin: "css`",
+                }, C = {
+                    begin: ".?css`",
                     end: "",
                     starts: {end: "`", returnEnd: !1, contains: [l.BACKSLASH_ESCAPE, T], subLanguage: "css"}
                 }, R = {
-                    begin: "gql`",
+                    begin: ".?gql`",
                     end: "",
                     starts: {end: "`", returnEnd: !1, contains: [l.BACKSLASH_ESCAPE, T], subLanguage: "graphql"}
-                }, N = {className: "string", begin: "`", end: "`", contains: [l.BACKSLASH_ESCAPE, T]}, O = {
+                }, N = {className: "string", begin: "`", end: "`", contains: [l.BACKSLASH_ESCAPE, T]}, h = {
                     className: "comment",
                     variants: [l.COMMENT(/\/\*\*(?!\/)/, "\\*/", {
                         relevance: 0,
@@ -7922,18 +7979,18 @@
                             }, {begin: /(?=[^\n])\s/, relevance: 0}]
                         }]
                     }), l.C_BLOCK_COMMENT_MODE, l.C_LINE_COMMENT_MODE]
-                }, h = [l.APOS_STRING_MODE, l.QUOTE_STRING_MODE, C, f, R, N, {match: /\$\d+/}, b];
-            T.contains = h.concat({begin: /\{/, end: /\}/, keywords: u, contains: ["self"].concat(h)});
-            const v = [].concat(O, T.contains),
-                I = v.concat([{begin: /\(/, end: /\)/, keywords: u, contains: ["self"].concat(v)}]), A = {
+                }, O = [l.APOS_STRING_MODE, l.QUOTE_STRING_MODE, f, C, R, N, {match: /\$\d+/}, b];
+            T.contains = O.concat({begin: /\{/, end: /\}/, keywords: u, contains: ["self"].concat(O)});
+            const v = [].concat(h, T.contains),
+                y = v.concat([{begin: /(\s*)\(/, end: /\)/, keywords: u, contains: ["self"].concat(v)}]), I = {
                     className: "params",
-                    begin: /\(/,
+                    begin: /(\s*)\(/,
                     end: /\)/,
                     excludeBegin: !0,
                     excludeEnd: !0,
                     keywords: u,
-                    contains: I
-                }, y = {
+                    contains: y
+                }, A = {
                     variants: [{
                         match: [/class/, /\s+/, _, /\s+/, /extends/, /\s+/, c.concat(_, "(", c.concat(/\./, _), ")*")],
                         scope: {1: "keyword", 3: "title.class", 5: "keyword", 7: "title.class.inherited"}
@@ -7943,19 +8000,19 @@
                     match: c.either(/\bJSON/, /\b[A-Z][a-z]+([A-Z][a-z]*|\d)*/, /\b[A-Z]{2,}([A-Z][a-z]+|\d)+([A-Z][a-z]*)*/, /\b[A-Z]{2,}[a-z]+([A-Z][a-z]+|\d)*([A-Z][a-z]*)*/),
                     className: "title.class",
                     keywords: {_: [...n, ...i]}
-                }, M = {
+                }, x = {
                     variants: [{match: [/function/, /\s+/, _, /(?=\s*\()/]}, {match: [/function/, /\s*(?=\()/]}],
                     className: {1: "keyword", 3: "title.function"},
                     label: "func.def",
-                    contains: [A],
+                    contains: [I],
                     illegal: /%/
                 };
-            const L = {
-                match: c.concat(/\b/, (x = [...r, "super", "import"], c.concat("(?!", x.join("|"), ")")), _, c.lookahead(/\(/)),
+            const M = {
+                match: c.concat(/\b/, (L = [...r, "super", "import"].map((e => `${e}\\s*\\(`)), c.concat("(?!", L.join("|"), ")")), _, c.lookahead(/\s*\(/)),
                 className: "title.function",
                 relevance: 0
             };
-            var x;
+            var L;
             const w = {
                 begin: c.concat(/\./, c.lookahead(c.concat(_, /(?![0-9A-Za-z$_(])/))),
                 end: _,
@@ -7966,33 +8023,33 @@
             }, P = {
                 match: [/get|set/, /\s+/, _, /(?=\()/],
                 className: {1: "keyword", 3: "title.function"},
-                contains: [{begin: /\(\)/}, A]
-            }, k = "(\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)|" + l.UNDERSCORE_IDENT_RE + ")\\s*=>", U = {
+                contains: [{begin: /\(\)/}, I]
+            }, k = "(\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)|" + l.UNDERSCORE_IDENT_RE + ")\\s*=>", F = {
                 match: [/const|var|let/, /\s+/, _, /\s*/, /=\s*/, /(async\s*)?/, c.lookahead(k)],
                 keywords: "async",
                 className: {1: "keyword", 3: "title.function"},
-                contains: [A]
+                contains: [I]
             };
             return {
                 name: "JavaScript",
                 aliases: ["js", "jsx", "mjs", "cjs"],
                 keywords: u,
-                exports: {PARAMS_CONTAINS: I, CLASS_REFERENCE: D},
+                exports: {PARAMS_CONTAINS: y, CLASS_REFERENCE: D},
                 illegal: /#(?![$_A-z])/,
                 contains: [l.SHEBANG({label: "shebang", binary: "node", relevance: 5}), {
                     label: "use_strict",
                     className: "meta",
                     relevance: 10,
                     begin: /^\s*['"]use (strict|asm)['"]/
-                }, l.APOS_STRING_MODE, l.QUOTE_STRING_MODE, C, f, R, N, O, {match: /\$\d+/}, b, D, {
+                }, l.APOS_STRING_MODE, l.QUOTE_STRING_MODE, f, C, R, N, h, {match: /\$\d+/}, b, D, {
                     className: "attr",
                     begin: _ + c.lookahead(":"),
                     relevance: 0
-                }, U, {
+                }, F, {
                     begin: "(" + l.RE_STARTERS_RE + "|\\b(case|return|throw)\\b)\\s*",
                     keywords: "return throw case",
                     relevance: 0,
-                    contains: [O, l.REGEXP_MODE, {
+                    contains: [h, l.REGEXP_MODE, {
                         className: "function",
                         begin: k,
                         returnBegin: !0,
@@ -8003,7 +8060,14 @@
                                 className: null,
                                 begin: /\(\s*\)/,
                                 skip: !0
-                            }, {begin: /\(/, end: /\)/, excludeBegin: !0, excludeEnd: !0, keywords: u, contains: I}]
+                            }, {
+                                begin: /(\s*)\(/,
+                                end: /\)/,
+                                excludeBegin: !0,
+                                excludeEnd: !0,
+                                keywords: u,
+                                contains: y
+                            }]
                         }]
                     }, {begin: /,/, relevance: 0}, {match: /\s+/, relevance: 0}, {
                         variants: [{
@@ -8015,31 +8079,30 @@
                             end: p.end
                         }], subLanguage: "xml", contains: [{begin: p.begin, end: p.end, skip: !0, contains: ["self"]}]
                     }]
-                }, M, {beginKeywords: "while if switch catch for"}, {
+                }, x, {beginKeywords: "while if switch catch for"}, {
                     begin: "\\b(?!function)" + l.UNDERSCORE_IDENT_RE + "\\([^()]*(\\([^()]*(\\([^()]*\\)[^()]*)*\\)[^()]*)*\\)\\s*\\{",
                     returnBegin: !0,
                     label: "func.def",
-                    contains: [A, l.inherit(l.TITLE_MODE, {begin: _, className: "title.function"})]
+                    contains: [I, l.inherit(l.TITLE_MODE, {begin: _, className: "title.function"})]
                 }, {match: /\.\.\./, relevance: 0}, w, {
                     match: "\\$" + _,
                     relevance: 0
                 }, {
                     match: [/\bconstructor(?=\s*\()/],
                     className: {1: "title.function"},
-                    contains: [A]
-                }, L, {
+                    contains: [I]
+                }, M, {
                     relevance: 0,
                     match: /\b[A-Z][A-Z_0-9]+\b/,
                     className: "variable.constant"
-                }, y, P, {match: /\$[(.]/}]
+                }, A, P, {match: /\$[(.]/}]
             }
         }
 
         return zo = function (n) {
             const i = l(n), r = e,
                 c = ["any", "void", "number", "boolean", "string", "object", "never", "symbol", "bigint", "unknown"],
-                _ = {beginKeywords: "namespace", end: /\{/, excludeEnd: !0, contains: [i.exports.CLASS_REFERENCE]},
-                d = {
+                _ = {begin: [/namespace/, /\s+/, n.IDENT_RE], beginScope: {1: "keyword", 3: "title.class"}}, d = {
                     beginKeywords: "interface",
                     end: /\{/,
                     excludeEnd: !0,
@@ -8047,7 +8110,7 @@
                     contains: [i.exports.CLASS_REFERENCE]
                 }, m = {
                     $pattern: e,
-                    keyword: t.concat(["type", "namespace", "interface", "public", "private", "protected", "implements", "declare", "abstract", "readonly", "enum", "override"]),
+                    keyword: t.concat(["type", "interface", "public", "private", "protected", "implements", "declare", "abstract", "readonly", "enum", "override", "satisfies"]),
                     literal: a,
                     built_in: s.concat(c),
                     "variable.language": o
@@ -8056,7 +8119,9 @@
                     if (-1 === n) throw new Error("can not find mode to replace");
                     e.contains.splice(n, 1, a)
                 };
-            return Object.assign(i.keywords, m), i.exports.PARAMS_CONTAINS.push(p), i.contains = i.contains.concat([p, _, d]), u(i, "shebang", n.SHEBANG()), u(i, "use_strict", {
+            Object.assign(i.keywords, m), i.exports.PARAMS_CONTAINS.push(p);
+            const g = i.contains.find((e => "attr" === e.className));
+            return i.exports.PARAMS_CONTAINS.push([i.exports.CLASS_REFERENCE, g]), i.contains = i.contains.concat([p, _, d]), u(i, "shebang", n.SHEBANG()), u(i, "use_strict", {
                 className: "meta",
                 relevance: 10,
                 begin: /^\s*['"]use strict['"]/
@@ -8065,7 +8130,7 @@
                 aliases: ["ts", "tsx", "mts", "cts"]
             }), i
         }, zo
-    }()),Cs.registerLanguage("vala", (Qo || (Qo = 1, Wo = function (e) {
+    }()),fs.registerLanguage("vala", (Qo || (Qo = 1, Wo = function (e) {
         return {
             name: "Vala",
             keywords: {
@@ -8087,7 +8152,7 @@
                 relevance: 5
             }, e.APOS_STRING_MODE, e.QUOTE_STRING_MODE, e.C_NUMBER_MODE, {className: "meta", begin: "^#", end: "$"}]
         }
-    }), Wo)),Cs.registerLanguage("vbnet", (jo || (jo = 1, Ko = function (e) {
+    }), Wo)),fs.registerLanguage("vbnet", (jo || (jo = 1, Ko = function (e) {
         const t = e.regex, a = /\d{1,2}\/\d{1,2}\/\d{4}/, n = /\d{4}-\d{1,2}-\d{1,2}/,
             i = /(\d|1[012])(:\d+){0,2} *(AM|PM)/, r = /\d{1,2}(:\d{1,2}){1,2}/, o = {
                 className: "literal",
@@ -8124,7 +8189,7 @@
                 contains: [l]
             }]
         }
-    }), Ko)),Cs.registerLanguage("vbscript", (Zo || (Zo = 1, Xo = function (e) {
+    }), Ko)),fs.registerLanguage("vbscript", (Zo || (Zo = 1, Xo = function (e) {
         const t = e.regex,
             a = ["lcase", "month", "vartype", "instrrev", "ubound", "setlocale", "getobject", "rgb", "getref", "string", "weekdayname", "rnd", "dateadd", "monthname", "now", "day", "minute", "isarray", "cbool", "round", "formatcurrency", "conversions", "csng", "timevalue", "second", "year", "space", "abs", "clng", "timeserial", "fixs", "len", "asc", "isempty", "maths", "dateserial", "atn", "timer", "isobject", "filter", "weekday", "datevalue", "ccur", "isdate", "instr", "datediff", "formatdatetime", "replace", "isnull", "right", "sgn", "array", "snumeric", "log", "cdbl", "hex", "chr", "lbound", "msgbox", "ucase", "getlocale", "cos", "cdate", "cbyte", "rtrim", "join", "hour", "oct", "typename", "trim", "strcomp", "int", "createobject", "loadpicture", "tan", "formatnumber", "mid", "split", "cint", "sin", "datepart", "ltrim", "sqr", "time", "derived", "eval", "date", "formatpercent", "exp", "inputbox", "left", "ascw", "chrw", "regexp", "cstr", "err"];
         return {
@@ -8143,13 +8208,13 @@
                 keywords: {built_in: a}
             }, e.inherit(e.QUOTE_STRING_MODE, {contains: [{begin: '""'}]}), e.COMMENT(/'/, /$/, {relevance: 0}), e.C_NUMBER_MODE]
         }
-    }), Xo)),Cs.registerLanguage("vbscript-html", es ? Jo : (es = 1, Jo = function (e) {
+    }), Xo)),fs.registerLanguage("vbscript-html", es ? Jo : (es = 1, Jo = function (e) {
         return {
             name: "VBScript in HTML",
             subLanguage: "xml",
             contains: [{begin: "<%", end: "%>", subLanguage: "vbscript"}]
         }
-    })),Cs.registerLanguage("verilog", (as || (as = 1, ts = function (e) {
+    })),fs.registerLanguage("verilog", (as || (as = 1, ts = function (e) {
         const t = e.regex,
             a = ["begin_keywords", "celldefine", "default_nettype", "default_decay_time", "default_trireg_strength", "define", "delay_mode_distributed", "delay_mode_path", "delay_mode_unit", "delay_mode_zero", "else", "elsif", "end_keywords", "endcelldefine", "endif", "ifdef", "ifndef", "include", "line", "nounconnected_drive", "pragma", "resetall", "timescale", "unconnected_drive", "undef", "undefineall"];
         return {
@@ -8180,7 +8245,7 @@
                 keywords: a
             }]
         }
-    }), ts)),Cs.registerLanguage("vhdl", (is || (is = 1, ns = function (e) {
+    }), ts)),fs.registerLanguage("vhdl", (is || (is = 1, ns = function (e) {
         const t = "\\d(_|\\d)*", a = "[eE][-+]?" + t,
             n = "\\b(" + t + "#\\w+(\\.\\w+)?#(" + a + ")?|" + t + "(\\." + t + ")?(" + a + ")?)";
         return {
@@ -8202,7 +8267,7 @@
                 contains: [e.BACKSLASH_ESCAPE]
             }, {className: "symbol", begin: "'[A-Za-z](_?[A-Za-z0-9])*", contains: [e.BACKSLASH_ESCAPE]}]
         }
-    }), ns)),Cs.registerLanguage("vim", (os || (os = 1, rs = function (e) {
+    }), ns)),fs.registerLanguage("vim", (os || (os = 1, rs = function (e) {
         return {
             name: "Vim Script",
             keywords: {
@@ -8225,7 +8290,7 @@
                 contains: [{className: "params", begin: "\\(", end: "\\)"}]
             }, {className: "symbol", begin: /<[\w-]+>/}]
         }
-    }), rs)),Cs.registerLanguage("wasm", (ls || (ls = 1, ss = function (e) {
+    }), rs)),fs.registerLanguage("wasm", (ls || (ls = 1, ss = function (e) {
         e.regex;
         const t = e.COMMENT(/\(;/, /;\)/);
         return t.contains.push("self"), {
@@ -8253,7 +8318,7 @@
                 match: /[+-]?\b(?:\d(?:_?\d)*(?:\.\d(?:_?\d)*)?(?:[eE][+-]?\d(?:_?\d)*)?|0x[\da-fA-F](?:_?[\da-fA-F])*(?:\.[\da-fA-F](?:_?[\da-fA-D])*)?(?:[pP][+-]?\d(?:_?\d)*)?)\b|\binf\b|\bnan(?::0x[\da-fA-F](?:_?[\da-fA-D])*)?\b/
             }]
         }
-    }), ss)),Cs.registerLanguage("wren", (_s || (_s = 1, cs = function (e) {
+    }), ss)),fs.registerLanguage("wren", (_s || (_s = 1, cs = function (e) {
         const t = e.regex, a = /[a-zA-Z]\w*/,
             n = ["as", "break", "class", "construct", "continue", "else", "for", "foreign", "if", "import", "in", "is", "return", "static", "var", "while"],
             i = ["true", "false", "null"], r = ["this", "super"],
@@ -8291,7 +8356,7 @@
                 }]
             };
         S.contains.push(b);
-        const T = [...n, ...r, ...i], C = {
+        const T = [...n, ...r, ...i], f = {
             relevance: 0,
             match: t.concat("\\b(?!", T.join("|"), "\\b)", /[a-zA-Z_]\w*(?:[?!]|\b)/),
             className: "variable"
@@ -8312,9 +8377,9 @@
                 className: "string",
                 begin: /"""/,
                 end: /"""/
-            }, E, e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE, p, c, g, l, s, _, m, d, C]
+            }, E, e.C_LINE_COMMENT_MODE, e.C_BLOCK_COMMENT_MODE, p, c, g, l, s, _, m, d, f]
         }
-    }), cs)),Cs.registerLanguage("x86asm", (ms || (ms = 1, ds = function (e) {
+    }), cs)),fs.registerLanguage("x86asm", (ms || (ms = 1, ds = function (e) {
         return {
             name: "Intel x86 Assembly",
             case_insensitive: !0,
@@ -8347,7 +8412,7 @@
                 relevance: 0
             }, {className: "meta", begin: /^\s*\.[\w_-]+/}]
         }
-    }), ds)),Cs.registerLanguage("xl", (us || (us = 1, ps = function (e) {
+    }), ds)),fs.registerLanguage("xl", (us || (us = 1, ps = function (e) {
         const t = {
                 $pattern: /[a-zA-Z][a-zA-Z0-9_?]*/,
                 keyword: ["if", "then", "else", "do", "while", "until", "for", "loop", "import", "with", "is", "as", "where", "when", "by", "data", "constant", "integer", "real", "text", "name", "boolean", "symbol", "infix", "prefix", "postfix", "block", "tree"],
@@ -8375,7 +8440,7 @@
                 begin: "[0-9]+#[0-9A-Z_]+(\\.[0-9-A-Z_]+)?#?([Ee][+-]?[0-9]+)?"
             }, e.NUMBER_MODE]
         }
-    }), ps)),Cs.registerLanguage("xquery", Es ? gs : (Es = 1, gs = function (e) {
+    }), ps)),fs.registerLanguage("xquery", Es ? gs : (Es = 1, gs = function (e) {
         return {
             name: "XQuery",
             aliases: ["xpath", "xq", "xqm"],
@@ -8442,7 +8507,7 @@
                 contains: [{begin: /\{/, end: /\}/, subLanguage: "xquery"}, "self"]
             }]
         }
-    })),Cs.registerLanguage("zephir", (bs || (bs = 1, Ss = function (e) {
+    })),fs.registerLanguage("zephir", (bs || (bs = 1, Ss = function (e) {
         const t = {
                 className: "string",
                 contains: [e.BACKSLASH_ESCAPE],
@@ -8489,8 +8554,8 @@
                 contains: [a]
             }, {begin: /=>/}, t, n]
         }
-    }), Ss)),Cs.HighlightJS = Cs,Cs.default = Cs;
-    var fs = e(Cs);
+    }), Ss)),fs.HighlightJS = fs,fs.default = fs;
+    var Cs = e(fs);
     !function (e, t) {
         var a, n = "hljs-ln", i = "hljs-ln-line", r = "hljs-ln-code", o = "hljs-ln-numbers", s = "hljs-ln-n",
             l = "data-line-number", c = /\r\n|\r|\n/g;
@@ -8518,10 +8583,10 @@
                     var n = function (e, t) {
                         return e.hasAttribute(t) ? e.getAttribute(t) : null
                     }(e, "data-ln-start-from");
-                    return null !== n && (a = function (e, t) {
+                    return null !== n && (a = function (e) {
                         if (!e) return 1;
-                        var a = Number(e);
-                        return isFinite(a) ? a : 1
+                        var t = Number(e);
+                        return isFinite(t) ? t : 1
                     }(n)), a
                 }(a, _)
             });
@@ -8559,11 +8624,11 @@
             }))
         }
 
-        fs ? (fs.initLineNumbersOnLoad = function (a) {
+        Cs ? (Cs.initLineNumbersOnLoad = function (a) {
             "interactive" === t.readyState || "complete" === t.readyState ? _(a) : e.addEventListener("DOMContentLoaded", (function () {
                 _(a)
             }))
-        }, fs.lineNumbersBlock = d, fs.lineNumbersValue = function (e, t) {
+        }, Cs.lineNumbersBlock = d, Cs.lineNumbersValue = function (e, t) {
             if ("string" == typeof e) {
                 var a = document.createElement("code");
                 return a.innerHTML = e, m(a, t)
@@ -8602,7 +8667,7 @@
         HIGHLIGHT_STEP_DELIMITER: "|",
         HIGHLIGHT_LINE_DELIMITER: ",",
         HIGHLIGHT_LINE_RANGE_DELIMITER: "-",
-        hljs: fs,
+        hljs: Cs,
         init: function (e) {
             let t = e.getConfig().highlight || {};
             t.highlightOnLoad = "boolean" != typeof t.highlightOnLoad || t.highlightOnLoad, t.escapeHTML = "boolean" != typeof t.escapeHTML || t.escapeHTML, Array.from(e.getRevealElement().querySelectorAll("pre code")).forEach((e => {
@@ -8628,9 +8693,9 @@
                         })).join("\n")
                     }(e)
                 }(e)), t.escapeHTML && !e.hasAttribute("data-noescape") && (e.innerHTML = e.innerHTML.replace(/</g, "&lt;").replace(/>/g, "&gt;")), e.addEventListener("focusout", (function (e) {
-                    fs.highlightElement(e.currentTarget)
+                    Cs.highlightElement(e.currentTarget)
                 }), !1)
-            })), "function" == typeof t.beforeHighlight && t.beforeHighlight(fs), t.highlightOnLoad && Array.from(e.getRevealElement().querySelectorAll("pre code")).forEach((e => {
+            })), "function" == typeof t.beforeHighlight && t.beforeHighlight(Cs), t.highlightOnLoad && Array.from(e.getRevealElement().querySelectorAll("pre code")).forEach((e => {
                 Rs.highlightBlock(e)
             })), e.on("pdf-ready", (function () {
                 [].slice.call(e.getRevealElement().querySelectorAll("pre code[data-line-numbers].current-fragment")).forEach((function (e) {
@@ -8639,8 +8704,8 @@
             }))
         },
         highlightBlock: function (e) {
-            if (fs.highlightElement(e), 0 !== e.innerHTML.trim().length && e.hasAttribute("data-line-numbers")) {
-                fs.lineNumbersBlock(e, {singleLine: !0});
+            if (Cs.highlightElement(e), 0 !== e.innerHTML.trim().length && e.hasAttribute("data-line-numbers")) {
+                Cs.lineNumbersBlock(e, {singleLine: !0});
                 var t = {currentBlock: e}, a = Rs.deserializeHighlightSteps(e.getAttribute("data-line-numbers"));
                 if (a.length > 1) {
                     var n = parseInt(e.getAttribute("data-fragment-index"), 10);
