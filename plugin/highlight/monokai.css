@@ -49,9 +49,8 @@ Monokai style - ported by Luigi Maselli - http://grigio.org
   color: #5e91b8;
 }
 
-
 .language-cmake .hljs-variable {
-  color: #ffffff;
+  color: #ddd;
 }
 
 
