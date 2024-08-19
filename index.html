@@ -16,9 +16,144 @@
 <body>
 <div class="reveal">
     <div class="slides">
-        <section>Slide 1</section>
-        <section>Slide 2</section>
-        <section>Slide 777</section>
+        <section class="reveal r-stretch">
+            <h2 class="title">Introduction</h2>
+            <div class="slide-content">
+                <ul class="my-list" style="--spacing: 5vb;">
+                    <li>I am a first time presenter and attender
+                    <li>About me: I work as a robotics scientist at PickNik Robotics. I earned my PhD in computer
+                        science from the University of New Hampshire on the topic of robot learning from demonstration.
+                    <li>I was the primary developer of <code>generate_parameter_library</code>, a ROS 2 library with a
+                        declarative syntax for managing parameters
+                </ul>
+            </div>
+        </section>
+        <section class="reveal r-stretch">
+            <h2 class="title">Outline</h2>
+            <div class="slide-content">
+                <ul class="my-list" style="--spacing: 5vb;">
+                    <li>Motivate the topic
+                    <li>High level code concept for proposal
+                    <li>Memory layout and performance
+                    <li>Real robot application
+                    <li>Summary: lessons learned
+                </ul>
+            </div>
+        </section>
+
+        <section class="reveal r-stretch">
+            <h2 class="title">Motivate the topic</h2>
+            <div class="slide-content">
+                <ul class="my-list" style="--spacing: 5vb;">
+                    <li>Some algorithms need to run at incredible speeds for optimal performance
+                    <li>This is especially true for common subroutines used by expensive algorithms
+                    <li>For example, robot path planning with RRT depends on nearest neighbor lookup and forward
+                        kinematics, and collision detection.
+                    <li>Reference the Motion planning in micro-seconds paper (not only can you generate fast code, but
+                        you can make it algorithmically different, e.g. doing collision check as the FK is done)
+                </ul>
+            </div>
+        </section>
+
+        <section class="reveal r-stretch">
+            <h2 class="title">Motivate the topic</h2>
+            <div class="slide-content">
+                <ul class="my-list" style="--spacing: 5vb;">
+                    <li> Software written by hardware manufactures has an inherit advantage because it can be written
+                        with very specific platforms in mind and take advantage of hardware specific knowledge.
+                    <li>For example, robot design with spherical wrist can decompose inverse kinematics into two stages
+                        1) find the wrist angles to achieve the desired orientation and 2) find the position value
+                        needed to find reach the desired Cartesian position.
+                    <li>Generic IK solvers cannot take advantage of this kind of knowledge in general
+                    <li>One downside of hardware specific implementations is scalability
+                    <li>Hardware generally does not change very often, other than attachments, like cameras and end
+                        effectors. Take a look at URDF?
+                </ul>
+            </div>
+        </section>
+
+        <section class="reveal r-stretch">
+            <h2 class="title">Motivate the topic</h2>
+            <div class="slide-content">
+                <ul class="my-list" style="--spacing: 5vb;">
+                    <li>Compiled code can be tested for memory allocations and real-time compatibility (no locks,
+                        exceptions, thread switching?). Safety critical applications, such as surgical robots need to
+                        meet these requirements
+                    <li>Allows for hardware specific CPU optimizations to be enabled since the code is source built on
+                        every machine
+                    <li>Some advantages of code generation as opposed to a templated robot builder are 1) less likely to
+                        make a mistake building defining the robot 2) do not have to maintain code for each of your
+                        robot
+                </ul>
+            </div>
+        </section>
+
+        <section class="reveal r-stretch">
+            <h2 class="title">Video demo?</h2>
+            <div class="slide-content">
+                Video
+            </div>
+        </section>
+
+        <section class="reveal r-stretch">
+            <h2 class="title">High level code concept for proposal</h2>
+            <div class="slide-content">
+                <ul class="my-list" style="--spacing: 5vb;">
+                    <li>Add slides showing how it should work in terms of user code, URDF, and cmake
+                </ul>
+            </div>
+        </section>
+
+        <section class="reveal r-stretch">
+            <h2 class="title">Go through example of how it is actually used for a simpler robot</h2>
+            <div class="slide-content">
+                <ul class="my-list" style="--spacing: 5vb;">
+                    <li>Show the URDF
+                    <li>Show cmake needed to generate the FK library
+                    <li>Show how python code is called in cmake and how it parses the URDF and populates Jinja templates
+                    <li>Which joint type are supported and how to implement them
+                    <li>Show user code that links against it
+                </ul>
+            </div>
+        </section>
+
+        <section class="reveal r-stretch">
+            <h2 class="title">Memory layout and performance</h2>
+            <div class="slide-content">
+                <ul class="my-list" style="--spacing: 5vb;">
+                    <li>The general strategy is to minimize cache misses and branching
+                    <li>Take advantage of cache lines
+                    <li>Explain some basics of FK matrix math
+                    <li>Show different layout and there corresponding `perf` values
+                    <li>show godbolt.org assembly output
+                </ul>
+            </div>
+        </section>
+
+        <section class="reveal r-stretch">
+            <h2 class="title">Real robot application</h2>
+            <div class="slide-content">
+                <ul class="my-list" style="--spacing: 5vb;">
+                    <li>record `perf` value and compare to existing KDL
+                    <li>Compare to KDL when compiled from source with native optimizations
+                    <li>Dynamic dispatch vs. compile-time dispatch
+                    <li>repeat for both FK and IK
+                    <li>Show FK queries per second with CUDA generated code
+                </ul>
+            </div>
+        </section>
+
+        <section class="reveal r-stretch">
+            <h2 class="title">Summary: lessons learned</h2>
+            <div class="slide-content">
+                <ul class="my-list" style="--spacing: 5vb;">
+                    <li>Leverage compile time optimization when needed in common robotics subroutines
+                    <li>Leverage code generation to squeeze out as much performance as possible from both the CPU
+                        optimizations and known hardware kinematic description.
+                </ul>
+            </div>
+        </section>
+
         <section>
           <pre><code class="language-cpp" data-trim data-line-numbers>
 // row major
@@ -42,7 +177,6 @@ int main(int argc, char *argv[]) {
 }
           </code></pre>
         </section>
-
         <section>
           <pre class="language-cmake"><code data-trim data-line-numbers>
 cmake_minimum_required(VERSION 3.22)
@@ -79,6 +213,8 @@ target_link_libraries(forward_kinematics_test PRIVATE
     // - https://revealjs.com/initialization/
     // - https://revealjs.com/config/
     Reveal.initialize({
+        width: 1920,
+        height: 1080,
         hash: true,
         highlight: {
             highlightOnLoad: true,
