@@ -200,7 +200,7 @@ int main(int argc, char *argv[]) {
           </code></pre>
         </section>
         <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
-          <pre class="language-cmake"><code data-trim data-line-numbers>
+          <pre class="language-cmake"><code data-trim data-line-numbers="1-4|6-25|26-33">
 cmake_minimum_required(VERSION 3.22)
 project(fast_forward_kinematics)
 
@@ -272,14 +272,15 @@ target_link_libraries(forward_kinematics_test PRIVATE
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
     }).then(() => {
         const highlight = Reveal.getPlugin('highlight');
-        console.log(highlight.hljs.listLanguages())
-        // highlight.hljs.registerLanguage('cmake')
+        // console.log(highlight.hljs.listLanguages())
     });
 </script>
 <script>
-    const elem = document.querySelector('.language-cmake .hljs-variable')
-    // console.log(elem.innerHTML) =
-    elem.innerHTML = elem.innerHTML.slice(2, elem.innerHTML.length - 1)
+    const elems = document.querySelectorAll('.language-cmake .hljs-variable')
+    // console.log(elems)
+    elems.forEach((elem, index)=>{
+        elem.innerHTML = elem.innerHTML.slice(2, elem.innerHTML.length - 1)
+        });
 </script>
 
 
@@ -304,7 +305,7 @@ target_link_libraries(forward_kinematics_test PRIVATE
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green'],
+            labels: ['Test 1', 'Test 2', 'Test 3', 'Test 4'],
             datasets: [{
                 data: [12, 19, 3, 5],
                 borderWidth: 1
@@ -329,7 +330,7 @@ target_link_libraries(forward_kinematics_test PRIVATE
                 },
                 title: {
                     display: true,
-                    text: 'Runtime Comparison (sec)'
+                    text: 'Runtime Comparison (nano seconds)'
                 }
             }
         },

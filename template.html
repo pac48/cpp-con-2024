@@ -182,7 +182,7 @@
           </code></pre>
         </section>
         <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
-          <pre class="language-cmake"><code data-trim data-line-numbers>
+          <pre class="language-cmake"><code data-trim data-line-numbers="1-4|6-25|26-33">
 {{CMakeLists_txt}}
           </code></pre>
         </section>
@@ -221,14 +221,15 @@
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
     }).then(() => {
         const highlight = Reveal.getPlugin('highlight');
-        console.log(highlight.hljs.listLanguages())
-        // highlight.hljs.registerLanguage('cmake')
+        // console.log(highlight.hljs.listLanguages())
     });
 </script>
 <script>
-    const elem = document.querySelector('.language-cmake .hljs-variable')
-    // console.log(elem.innerHTML) =
-    elem.innerHTML = elem.innerHTML.slice(2, elem.innerHTML.length - 1)
+    const elems = document.querySelectorAll('.language-cmake .hljs-variable')
+    // console.log(elems)
+    elems.forEach((elem, index)=>{
+        elem.innerHTML = elem.innerHTML.slice(2, elem.innerHTML.length - 1)
+        });
 </script>
 
 
@@ -253,7 +254,7 @@
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green'],
+            labels: ['Test 1', 'Test 2', 'Test 3', 'Test 4'],
             datasets: [{
                 data: [12, 19, 3, 5],
                 borderWidth: 1
@@ -278,7 +279,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Runtime Comparison (sec)'
+                    text: 'Runtime Comparison (nano seconds)'
                 }
             }
         },
