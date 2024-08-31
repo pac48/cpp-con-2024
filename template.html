@@ -236,14 +236,30 @@
 
 <script>
     const ctx = document.getElementById('myChart');
+    Chart.defaults.font.size = 45;
+
+    const plugin = {
+        id: 'customCanvasBackgroundColor',
+        beforeDraw: (chart, args, options) => {
+            const {ctx} = chart;
+            ctx.save();
+            ctx.globalCompositeOperation = 'destination-over';
+            ctx.fillStyle = options.color || '#99ffff';
+            ctx.fillRect(0, 0, chart.width, chart.height);
+            ctx.restore();
+        }
+    };
 
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: ['Red', 'Blue', 'Yellow', 'Green'],
             datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                data: [12, 19, 3, 5],
+                borderWidth: 1
+            },
+            {
+                data: [12, 19, 3, 5],
                 borderWidth: 1
             }]
         },
@@ -252,8 +268,21 @@
                 y: {
                     beginAtZero: true
                 }
+            },
+            plugins: {
+                customCanvasBackgroundColor: {
+                    color: 'white',
+                },
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Runtime Comparison (sec)'
+                }
             }
-        }
+        },
+        plugins: [plugin],
     });
 </script>
 </body>
