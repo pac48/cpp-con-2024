@@ -11,6 +11,7 @@
   "scripts": {
     "start": "python3 my_server.py",
     "build": "gulp build",
+    "gulp": "gulp",
     "start_gulp": "gulp serve"
   },
   "author": {
@@ -51,14 +52,14 @@
     "gulp-header": "^2.0.9",
     "gulp-tap": "^2.0.0",
     "gulp-zip": "^5.1.0",
+    "highlight.js": "github:pac48/highlight.js#add-more-cmake-syntax",
     "marked": "^4.3.0",
     "node-qunit-puppeteer": "^2.1.2",
     "qunit": "^2.20.0",
     "rollup": "^4.1.5",
     "sass": "^1.69.5",
     "webpack": "^5.93.0",
-    "webpack-cli": "^5.1.4",
-    "highlight.js": "github:pac48/highlight.js#add-more-cmake-syntax"
+    "webpack-cli": "^5.1.4"
   },
   "overrides": {
     "chokidar": "3.5.3",
@@ -102,5 +103,8 @@
       "no-eq-null": 2,
       "no-unused-expressions": 0
     }
+  },
+  "dependencies": {
+    "chart.js": "^4.4.4"
   }
 }

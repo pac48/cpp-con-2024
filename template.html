@@ -14,9 +14,23 @@
     <link rel="stylesheet" href="dist/css/monokai.css">
 </head>
 <body>
+<style>
+.full-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire area without distortion */
+}
+</style>
+
 <div class="reveal">
     <div class="slides">
-        <section class="reveal r-stretch">
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <div class="title-slide-content">
+                <img style="--r-block-margin: 0;" src="dist/images/title_card.png" alt="Code Generation from Unified Robot Description Format (URDF) for Accelerated Robotics" class="full-image">
+            </div>
+        </section>
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Introduction</h2>
             <div class="slide-content">
                 <ul class="my-list" style="--spacing: 5vb;">
@@ -28,7 +42,15 @@
                 </ul>
             </div>
         </section>
-        <section class="reveal r-stretch">
+            <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+                <h2 class="title">Chart</h2>
+                <div class="slide-content">
+                    <div>
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+        </section>
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Outline</h2>
             <div class="slide-content">
                 <ul class="my-list" style="--spacing: 5vb;">
@@ -41,7 +63,7 @@
             </div>
         </section>
 
-        <section class="reveal r-stretch">
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Motivate the topic</h2>
             <div class="slide-content">
                 <ul class="my-list" style="--spacing: 5vb;">
@@ -55,7 +77,7 @@
             </div>
         </section>
 
-        <section class="reveal r-stretch">
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Motivate the topic</h2>
             <div class="slide-content">
                 <ul class="my-list" style="--spacing: 5vb;">
@@ -72,7 +94,7 @@
             </div>
         </section>
 
-        <section class="reveal r-stretch">
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Motivate the topic</h2>
             <div class="slide-content">
                 <ul class="my-list" style="--spacing: 5vb;">
@@ -88,14 +110,14 @@
             </div>
         </section>
 
-        <section class="reveal r-stretch">
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Video demo?</h2>
             <div class="slide-content">
                 Video
             </div>
         </section>
 
-        <section class="reveal r-stretch">
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">High level code concept for proposal</h2>
             <div class="slide-content">
                 <ul class="my-list" style="--spacing: 5vb;">
@@ -104,7 +126,7 @@
             </div>
         </section>
 
-        <section class="reveal r-stretch">
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Go through example of how it is actually used for a simpler robot</h2>
             <div class="slide-content">
                 <ul class="my-list" style="--spacing: 5vb;">
@@ -117,7 +139,7 @@
             </div>
         </section>
 
-        <section class="reveal r-stretch">
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Memory layout and performance</h2>
             <div class="slide-content">
                 <ul class="my-list" style="--spacing: 5vb;">
@@ -130,7 +152,7 @@
             </div>
         </section>
 
-        <section class="reveal r-stretch">
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Real robot application</h2>
             <div class="slide-content">
                 <ul class="my-list" style="--spacing: 5vb;">
@@ -143,7 +165,7 @@
             </div>
         </section>
 
-        <section class="reveal r-stretch">
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Summary: lessons learned</h2>
             <div class="slide-content">
                 <ul class="my-list" style="--spacing: 5vb;">
@@ -154,12 +176,12 @@
             </div>
         </section>
 
-        <section>
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
           <pre><code class="language-cpp" data-trim data-line-numbers>
 {{main_cpp}}
           </code></pre>
         </section>
-        <section>
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
           <pre class="language-cmake"><code data-trim data-line-numbers>
 {{CMakeLists_txt}}
           </code></pre>
@@ -178,11 +200,22 @@
     // - https://revealjs.com/initialization/
     // - https://revealjs.com/config/
     Reveal.initialize({
+        margin: 0,    // set margin to 0 for 1:1 scale
+        minScale: 1.0,  // Ensure slides are not scaled below 1.0
+        maxScale: 1.0,  // Ensure slides are not scaled above 1.0
         width: 1920,
         height: 1080,
         hash: true,
+        transitionSpeed: 'fast',
         highlight: {
             highlightOnLoad: true,
+        },
+        // backgroundTransition: 'slide',
+        background: {
+            image: 'dist/images/title_card.png',
+            size: 'cover', // to cover the entire slide
+            position: 'center', // to center the image
+            repeat: 'no-repeat' // to avoid repeating the image
         },
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
     }).then(() => {
@@ -197,5 +230,30 @@
     elem.innerHTML = elem.innerHTML.slice(2, elem.innerHTML.length - 1)
 </script>
 
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
 </body>
 </html>

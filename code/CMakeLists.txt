@@ -16,3 +16,18 @@ add_executable(forward_kinematics_test
 target_link_libraries(forward_kinematics_test PRIVATE
                       fast_forward_kinematics_library
 )
+# why ???
+add_executable(forward_kinematics_test
+        forward_kinematics_test.cpp
+)
+target_link_libraries(forward_kinematics_test PRIVATE
+        fast_forward_kinematics_library
+)
+# How
+# When?
+
+
+
+
+
+# What?

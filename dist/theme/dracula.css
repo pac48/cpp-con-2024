@@ -139,8 +139,8 @@ section.has-light-background, section.has-light-background h1, section.has-light
 .reveal img,
 .reveal video,
 .reveal iframe {
-  max-width: 95%;
-  max-height: 95%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .reveal strong,
@@ -235,12 +235,15 @@ section.has-light-background, section.has-light-background h1, section.has-light
   display: block;
   padding: 5px;
   overflow: auto;
-  max-height: 400px;
   word-wrap: normal;
 }
 
 .reveal .code-wrapper {
   white-space: normal;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Offsets the element by half its own size */
 }
 
 .reveal .code-wrapper code {

@@ -325,3 +325,26 @@ gulp.task('serve', () => {
     gulp.watch(['test/*.html'], gulp.series('test'))
 
 })
+
+
+// Define paths
+const paths = {
+    images: {
+        src: './*.{jpg,jpeg,png,gif,svg}', // Source folder
+        dest: 'dist/images/' // Destination folder
+    }
+};
+
+// Task to copy and optimize images
+function images() {
+    return gulp.src(paths.images.src)
+        .pipe(gulp.dest(paths.images.dest));
+}
+
+// Watch task to automate the process
+function watchFiles() {
+    gulp.watch(paths.images.src, images);
+}
+
+// Define the default task
+exports.default = gulp.series(images, watchFiles);
