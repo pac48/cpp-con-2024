@@ -19,17 +19,51 @@
     display: block;
     width: 100%;
     height: 100%;
+    position: absolute;
     object-fit: cover; /* Ensures the image covers the entire area without distortion */
+    transition: scale 1.0s, opacity 0.5s;
+    opacity: 1; /* Initial opacity */
 }
+
 </style>
 
 <div class="reveal">
     <div class="slides">
-        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+        <section class="reveal r-stretch" data-transition="fade"  data-background-image="dist/images/background.png" >
             <div class="title-slide-content">
-                <img style="--r-block-margin: 0;" src="dist/images/title_card.png" alt="Code Generation from Unified Robot Description Format (URDF) for Accelerated Robotics" class="full-image">
+                <img id="titleImage" style="--r-block-margin: 0; opacity: 1" src="dist/images/title_card.png" alt="Code Generation from Unified Robot Description Format (URDF) for Accelerated Robotics" class="full-image">
+<!--                <img id="backgroundImage" style="&#45;&#45;r-block-margin: 0; opacity: 0" src="dist/images/background.png" alt="Code Generation from Unified Robot Description Format (URDF) for Accelerated Robotics" class="full-image">-->
             </div>
+            <script>
+                document.addEventListener('keydown', function(event) {
+                    // const backgroundImage = document.getElementById('backgroundImage');
+                    const titleImage = document.getElementById('titleImage');
+                    const backgrounds = document.querySelectorAll('.slide-background');
+
+                    if (event.key === '1' && titleImage.style.opacity === '1') {
+                        titleImage.style.opacity = '0';
+                    }
+                    else if (event.key === '1' && titleImage.style.opacity === '0' ) {
+                        backgrounds.forEach((elem, index)=>{
+                            elem.style.scale='2.0'
+                        });
+                    }
+                    else if (event.key === '0' && backgrounds[0].style.scale === '2' ) {
+                        backgrounds.forEach((elem, index)=>{
+                            elem.style.scale='1.0'
+                        });
+                    }
+                    else if (event.key === '0' && titleImage.style.opacity === '0') {
+                        titleImage.style.opacity = '1';
+                    }
+                });
+            </script>
         </section>
+<!--        <section class="reveal r-stretch" data-transition="fade" >-->
+<!--            <div class="title-slide-content">-->
+<!--                -->
+<!--            </div>-->
+<!--        </section>-->
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Introduction</h2>
             <div class="slide-content">
@@ -186,8 +220,14 @@
 {{CMakeLists_txt}}
           </code></pre>
         </section>
+
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <h2 class="title">Questions?</h2>
+        </section>
     </div>
 </div>
+
+
 
 <script src="dist/reveal.js"></script>
 <script src="dist/notes/notes.js"></script>
@@ -216,7 +256,7 @@
             image: 'dist/images/title_card.png',
             size: 'cover', // to cover the entire slide
             position: 'center', // to center the image
-            repeat: 'no-repeat' // to avoid repeating the image
+            repeat: 'repeat' // to avoid repeating the image
         },
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
     }).then(() => {
