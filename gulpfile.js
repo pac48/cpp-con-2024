@@ -330,7 +330,7 @@ gulp.task('serve', () => {
 // Define paths
 const paths = {
     images: {
-        src: './*.{jpg,jpeg,png,gif,svg}', // Source folder
+        src: './*.{jpg,jpeg,png,gif,svg,mp4}', // Source folder
         dest: 'dist/images/' // Destination folder
     }
 };
