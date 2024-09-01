@@ -24,6 +24,22 @@
     transition: scale 1.0s, opacity 0.5s;
     opacity: 1; /* Initial opacity */
 }
+ .fragment.scaled {
+     scale: 1;
+     transition: scale 3.0s;
+ }
+.fragment.scaled.visible {
+    scale: 2;
+    transition: scale 3.0s;
+}
+.fragment.no-fade {
+    visibility: hidden;
+    transition: visibility 0.0s;
+}
+.fragment.no-fade.visible {
+    visibility: visible;
+    transition: visibility 0.0s;
+}
 
 </style>
 
@@ -31,39 +47,19 @@
     <div class="slides">
         <section class="reveal r-stretch" data-transition="fade"  data-background-image="dist/images/background.png" >
             <div class="title-slide-content">
-                <img id="titleImage" style="--r-block-margin: 0; opacity: 1" src="dist/images/title_card.png" alt="Code Generation from Unified Robot Description Format (URDF) for Accelerated Robotics" class="full-image">
-<!--                <img id="backgroundImage" style="&#45;&#45;r-block-margin: 0; opacity: 0" src="dist/images/background.png" alt="Code Generation from Unified Robot Description Format (URDF) for Accelerated Robotics" class="full-image">-->
-            </div>
-            <script>
-                document.addEventListener('keydown', function(event) {
-                    // const backgroundImage = document.getElementById('backgroundImage');
-                    const titleImage = document.getElementById('titleImage');
-                    const backgrounds = document.querySelectorAll('.slide-background');
-
-                    if (event.key === '1' && titleImage.style.opacity === '1') {
-                        titleImage.style.opacity = '0';
-                    }
-                    else if (event.key === '1' && titleImage.style.opacity === '0' ) {
-                        backgrounds.forEach((elem, index)=>{
-                            elem.style.scale='2.0'
-                        });
-                    }
-                    else if (event.key === '0' && backgrounds[0].style.scale === '2' ) {
-                        backgrounds.forEach((elem, index)=>{
-                            elem.style.scale='1.0'
-                        });
-                    }
-                    else if (event.key === '0' && titleImage.style.opacity === '0') {
-                        titleImage.style.opacity = '1';
-                    }
-                });
-            </script>
+<!--                <img style="&#45;&#45;r-block-margin: 0; opacity: 1" src="dist/images/background.png" alt="Code Generation from Unified Robot Description Format (URDF) for Accelerated Robotics" class="full-image fragment fade-in">-->
+                <img id="titleImage" style="--r-block-margin: 0;" src="dist/images/title_card.png" alt="Code Generation from Unified Robot Description Format (URDF) for Accelerated Robotics" class="full-image" >
+                <div class="fragment fade-in" data-fragment-index="1">
+                    <img style="--r-block-margin: 0;" src="dist/images/background.png" alt="Code Generation from Unified Robot Description Format (URDF) for Accelerated Robotics" class="full-image">
+                    <img style="--r-block-margin: 0;" src="dist/images/background_icon.png" alt="Code Generation from Unified Robot Description Format (URDF) for Accelerated Robotics" class="full-image">
+                </div>
+                <div class="fragment no-fade" data-fragment-index="2">
+                    <img style="--r-block-margin: 0;" src="dist/images/background.png" alt="Code Generation from Unified Robot Description Format (URDF) for Accelerated Robotics" class="full-image">
+                </div>
+                <!--                <img style="&#45;&#45;r-block-margin: 0; opacity: 1" src="dist/images/background_icon.png" alt="Code Generation from Unified Robot Description Format (URDF) for Accelerated Robotics" class="full-image fragment fade-in-then-out">-->
+                <img style="--r-block-margin: 0;" src="dist/images/background_icon.png" alt="Code Generation from Unified Robot Description Format (URDF) for Accelerated Robotics" class="full-image fragment scaled" data-fragment-index="2">
+             </div>
         </section>
-<!--        <section class="reveal r-stretch" data-transition="fade" >-->
-<!--            <div class="title-slide-content">-->
-<!--                -->
-<!--            </div>-->
-<!--        </section>-->
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Introduction</h2>
             <div class="slide-content">
@@ -277,6 +273,8 @@ target_link_libraries(forward_kinematics_test PRIVATE
         </section>
     </div>
 </div>
+
+
 
 <script src="dist/reveal.js"></script>
 <script src="dist/notes/notes.js"></script>
