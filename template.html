@@ -247,6 +247,21 @@
         </section>
 
         <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
+          <pre><code class="language-cpp" data-trim data-line-numbers>
+{{robotConfig_template}}
+          </code></pre>
+        </section>
+
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
+          <pre><code class="language-cpp" data-trim data-line-numbers>
+{{forwardKinematicsLib_cpp}}
+          </code></pre>
+        </section>
+
+
+
+
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
           <pre class="language-cmake"><code data-trim data-line-numbers="31-49|51-53|55-60">
 {{FFK_cmake}}
           </code></pre>
@@ -369,6 +384,15 @@
     elems.forEach((elem, index)=>{
         elem.innerHTML = elem.innerHTML.slice(2, elem.innerHTML.length - 1)
         });
+    const elems_cpp = document.querySelectorAll('.language-cpp .hljs-keyword')
+    elems_cpp.forEach((elem, index)=>{
+        console.log(elem.innerHTML)
+
+        if (elem.innerHTML==='include'){
+            elem.className = '.language-cpp .hljs-meta'
+        }
+    });
+
 </script>
 
 
