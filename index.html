@@ -1076,6 +1076,171 @@ if __name__ == "__main__":
           </code></pre>
         </section>
 
+
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
+          <pre class="language-cmake"><code data-trim data-line-numbers="3-17|19-28|30-44">
+function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
+
+    find_package(Python REQUIRED COMPONENTS Interpreter)
+    if (Python_Interpreter_FOUND)
+        message(STATUS "Python executable: ${Python_EXECUTABLE}")
+    else ()
+        message(FATAL_ERROR "Python interpreter not found.")
+    endif ()
+
+    execute_process(
+            COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/get_num_joints.py
+            ${URDF_FILE}
+            ${ROOT_LINK}
+            ${TIP_LINK}
+            OUTPUT_VARIABLE FAST_FK_NUMBER_OF_JOINTS
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+
+    include(ExternalProject)
+    ExternalProject_Add(
+            LBFGSpp
+            PREFIX ${CMAKE_BINARY_DIR}/LBFGSpp
+            GIT_REPOSITORY https://github.com/yixuan/LBFGSpp.git
+            GIT_TAG master
+            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}
+    )
+    ExternalProject_Get_Property(LBFGSpp source_dir)
+    set(LBFGSppIncludeDir ${source_dir}/include)
+
+    add_custom_command(
+            OUTPUT forward_kinematics_lib.cpp
+            COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/robot_gen.py ${URDF_FILE} ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
+            ${CMAKE_CURRENT_BINARY_DIR}/forward_kinematics_lib.cpp ${ROOT_LINK} ${TIP_LINK}
+            DEPENDS ${URDF_FILE} ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
+            COMMENT
+            "Running `${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/robot_gen.py
+                      ${URDF_FILE}
+                      ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
+                      ${CMAKE_CURRENT_BINARY_DIR}/forward_kinematics_test.cpp
+                      ${ROOT_LINK}
+                      ${TIP_LINK}`"
+            VERBATIM
+    )
+    add_custom_target(code_generation DEPENDS forward_kinematics_lib.cpp)
+
+    add_library(fast_forward_kinematics_library SHARED forward_kinematics_lib.cpp)
+    add_dependencies(fast_forward_kinematics_library code_generation)
+    target_include_directories(fast_forward_kinematics_library PUBLIC ${CMAKE_SOURCE_DIR}/include)
+    target_compile_definitions(fast_forward_kinematics_library PUBLIC "${FAST_FK_NUMBER_OF_JOINTS}")
+    find_package(Eigen3 3.3 NO_MODULE)
+    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
+    add_dependencies(fast_forward_kinematics_library LBFGSpp)
+    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
+    target_include_directories(fast_forward_kinematics_library PUBLIC ${LBFGSppIncludeDir})
+
+
+endfunction()
+          </code></pre>
+        </section>
+
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
+          <pre class="python" ><code data-trim data-line-numbers>
+from jinja2 import Template
+from urdf_parser_py import urdf
+
+import argparse
+import numpy as np
+
+
+def run():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('urdf_file')
+    parser.add_argument('fk_template')
+    parser.add_argument('fk_output_file')
+    parser.add_argument('root_link_name')
+    parser.add_argument('tip_link_name')
+    args = parser.parse_args()
+
+    root_link_name = args.root_link_name
+    tip_link_name = args.tip_link_name
+    with open(args.urdf_file) as f:
+        robot = urdf.Robot.from_xml_string(f.read())
+
+    def get_transform(joint):
+        rpy = joint.origin.rpy
+        xyz = joint.origin.xyz
+        T = np.eye(4)
+
+        yaw = np.array([[np.cos(rpy[2]), np.sin(rpy[2]), 0],
+                        [-np.sin(rpy[2]), np.cos(rpy[2]), 0],
+                        [0, 0, 1]])
+
+        pitch = np.array([[np.cos(rpy[1]), 0, np.sin(rpy[1])],
+                          [0, 1, 0],
+                          [-np.sin(rpy[1]), 0, np.cos(rpy[1])]])
+
+        roll = np.array([[1, 0, 0],
+                         [0, np.cos(rpy[0]), np.sin(rpy[0])],
+                         [0, -np.sin(rpy[0]), np.cos(rpy[0])]])
+        T[:3, :3] = yaw @ pitch @ roll
+        T[:3, 3] = xyz
+
+        return T
+
+    rotations = []
+    offsets = []
+    types = []
+    joint_names = []
+    while tip_link_name != root_link_name:
+        tip_joint_name, tip_link_name = robot.parent_map[tip_link_name]
+        joint_names.append(tip_joint_name)
+
+    joint_names.reverse()
+
+    T_fixed = np.eye(4)
+    for joint_name in joint_names:
+        joint = robot.joint_map[joint_name]
+        if joint.type == 'fixed':
+            T_fixed = T_fixed * get_transform(joint)
+        elif joint.type == 'revolute':
+            # TODO: need to add joint limits?
+            T = get_transform(joint) @ T_fixed
+            T_fixed = np.eye(4)
+            rotations.append(T[:3, :3])
+            offsets.append(T[:3, 3])
+            types.append('revolute')
+        elif joint.type == 'continuous':
+            T = get_transform(joint) @ T_fixed
+            T_fixed = np.eye(4)
+            rotations.append(T[:3, :3])
+            offsets.append(T[:3, 3])
+            types.append('revolute')
+        elif joint.type == 'prismatic':
+            # TODO: need to add joint limits?
+            T = get_transform(joint) @ T_fixed
+            T_fixed = np.eye(4)
+            rotations.append(T[:3, :3])
+            offsets.append(T[:3, 3])
+            types.append('prismatic')
+        else:
+            raise Exception(f"joint type {joint.type} in URDF not supported")
+
+    # truncate near zero values
+    offsets = [val * (np.abs(val) &gt 1E-5) for val in offsets]
+    rotations = [val * (np.abs(val) &gt 1E-5) for val in rotations]
+
+    with open(args.fk_template, 'r') as f:
+        j2_template = Template(f.read())
+        code = j2_template.render({'rotations': rotations, 'offsets': offsets, 'types': types}, trim_blocks=True)
+
+    with open(args.fk_output_file, 'w') as f:
+        f.write(code)
+
+    print(f"FAST_FK_NUMBER_OF_JOINTS={len(types)}", end="")
+
+
+if __name__ == "__main__":
+    run()
+
+          </code></pre>
+        </section>
+
         <section class="reveal r-stretch" data-transition="none"  data-background-image="dist/images/background.png" >
             <div class="title-slide-content">
                 <img style="--r-block-margin: 0;" src="dist/images/cmake1.gif" class="full-image" >
@@ -1194,7 +1359,8 @@ target_link_libraries(forward_kinematics_test PRIVATE
         </section>
 
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
-            <h2 class="title">Questions?</h2>
+            <h2 class="title" style="margin-top: 20vb">Thank you!</h2>
+            <h2 class="title" style="margin-top: 20vb">Questions?</h2>
         </section>
     </div>
 </div>

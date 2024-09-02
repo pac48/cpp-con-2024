@@ -75,6 +75,10 @@ Monokai style - ported by Luigi Maselli - http://grigio.org
 .python .hljs-keyword {
     color: #c66614;
 }
+.python .hljs-title{
+    color: #fcc467;
+}
+
 .python .hljs-string {
     color: #6a8759;
 }
