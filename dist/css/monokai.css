@@ -51,9 +51,42 @@ Monokai style - ported by Luigi Maselli - http://grigio.org
     color: #5e91b8;
 }
 
+.language-cmake .hljs-string {
+    color: #6a8759;
+}
+
 .language-cmake .hljs-variable {
     color: #ddd;
 }
+
+.language-xml .hljs-name {
+    color: #fcc467;
+}
+.language-xml .hljs-tag {
+    color: #fcc467;
+}
+.language-xml .hljs-attr {
+    color: #ddd;
+}
+.language-xml .hljs-string {
+    color: #6a8759;
+}
+
+.python .hljs-keyword {
+    color: #c66614;
+}
+.python .hljs-string {
+    color: #6a8759;
+}
+
+.python .hljs-built_in {
+    color: #8888c6;
+}
+
+.python .hljs-subst{
+    color: #ddd;
+}
+
 
 .reveal h2 {
     margin-bottom: 8vb;

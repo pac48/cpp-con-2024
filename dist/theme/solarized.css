@@ -232,6 +232,7 @@ html * {
   display: block;
   padding: 5px;
   overflow: auto;
+  max-height: 1000px;
   word-wrap: normal;
 }
 

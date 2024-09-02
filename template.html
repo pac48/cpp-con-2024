@@ -215,6 +215,42 @@
             </div>
         </section>
 
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
+          <pre class="language-cmake"><code data-trim data-line-numbers="1-57|3-17">
+{{FFK_cmake}}
+          </code></pre>
+        </section>
+
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
+          <pre class="python" ><code data-trim data-line-numbers>
+{{getNumJoints_py}}
+          </code></pre>
+        </section>
+
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
+          <pre class="language-xml" ><code data-trim data-line-numbers="1-761|155-162|162-169|171-178|179-186|186-194|195-202|448-454">
+{{robot_urdf}}
+          </code></pre>
+        </section>
+
+        <section class="reveal r-stretch" data-transition="none"  data-background-image="dist/images/background.png" >
+            <div class="title-slide-content">
+                <img style="--r-block-margin: 0;" src="dist/images/cmake1.gif" class="full-image" >
+          </div>
+        </section>
+        <section class="reveal r-stretch" data-transition="none"  data-background-image="dist/images/background.png" >
+            <div class="title-slide-content">
+                <img style="--r-block-margin: 0;" src="dist/images/cmake2.gif" class="full-image" >
+            </div>
+        </section>
+        <section class="reveal r-stretch" data-transition="none"  data-background-image="dist/images/background.png" >
+            <div class="title-slide-content">
+                <img style="--r-block-margin: 0;" src="dist/images/cmake3.gif" class="full-image" >
+            </div>
+        </section>
+
+
+
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Memory layout and performance</h2>
             <div class="slide-content">
@@ -303,7 +339,7 @@
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
     }).then(() => {
         const highlight = Reveal.getPlugin('highlight');
-        // console.log(highlight.hljs.listLanguages())
+        console.log(highlight.hljs.listLanguages())
     });
 </script>
 <script>
