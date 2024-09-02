@@ -216,7 +216,7 @@
         </section>
 
         <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
-          <pre class="language-cmake"><code data-trim data-line-numbers="1-57|3-17">
+          <pre class="language-cmake"><code data-trim data-line-numbers="1-57|3-18">
 function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
 
     find_package(Python REQUIRED COMPONENTS Interpreter)
@@ -233,6 +233,7 @@ function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
             ${TIP_LINK}
             OUTPUT_VARIABLE FAST_FK_NUMBER_OF_JOINTS
             OUTPUT_STRIP_TRAILING_WHITESPACE
+            COMMAND_ECHO STDOUT
     )
 
     include(ExternalProject)
@@ -248,8 +249,12 @@ function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
 
     add_custom_command(
             OUTPUT forward_kinematics_lib.cpp
-            COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/robot_gen.py ${URDF_FILE} ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
-            ${CMAKE_CURRENT_BINARY_DIR}/forward_kinematics_lib.cpp ${ROOT_LINK} ${TIP_LINK}
+            COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/robot_gen.py
+            ${URDF_FILE}
+            ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
+            ${CMAKE_CURRENT_BINARY_DIR}/forward_kinematics_lib.cpp
+            ${ROOT_LINK}
+            ${TIP_LINK}
             DEPENDS ${URDF_FILE} ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
             COMMENT
             "Running `${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/robot_gen.py
@@ -264,16 +269,33 @@ function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
 
     add_library(fast_forward_kinematics_library SHARED forward_kinematics_lib.cpp)
     add_dependencies(fast_forward_kinematics_library code_generation)
-    target_include_directories(fast_forward_kinematics_library PUBLIC ${CMAKE_SOURCE_DIR}/include)
-    target_compile_definitions(fast_forward_kinematics_library PUBLIC "${FAST_FK_NUMBER_OF_JOINTS}")
-    find_package(Eigen3 3.3 NO_MODULE)
-    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
     add_dependencies(fast_forward_kinematics_library LBFGSpp)
-    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
-    target_include_directories(fast_forward_kinematics_library PUBLIC ${LBFGSppIncludeDir})
 
+    find_package(Eigen3 3.3 NO_MODULE)
+    target_compile_definitions(fast_forward_kinematics_library PUBLIC "${FAST_FK_NUMBER_OF_JOINTS}")
+    target_include_directories(fast_forward_kinematics_library PUBLIC ${CMAKE_SOURCE_DIR}/include)
+    target_include_directories(fast_forward_kinematics_library PUBLIC ${LBFGSppIncludeDir})
+    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
+    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
 
 endfunction()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
           </code></pre>
         </section>
 
@@ -1078,7 +1100,7 @@ if __name__ == "__main__":
 
 
         <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
-          <pre class="language-cmake"><code data-trim data-line-numbers="3-17|19-28|30-44">
+          <pre class="language-cmake"><code data-trim data-line-numbers="3-18|20-29|31-49">
 function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
 
     find_package(Python REQUIRED COMPONENTS Interpreter)
@@ -1095,6 +1117,7 @@ function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
             ${TIP_LINK}
             OUTPUT_VARIABLE FAST_FK_NUMBER_OF_JOINTS
             OUTPUT_STRIP_TRAILING_WHITESPACE
+            COMMAND_ECHO STDOUT
     )
 
     include(ExternalProject)
@@ -1110,8 +1133,12 @@ function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
 
     add_custom_command(
             OUTPUT forward_kinematics_lib.cpp
-            COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/robot_gen.py ${URDF_FILE} ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
-            ${CMAKE_CURRENT_BINARY_DIR}/forward_kinematics_lib.cpp ${ROOT_LINK} ${TIP_LINK}
+            COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/robot_gen.py
+            ${URDF_FILE}
+            ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
+            ${CMAKE_CURRENT_BINARY_DIR}/forward_kinematics_lib.cpp
+            ${ROOT_LINK}
+            ${TIP_LINK}
             DEPENDS ${URDF_FILE} ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
             COMMENT
             "Running `${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/robot_gen.py
@@ -1126,21 +1153,38 @@ function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
 
     add_library(fast_forward_kinematics_library SHARED forward_kinematics_lib.cpp)
     add_dependencies(fast_forward_kinematics_library code_generation)
-    target_include_directories(fast_forward_kinematics_library PUBLIC ${CMAKE_SOURCE_DIR}/include)
-    target_compile_definitions(fast_forward_kinematics_library PUBLIC "${FAST_FK_NUMBER_OF_JOINTS}")
-    find_package(Eigen3 3.3 NO_MODULE)
-    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
     add_dependencies(fast_forward_kinematics_library LBFGSpp)
-    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
-    target_include_directories(fast_forward_kinematics_library PUBLIC ${LBFGSppIncludeDir})
 
+    find_package(Eigen3 3.3 NO_MODULE)
+    target_compile_definitions(fast_forward_kinematics_library PUBLIC "${FAST_FK_NUMBER_OF_JOINTS}")
+    target_include_directories(fast_forward_kinematics_library PUBLIC ${CMAKE_SOURCE_DIR}/include)
+    target_include_directories(fast_forward_kinematics_library PUBLIC ${LBFGSppIncludeDir})
+    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
+    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
 
 endfunction()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
           </code></pre>
         </section>
 
         <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
-          <pre class="python" ><code data-trim data-line-numbers>
+          <pre class="python" ><code class="python" data-trim data-line-numbers="|9-20|22-41|43-49|53-79|82-90">
 from jinja2 import Template
 from urdf_parser_py import urdf
 
@@ -1232,14 +1276,97 @@ def run():
     with open(args.fk_output_file, 'w') as f:
         f.write(code)
 
-    print(f"FAST_FK_NUMBER_OF_JOINTS={len(types)}", end="")
-
 
 if __name__ == "__main__":
     run()
 
           </code></pre>
         </section>
+
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
+          <pre class="language-cmake"><code data-trim data-line-numbers="31-49|51-53|55-60">
+function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
+
+    find_package(Python REQUIRED COMPONENTS Interpreter)
+    if (Python_Interpreter_FOUND)
+        message(STATUS "Python executable: ${Python_EXECUTABLE}")
+    else ()
+        message(FATAL_ERROR "Python interpreter not found.")
+    endif ()
+
+    execute_process(
+            COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/get_num_joints.py
+            ${URDF_FILE}
+            ${ROOT_LINK}
+            ${TIP_LINK}
+            OUTPUT_VARIABLE FAST_FK_NUMBER_OF_JOINTS
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            COMMAND_ECHO STDOUT
+    )
+
+    include(ExternalProject)
+    ExternalProject_Add(
+            LBFGSpp
+            PREFIX ${CMAKE_BINARY_DIR}/LBFGSpp
+            GIT_REPOSITORY https://github.com/yixuan/LBFGSpp.git
+            GIT_TAG master
+            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}
+    )
+    ExternalProject_Get_Property(LBFGSpp source_dir)
+    set(LBFGSppIncludeDir ${source_dir}/include)
+
+    add_custom_command(
+            OUTPUT forward_kinematics_lib.cpp
+            COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/robot_gen.py
+            ${URDF_FILE}
+            ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
+            ${CMAKE_CURRENT_BINARY_DIR}/forward_kinematics_lib.cpp
+            ${ROOT_LINK}
+            ${TIP_LINK}
+            DEPENDS ${URDF_FILE} ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
+            COMMENT
+            "Running `${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/robot_gen.py
+                      ${URDF_FILE}
+                      ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
+                      ${CMAKE_CURRENT_BINARY_DIR}/forward_kinematics_test.cpp
+                      ${ROOT_LINK}
+                      ${TIP_LINK}`"
+            VERBATIM
+    )
+    add_custom_target(code_generation DEPENDS forward_kinematics_lib.cpp)
+
+    add_library(fast_forward_kinematics_library SHARED forward_kinematics_lib.cpp)
+    add_dependencies(fast_forward_kinematics_library code_generation)
+    add_dependencies(fast_forward_kinematics_library LBFGSpp)
+
+    find_package(Eigen3 3.3 NO_MODULE)
+    target_compile_definitions(fast_forward_kinematics_library PUBLIC "${FAST_FK_NUMBER_OF_JOINTS}")
+    target_include_directories(fast_forward_kinematics_library PUBLIC ${CMAKE_SOURCE_DIR}/include)
+    target_include_directories(fast_forward_kinematics_library PUBLIC ${LBFGSppIncludeDir})
+    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
+    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
+
+endfunction()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
+          </code></pre>
+        </section>
+
 
         <section class="reveal r-stretch" data-transition="none"  data-background-image="dist/images/background.png" >
             <div class="title-slide-content">

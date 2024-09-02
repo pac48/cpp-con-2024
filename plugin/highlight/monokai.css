@@ -87,6 +87,10 @@ Monokai style - ported by Luigi Maselli - http://grigio.org
     color: #8888c6;
 }
 
+.python .hljs-literal {
+    color: #c66614;
+}
+
 .python .hljs-subst{
     color: #ddd;
 }

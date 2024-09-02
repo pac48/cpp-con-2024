@@ -89,8 +89,6 @@ def run():
     with open(args.fk_output_file, 'w') as f:
         f.write(code)
 
-    print(f"FAST_FK_NUMBER_OF_JOINTS={len(types)}", end="")
-
 
 if __name__ == "__main__":
     run()

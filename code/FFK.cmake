@@ -14,6 +14,7 @@ function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
             ${TIP_LINK}
             OUTPUT_VARIABLE FAST_FK_NUMBER_OF_JOINTS
             OUTPUT_STRIP_TRAILING_WHITESPACE
+            COMMAND_ECHO STDOUT
     )
 
     include(ExternalProject)
@@ -29,8 +30,12 @@ function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
 
     add_custom_command(
             OUTPUT forward_kinematics_lib.cpp
-            COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/robot_gen.py ${URDF_FILE} ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
-            ${CMAKE_CURRENT_BINARY_DIR}/forward_kinematics_lib.cpp ${ROOT_LINK} ${TIP_LINK}
+            COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/robot_gen.py
+            ${URDF_FILE}
+            ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
+            ${CMAKE_CURRENT_BINARY_DIR}/forward_kinematics_lib.cpp
+            ${ROOT_LINK}
+            ${TIP_LINK}
             DEPENDS ${URDF_FILE} ${CMAKE_SOURCE_DIR}/scripts/robot_config.cpp.template
             COMMENT
             "Running `${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/scripts/robot_gen.py
@@ -45,13 +50,30 @@ function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
 
     add_library(fast_forward_kinematics_library SHARED forward_kinematics_lib.cpp)
     add_dependencies(fast_forward_kinematics_library code_generation)
-    target_include_directories(fast_forward_kinematics_library PUBLIC ${CMAKE_SOURCE_DIR}/include)
-    target_compile_definitions(fast_forward_kinematics_library PUBLIC "${FAST_FK_NUMBER_OF_JOINTS}")
-    find_package(Eigen3 3.3 NO_MODULE)
-    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
     add_dependencies(fast_forward_kinematics_library LBFGSpp)
-    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
-    target_include_directories(fast_forward_kinematics_library PUBLIC ${LBFGSppIncludeDir})
 
+    find_package(Eigen3 3.3 NO_MODULE)
+    target_compile_definitions(fast_forward_kinematics_library PUBLIC "${FAST_FK_NUMBER_OF_JOINTS}")
+    target_include_directories(fast_forward_kinematics_library PUBLIC ${CMAKE_SOURCE_DIR}/include)
+    target_include_directories(fast_forward_kinematics_library PUBLIC ${LBFGSppIncludeDir})
+    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
+    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
 
 endfunction()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
