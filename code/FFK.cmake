@@ -22,7 +22,7 @@ function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
             LBFGSpp
             PREFIX ${CMAKE_BINARY_DIR}/LBFGSpp
             GIT_REPOSITORY https://github.com/yixuan/LBFGSpp.git
-            GIT_TAG master
+            GIT_TAG v0.3.0
             CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}
     )
     ExternalProject_Get_Property(LBFGSpp source_dir)
