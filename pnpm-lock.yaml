@@ -74,7 +74,7 @@ importers:
         version: 5.1.0(gulp@4.0.2)
       highlight.js:
         specifier: github:pac48/highlight.js#add-more-cmake-syntax
-        version: https://codeload.github.com/pac48/highlight.js/tar.gz/9579d83da2c47306158918774f6e58a09299c50d(eslint-plugin-n@16.6.2(eslint@8.57.0))
+        version: https://codeload.github.com/pac48/highlight.js/tar.gz/a08a33d59a2f291e02cd0ca658009de2e589f369(eslint-plugin-n@16.6.2(eslint@8.57.0))
       marked:
         specifier: ^4.3.0
         version: 4.3.0
@@ -2560,8 +2560,8 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
 
-  highlight.js@https://codeload.github.com/pac48/highlight.js/tar.gz/9579d83da2c47306158918774f6e58a09299c50d:
-    resolution: {tarball: https://codeload.github.com/pac48/highlight.js/tar.gz/9579d83da2c47306158918774f6e58a09299c50d}
+  highlight.js@https://codeload.github.com/pac48/highlight.js/tar.gz/a08a33d59a2f291e02cd0ca658009de2e589f369:
+    resolution: {tarball: https://codeload.github.com/pac48/highlight.js/tar.gz/a08a33d59a2f291e02cd0ca658009de2e589f369}
     version: 11.10.0
     engines: {node: '>=12.0.0'}
 
@@ -7594,7 +7594,7 @@ snapshots:
 
   he@1.2.0: {}
 
-  highlight.js@https://codeload.github.com/pac48/highlight.js/tar.gz/9579d83da2c47306158918774f6e58a09299c50d(eslint-plugin-n@16.6.2(eslint@8.57.0)):
+  highlight.js@https://codeload.github.com/pac48/highlight.js/tar.gz/a08a33d59a2f291e02cd0ca658009de2e589f369(eslint-plugin-n@16.6.2(eslint@8.57.0)):
     dependencies:
       '@colors/colors': 1.6.0
       '@rollup/plugin-commonjs': 26.0.1(rollup@4.20.0)

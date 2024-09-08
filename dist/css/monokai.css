@@ -107,6 +107,26 @@ Monokai style - ported by Luigi Maselli - http://grigio.org
 }
 
 
+.x86asm .hljs-symbol {
+    color: #fcc467;
+}
+
+.x86asm .hljs-meta {
+    color: #c66614;
+}
+
+.x86asm .hljs-number {
+    color: #5e91b8;
+}
+
+.x86asm .hljs-built_in {
+    color: #ddd;
+}
+
+.x86asm .hljs-keyword {
+    color: #c66614;
+}
+
 .reveal h2 {
     margin-bottom: 8vb;
     margin-top: 4vb;
@@ -150,6 +170,7 @@ ul > * {
     color: #c66614;
     content: "}";
 }
+
 
 
 .hljs-code {
