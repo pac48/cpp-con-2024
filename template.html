@@ -186,33 +186,6 @@
         </section>
 
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
-            <h2 class="title">Chart</h2>
-            <div class="slide-content">
-                <div>
-                    <canvas id="perf_kdl"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
-            <h2 class="title">Chart</h2>
-            <div class="slide-content">
-                <div>
-                    <canvas id="perf_ffk"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
-            <h2 class="title">Chart</h2>
-            <div class="slide-content">
-                <div>
-                    <canvas id="perf_kdl_vs_ffk"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">High level code concept for proposal</h2>
             <div class="slide-content">
                 <ul class="my-list" style="--spacing: 5vb;">
@@ -374,6 +347,73 @@
             </div>
         </section>
 
+
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <h2 class="title">Chart</h2>
+            <div class="slide-content">
+                <div>
+                    <canvas id="perf_kdl"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <h2 class="title">Chart</h2>
+            <div class="slide-content">
+                <div>
+                    <canvas id="perf_ffk"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <h2 class="title">Chart</h2>
+            <div class="slide-content">
+                <div>
+                    <canvas id="perf_kdl_vs_ffk"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <h2 class="title">Chart</h2>
+            <div class="slide-content">
+                <div>
+                    <canvas id="perf_ik_kdl"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <h2 class="title">Chart</h2>
+            <div class="slide-content">
+                <div>
+                    <canvas id="perf_ik_ffk"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <h2 class="title">Chart</h2>
+            <div class="slide-content">
+                <div>
+                    <canvas id="perf_ik_kdl_vs_ffk"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
+          <pre class="x86asm"><code class="x86asm" data-trim data-line-numbers>
+{{godboltO3_asm}}
+          </code></pre>
+        </section>
+
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
+          <pre class="x86asm"><code class="x86asm" data-trim data-line-numbers>
+{{godboltOfast_asm}}
+          </code></pre>
+        </section>
+
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Summary: lessons learned</h2>
             <div class="slide-content">
@@ -383,23 +423,6 @@
                         optimizations and known hardware kinematic description.
                 </ul>
             </div>
-        </section>
-
-        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
-          <pre><code class="language-cpp" data-trim data-line-numbers>
-{{main_cpp}}
-          </code></pre>
-        </section>
-        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
-          <pre class="language-cmake"><code data-trim data-line-numbers="1-4|6-25|26-33">
-{{CMakeLists_txt}}
-          </code></pre>
-        </section>
-
-        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
-          <pre class="x86asm"><code class="x86asm" data-trim data-line-numbers>
-{{godbolt_asm}}
-          </code></pre>
         </section>
 
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
@@ -590,5 +613,124 @@
         plugins: [plugin],
     });
 </script>
+
+<script>
+    ctx = document.getElementById('perf_ik_kdl');
+    Chart.defaults.font.size = 30;
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['JacobiSVD<Eigen::Matrix<...>>', 'real_2x2_jacobi_svd<...>', 'other', 'KDL::Segment::pose', '__sincos'],
+            datasets: [{
+                data: [ 41.68, 38.34, 14.53, 3.48, 1.97],
+                borderWidth: 1
+            },
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                customCanvasBackgroundColor: {
+                    color: 'white',
+                },
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Perf report KDL IK'
+                }
+            }
+        },
+        plugins: [plugin],
+    });
+</script>
+
+<script>
+    ctx = document.getElementById('perf_ik_ffk');
+    Chart.defaults.font.size = 30;
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['other', 'BFGSMat<...>::apply_Hv', 'LineSearchNocedalWright', 'forward_kinematics_internal', '__sincosf_fma'],
+            datasets: [{
+                data: [ 37.07, 30.36, 17.78, 7.43, 7.36],
+                borderWidth: 1
+            },
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                customCanvasBackgroundColor: {
+                    color: 'white',
+                },
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Perf report FFK IK'
+                }
+            }
+        },
+        plugins: [plugin],
+    });
+</script>
+
+<script>
+    ctx = document.getElementById('perf_ik_kdl_vs_ffk');
+    Chart.defaults.font.size = 35;
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['inverse_kinematics', 'forward_kinematics', 'other', ],
+            datasets: [{
+                label: 'KDL',
+                data: [ 57.34, 11.97, 49.80], // percent 48.14, 10.05, 41.81
+                borderWidth: 1
+            },
+                {
+                    label: 'FFK',
+                    data: [ 1.45, 0.33, 0.45], // percent [ 64.93 , 14.79  , 20.28]
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                customCanvasBackgroundColor: {
+                    color: 'white',
+                },
+                legend: {
+                    display: true,
+                },
+                title: {
+                    display: true,
+                    text: 'Perf report IK KDL vs. FFK (microseconds)'
+                }
+            }
+        },
+        plugins: [plugin],
+    });
+</script>
+
+
 </body>
 </html>

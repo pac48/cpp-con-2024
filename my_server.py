@@ -23,7 +23,7 @@ def render():
     code_dir = os.path.join(current_dir, 'code')
     template = read_file(current_dir,"template.html")
     included_files = ['main_cpp', 'CMakeLists_txt', 'robot_urdf', 'getNumJoints_py', 'FFK_cmake', 'robotGen_py',
-                      'robotConfig_template', 'forwardKinematicsLib_cpp', 'godbolt_asm']
+                      'robotConfig_template', 'forwardKinematicsLib_cpp', 'godboltOfast_asm', 'godboltO3_asm']
 
     data = {value: read_file(code_dir, value.replace('_','.')) for value in included_files}
     for  key in data:
