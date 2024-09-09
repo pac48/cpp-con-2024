@@ -402,6 +402,15 @@
             </div>
         </section>
 
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <h2 class="title">Chart</h2>
+            <div class="slide-content">
+                <div>
+                    <canvas id="perf_cuda_ffk"></canvas>
+                </div>
+            </div>
+        </section>
+
         <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
           <pre class="x86asm"><code class="x86asm" data-trim data-line-numbers>
 {{godboltO3_asm}}
@@ -506,7 +515,7 @@
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['KDL::Segment::pose', 'KDL::operator*', 'other', 'KDL::Joint::pose', 'KDL::Rotation::Rot2', '__sincos'],
+            labels: ['KDL::Segment::pose', 'KDL::operator*', 'other', 'KDL::Joint::pose', 'KDL::Rotation::Rot2', 'sin & cos'],
             datasets: [{
                 data: [33.48, 23.3, 22.14, 11.59, 5.66, 3.83],
                 borderWidth: 1
@@ -542,9 +551,9 @@
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['__sincosf_fma', 'forward_kinematics_internal', 'main', 'other'],
+            labels: ['forward_kinematics_internal', 'sin & cos', 'JointData::set_joints', 'other'],
             datasets: [{
-                data: [ 56.36, 22.60, 16.28, 4.76],
+                data: [ 44.51, 40.82, 8.24, 6.43],
                 borderWidth: 1
             },
             ]
@@ -580,13 +589,13 @@
         data: {
             labels: ['forward_kinematics', 'sin & cos', 'other', ],
             datasets: [{
-                label: 'KDL',
+                label: 'KDL: 350.50',
                 data: [ 259.4766306,  13.4242266, 77.6011428],
                 borderWidth: 1
             },
             {
-                label: 'FFK',
-                data: [ 42.66 , 17.11  , 15.92],
+                label: 'FFK:  37.52',
+                data: [ 16.70, 15.32,  5.50],
                 borderWidth: 1
             }
             ]
@@ -658,9 +667,9 @@
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['other', 'BFGSMat<...>::apply_Hv', 'LineSearchNocedalWright', 'forward_kinematics_internal', '__sincosf_fma'],
+            labels: ['BFGSMat<...>::apply_Hv', 'other', 'LineSearchNocedalWright', 'forward_kinematics_internal', '__sincosf_fma'],
             datasets: [{
-                data: [ 37.07, 30.36, 17.78, 7.43, 7.36],
+                data: [ 46.89, 37.07, 16.18, 5.77, 4.27],
                 borderWidth: 1
             },
             ]
@@ -697,13 +706,13 @@
         data: {
             labels: ['inverse_kinematics', 'forward_kinematics', 'other', ],
             datasets: [{
-                label: 'KDL',
+                label: 'KDL: 119.11',
                 data: [ 57.34, 11.97, 49.80], // percent 48.14, 10.05, 41.81
                 borderWidth: 1
             },
                 {
-                    label: 'FFK',
-                    data: [ 1.45, 0.33, 0.45], // percent [ 64.93 , 14.79  , 20.28]
+                    label: 'FFK: 5.80',
+                    data: [ 4.42, 0.33, 1.05], // percent [ 46.89+13.12+16.18 , 14.79  , 20.28]   Average: 5.7984 microseconds
                     borderWidth: 1
                 }
             ]
@@ -731,6 +740,42 @@
     });
 </script>
 
+<script>
+    ctx = document.getElementById('perf_cuda_ffk');
+    Chart.defaults.font.size = 30;
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['CUDA FFK', 'CUDA FFK joints', 'CUDA FFK no transfer', 'FFK CPU'],
+            datasets: [{
+                data: [ 485.54, 31.47, 7.48, 36.25],
+                borderWidth: 1
+            },
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                customCanvasBackgroundColor: {
+                    color: 'white',
+                },
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Performance FFK CUDA FK (nanoseconds)'
+                }
+            }
+        },
+        plugins: [plugin],
+    });
+</script>
 
 </body>
 </html>
