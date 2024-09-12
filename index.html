@@ -73,15 +73,20 @@
                 </ul>
             </div>
         </section>
+
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
-            <h2 class="title">Outline</h2>
+            <h1 class="title" style="margin-top: 50vb">Motivation</h1>
+        </section>
+
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <h2 class="title">Memory layout and performance</h2>
             <div class="slide-content">
                 <ul class="my-list" style="--spacing: 5vb;">
-                    <li>Motivate the topic
-                    <li>High level code concept for proposal
-                    <li>Memory layout and performance
-                    <li>Real robot application
-                    <li>Summary: lessons learned
+                    <li>The general strategy is to minimize cache misses and branching
+                    <li>Take advantage of cache lines
+                    <li>Explain some basics of FK matrix math
+                    <li>Show different layout and there corresponding `perf` values
+                    <li>show godbolt.org assembly output
                 </ul>
             </div>
         </section>
@@ -161,6 +166,11 @@
                         robot
                 </ul>
             </div>
+        </section>
+
+
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <h1 class="title" style="margin-top: 50vb">The Background</h1>
         </section>
 
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
@@ -250,63 +260,26 @@
             </div>
         </section>
 
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <h1 class="title" style="margin-top: 50vb">The Build Process</h1>
+        </section>
+
         <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
-          <pre class="language-cpp"><code class="language-cpp" data-trim data-line-numbers>
-#pragma once
+          <pre class="language-cmake"><code data-trim data-line-numbers="|4-5|7-11|13-14">
+cmake_minimum_required(VERSION 3.22)
+project(fast_forward_kinematics)
 
-#include &ltconcepts&gt
-#include &ltiostream&gt
+# create executable
+add_executable(forward_kinematics_test forward_kinematics_test.cpp)
 
-#include &ltEigen/Core&gt
+# setup targets to generate C++ code
+set(URDF_FILE "data/robot.urdf")
+set(ROOT "base_link")
+set(TIP "tool0")
+generate_fast_forward_kinematics_library(${URDF_FILE} ${ROOT} ${TIP})
 
-namespace fk_interface {
-
-    struct IKSolverStats {
-        float fx = 0;
-        int niter = 0;
-        float grad_norm = 0;
-        bool success = false;
-        std::string what;
-    };
-
-    template&lttypename T&gt
-    concept KinematicInterfaceConstraint = requires(T obj, size_t ind, float value,
-                                                    const Eigen::Vector&ltfloat, T::get_num_joints()&gt &values,
-                                                    Eigen::Vector&ltfloat, T::get_num_joints()&gt &values_non_const,
-                                                    Eigen::VectorX&ltfloat&gt &q_guess) {
-        { T::get_num_joints() };
-        { obj.set_joint(ind, value) };
-        { obj.set_joints(values) };
-        { obj.set_joint(ind, value, value) };
-        { obj.set_joints(values, values) };
-        { obj.get_joint(ind) };
-        { obj.get_joints(values_non_const) };
-    };
-
-
-    template&lttypename T&gt
-    concept ForwardKinematicInterfaceConstraint = requires(T obj, size_t ind, Eigen::Matrix&ltfloat, 4, 4&gt &transform) {
-        { obj.get_frame(ind, transform) };
-        { obj.forward_kinematics() };
-    };
-
-    template&lttypename T&gt
-    concept InverseInterfaceConstraint = requires(T obj, Eigen::VectorX&ltfloat&gt &q_guess,
-                                                  Eigen::Matrix&ltfloat, 4, 4&gt &transform) {
-        { obj.inverse_kinematics(transform, q_guess) } -&gt std::same_as&ltIKSolverStats&gt;
-    };
-
-    template&lttypename KI&gt requires KinematicInterfaceConstraint&ltKI&gt && ForwardKinematicInterfaceConstraint&ltKI&gt
-    struct ForwardKinematicsInterface : KI {
-    };
-
-
-    template&lttypename IK&gt requires KinematicInterfaceConstraint&ltIK&gt && ForwardKinematicInterfaceConstraint&ltIK&gt &&
-                                   InverseInterfaceConstraint&ltIK&gt
-    struct InverseKinematicsInterface : IK {
-    };
-
-}
+# link against generated code
+target_link_libraries(forward_kinematics_test PUBLIC fast_forward_kinematics_library)
 
           </code></pre>
         </section>
@@ -2763,6 +2736,71 @@ endfunction()
         </section>
 
 
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <h1 class="title" style="margin-top: 50vb">The Code</h1>
+        </section>
+
+
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
+          <pre class="language-cpp"><code class="language-cpp" data-trim data-line-numbers>
+#pragma once
+
+#include &ltconcepts&gt
+#include &ltiostream&gt
+
+#include &ltEigen/Core&gt
+
+namespace fk_interface {
+
+    struct IKSolverStats {
+        float fx = 0;
+        int niter = 0;
+        float grad_norm = 0;
+        bool success = false;
+        std::string what;
+    };
+
+    template&lttypename T&gt
+    concept KinematicInterfaceConstraint = requires(T obj, size_t ind, float value,
+                                                    const Eigen::Vector&ltfloat, T::get_num_joints()&gt &values,
+                                                    Eigen::Vector&ltfloat, T::get_num_joints()&gt &values_non_const,
+                                                    Eigen::VectorX&ltfloat&gt &q_guess) {
+        { T::get_num_joints() };
+        { obj.set_joint(ind, value) };
+        { obj.set_joints(values) };
+        { obj.set_joint(ind, value, value) };
+        { obj.set_joints(values, values) };
+        { obj.get_joint(ind) };
+        { obj.get_joints(values_non_const) };
+    };
+
+
+    template&lttypename T&gt
+    concept ForwardKinematicInterfaceConstraint = requires(T obj, size_t ind, Eigen::Matrix&ltfloat, 4, 4&gt &transform) {
+        { obj.get_frame(ind, transform) };
+        { obj.forward_kinematics() };
+    };
+
+    template&lttypename T&gt
+    concept InverseInterfaceConstraint = requires(T obj, Eigen::VectorX&ltfloat&gt &q_guess,
+                                                  Eigen::Matrix&ltfloat, 4, 4&gt &transform) {
+        { obj.inverse_kinematics(transform, q_guess) } -&gt std::same_as&ltIKSolverStats&gt;
+    };
+
+    template&lttypename KI&gt requires KinematicInterfaceConstraint&ltKI&gt && ForwardKinematicInterfaceConstraint&ltKI&gt
+    struct ForwardKinematicsInterface : KI {
+    };
+
+
+    template&lttypename IK&gt requires KinematicInterfaceConstraint&ltIK&gt && ForwardKinematicInterfaceConstraint&ltIK&gt &&
+                                   InverseInterfaceConstraint&ltIK&gt
+    struct InverseKinematicsInterface : IK {
+    };
+
+}
+
+          </code></pre>
+        </section>
 
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Memory layout and performance</h2>
@@ -2770,12 +2808,26 @@ endfunction()
                 <ul class="my-list" style="--spacing: 5vb;">
                     <li>The general strategy is to minimize cache misses and branching
                     <li>Take advantage of cache lines
-                    <li>Explain some basics of FK matrix math
+                </ul>
+            </div>
+        </section>
+
+
+
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <h1 class="title" style="margin-top: 50vb">The Results</h1>
+        </section>
+
+        <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
+            <h2 class="title">Memory layout and performance</h2>
+            <div class="slide-content">
+                <ul class="my-list" style="--spacing: 5vb;">
                     <li>Show different layout and there corresponding `perf` values
                     <li>show godbolt.org assembly output
                 </ul>
             </div>
         </section>
+
 
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Real robot application</h2>
