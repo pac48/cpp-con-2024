@@ -251,6 +251,67 @@
         </section>
 
         <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
+          <pre class="language-cpp"><code class="language-cpp" data-trim data-line-numbers>
+#pragma once
+
+#include &ltconcepts&gt
+#include &ltiostream&gt
+
+#include &ltEigen/Core&gt
+
+namespace fk_interface {
+
+    struct IKSolverStats {
+        float fx = 0;
+        int niter = 0;
+        float grad_norm = 0;
+        bool success = false;
+        std::string what;
+    };
+
+    template&lttypename T&gt
+    concept KinematicInterfaceConstraint = requires(T obj, size_t ind, float value,
+                                                    const Eigen::Vector&ltfloat, T::get_num_joints()&gt &values,
+                                                    Eigen::Vector&ltfloat, T::get_num_joints()&gt &values_non_const,
+                                                    Eigen::VectorX&ltfloat&gt &q_guess) {
+        { T::get_num_joints() };
+        { obj.set_joint(ind, value) };
+        { obj.set_joints(values) };
+        { obj.set_joint(ind, value, value) };
+        { obj.set_joints(values, values) };
+        { obj.get_joint(ind) };
+        { obj.get_joints(values_non_const) };
+    };
+
+
+    template&lttypename T&gt
+    concept ForwardKinematicInterfaceConstraint = requires(T obj, size_t ind, Eigen::Matrix&ltfloat, 4, 4&gt &transform) {
+        { obj.get_frame(ind, transform) };
+        { obj.forward_kinematics() };
+    };
+
+    template&lttypename T&gt
+    concept InverseInterfaceConstraint = requires(T obj, Eigen::VectorX&ltfloat&gt &q_guess,
+                                                  Eigen::Matrix&ltfloat, 4, 4&gt &transform) {
+        { obj.inverse_kinematics(transform, q_guess) } -&gt std::same_as&ltIKSolverStats&gt;
+    };
+
+    template&lttypename KI&gt requires KinematicInterfaceConstraint&ltKI&gt && ForwardKinematicInterfaceConstraint&ltKI&gt
+    struct ForwardKinematicsInterface : KI {
+    };
+
+
+    template&lttypename IK&gt requires KinematicInterfaceConstraint&ltIK&gt && ForwardKinematicInterfaceConstraint&ltIK&gt &&
+                                   InverseInterfaceConstraint&ltIK&gt
+    struct InverseKinematicsInterface : IK {
+    };
+
+}
+
+          </code></pre>
+        </section>
+
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
           <pre class="language-cmake"><code data-trim data-line-numbers="1-57|3-18">
 function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
 
