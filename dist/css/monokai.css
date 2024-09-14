@@ -173,6 +173,16 @@ ul > * {
     padding-bottom: var(--spacing);
 }
 
+ol {
+    height: 100%;
+}
+
+ol > * {
+    /*padding-bottom: calc(100vb/var(--spacing));*/
+    padding-bottom: var(--spacing);
+}
+
+
 .language-cmake .hljs-variable::before {
     color: #c66614;
     content: "${";

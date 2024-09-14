@@ -64,24 +64,30 @@
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Introduction</h2>
             <div class="slide-content">
-                <ul class="my-list" style="--spacing: 5vb;">
-                    <li>I am a first time presenter and attender
-                    <li>About me: I work as a robotics scientist at PickNik Robotics. I earned my PhD in computer
-                        science from the University of New Hampshire on the topic of robot learning from demonstration.
-                    <li>I was the primary developer of <code>generate_parameter_library</code>, a ROS 2 library with a
-                        declarative syntax for managing parameters
-                </ul>
+                <ol class="my-list" style="--spacing: 10vb;">
+                    <li>I am a first time presenter and attender at CppCon
+                    <li>About me: I work as a robotics scientist at PickNik Robotics
+                    <li>I earned my PhD in computer science from the University of New Hampshire on the topic of robot learning
+<!--                    <li>I am the primary developer of <code>generate_parameter_library</code>, a ROS 2 library with a-->
+<!--                        declarative syntax for managing parameters-->
+                </ol>
             </div>
         </section>
 
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
             <h2 class="title">Outline</h2>
             <div class="slide-content">
-                <ul class="my-list" style="--spacing: 5vb;">
-                    <li>Motivate the topic
-                    <li>High level code concept for proposal
-                    <li>Memory layout and performance
-                    <li>Real robot application
+                <ul class="my-list" style="--spacing: 4vb;">
+                    <li>Background
+                    <li>Motivation
+                    <li>Build Process
+                    <li>Code Implementation
+                    <ul class="my-list" style="--spacing: 1vb;">
+                        <li>kinematics interface
+                        <li>memory layout and performance
+                        <li>test executable
+                    </ul>
+                    <li>Results
                     <li>Summary: lessons learned
                 </ul>
             </div>
@@ -92,17 +98,15 @@
         </section>
 
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
-            <h2 class="title">Background</h2>
-            <div class="slide-content" style="text-align: center">
-                <img style="margin-left: 0vb;margin-top: -5vb; width: 1536px;" src="dist/images/sawyer1.png">
+            <div class="title-slide-content">
+                <img style="--r-block-margin: 0;" src="dist/images/sawyer1.png" class="full-image" >
             </div>
         </section>
 
         <section class="reveal r-stretch" data-transition="fade" data-background-image="dist/images/background.png" >
-            <h2 class="title">Background</h2>
-            <div class="slide-content" style="text-align: center">
-                <img style="margin-top: -5vb; width: 1536px; position: absolute; transform: translate(-768px, 0);" src="dist/images/sawyer2.png">
-                <img class="fragment fade-in" style="margin-top: -5vb;width: 1536px; position: absolute; transform: translate(-768px, 0);" src="dist/images/sawyer3.png">
+            <div class="title-slide-content">
+                <img style="--r-block-margin: 0;" src="dist/images/sawyer2.png" class="full-image" >
+                <img class="full-image fragment fade-in" style="--r-block-margin: 0;"  src="dist/images/sawyer3.png">
             </div>
         </section>
 
