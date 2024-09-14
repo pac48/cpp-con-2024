@@ -249,7 +249,7 @@ cmake_minimum_required(VERSION 3.22)
 project(fast_forward_kinematics)
 
 # create executable
-add_executable(forward_kinematics_test forward_kinematics_test.cpp)
+add_executable(forward_kinematics_test forwardKinematicsTest.cpp)
 
 # setup targets to generate C++ code
 set(URDF_FILE "data/robot.urdf")
@@ -2982,6 +2982,110 @@ endfunction()
             <h1 class="title" style="margin-top: 50vb">The Code</h1>
         </section>
 
+
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
+          <pre class="language-cpp"><code class="language-cpp" data-trim data-line-numbers>
+#include "chrono"
+#include "iostream"
+
+#ifdef USE_FAST_KINEMATICS
+
+#include "fast_kinematics.hpp"
+
+using KI = fast_fk::JointData;
+#else
+#include "kdl_kinematics.hpp"
+using KI = kdl_impl::JointData;
+#endif
+
+int main(int arc, char **argv) {
+    constexpr int iterations = 128 * 128;
+    constexpr int multiplier = 128 * MULTIPLIER;
+    std::array&ltEigen::Vector&ltfloat, KI::get_num_joints()&gt, iterations&gt rand_values;
+    for (auto &rand_val: rand_values) {
+        rand_val = Eigen::Vector&ltfloat, KI::get_num_joints()&gt::Random();
+    }
+
+    fk_interface::ForwardKinematicsInterface&ltKI&gt fk_interface;
+    Eigen::Matrix&ltfloat, 4, 4&gt tf;
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    for (int k = 0; k &lt multiplier; k++) {
+        for (int i = 0; i &lt iterations; i++) {
+            fk_interface.set_joints(rand_values[i]);
+            fk_interface.forward_kinematics();
+        }
+    }
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast&ltstd::chrono::nanoseconds&gt(stop - start);
+
+    std::cout &lt&lt "Time taken by function: " &lt&lt (float) duration.count() &lt&lt " nanoseconds" &lt&lt std::endl;
+    std::cout &lt&lt "Average: " &lt&lt ((float) duration.count()) / (iterations * multiplier) &lt&lt " nanoseconds"
+              &lt&lt std::endl;
+
+    return 0;
+}
+
+          </code></pre>
+        </section>
+
+        <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
+          <pre class="language-cpp"><code class="language-cpp" data-trim data-line-numbers>
+#include "chrono"
+#include "iostream"
+
+#ifdef USE_FAST_KINEMATICS
+#include "fast_kinematics.hpp"
+using IK = fast_fk::JointData;
+#else
+
+#include "kdl_kinematics.hpp"
+
+using IK = kdl_impl::JointData;
+#endif
+
+
+int main(int arc, char **argv) {
+    constexpr int iterations = 128 * 128 * 5* MULTIPLIER;
+
+    // get target pose
+    Eigen::VectorX&ltfloat&gt q_in = Eigen::VectorX&ltfloat&gt::Random(IK::get_num_joints());
+    fk_interface::InverseKinematicsInterface&ltIK&gt fk_interface;
+    fk_interface.set_joints(q_in);
+    fk_interface.forward_kinematics();
+    Eigen::Matrix&ltfloat, 4, 4&gt tf;
+    fk_interface.get_frame(IK::get_num_joints() - 1, tf);
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    fk_interface::IKSolverStats stats;
+    size_t failed = 0;
+    size_t succeeded = 0;
+
+    Eigen::VectorX&ltfloat&gt q = 1 * Eigen::VectorX&ltfloat&gt::Random(IK::get_num_joints());
+    for (int ind = 0; ind &lt iterations; ++ind) {
+        q = Eigen::VectorX&ltfloat&gt::Random(IK::get_num_joints());
+        stats = fk_interface.inverse_kinematics(tf, q);
+        failed += stats.success == 0;
+        succeeded += stats.success == 1;
+    }
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast&ltstd::chrono::microseconds&gt(stop - start);
+
+    std::cout &lt&lt "Time taken by function: " &lt&lt (double) duration.count() &lt&lt " microseconds" &lt&lt std::endl;
+    std::cout &lt&lt "Average: " &lt&lt ((double) duration.count()) / (iterations) &lt&lt " microseconds"
+              &lt&lt std::endl;
+    std::cout &lt&lt "Percent success: " &lt&lt ((double) (100.0 * succeeded) / (failed + succeeded)) &lt&lt "%"
+              &lt&lt std::endl;
+
+    return 0;
+}
+
+          </code></pre>
+        </section>
 
         <section class="reveal r-stretch code"  data-transition="fade" data-background-image="dist/images/background.png" >
           <pre class="language-cpp"><code class="language-cpp" data-trim data-line-numbers>

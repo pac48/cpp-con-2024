@@ -22,6 +22,8 @@ Monokai style - ported by Luigi Maselli - http://grigio.org
     color: #c66614;
 }
 
+
+
 .language-cpp .hljs-title {
     color: #fcc467;
 }
@@ -37,6 +39,11 @@ Monokai style - ported by Luigi Maselli - http://grigio.org
 .language-cpp .hljs-meta {
     color: #bbb529;
 }
+
+.hljs-meta .hljs-keyword {
+    color: #bbb529;
+}
+
 .language-cpp .hljs-built_in {
     color: #ddd;
 }

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 project(fast_forward_kinematics)
 
 # create executable
-add_executable(forward_kinematics_test forward_kinematics_test.cpp)
+add_executable(forward_kinematics_test forwardKinematicsTest.cpp)
 
 # setup targets to generate C++ code
 set(URDF_FILE "data/robot.urdf")

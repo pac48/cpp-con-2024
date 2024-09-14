@@ -74,7 +74,7 @@ importers:
         version: 5.1.0(gulp@4.0.2)
       highlight.js:
         specifier: github:pac48/highlight.js#add-more-cmake-syntax
-        version: https://codeload.github.com/pac48/highlight.js/tar.gz/a08a33d59a2f291e02cd0ca658009de2e589f369(eslint-plugin-n@16.6.2(eslint@8.57.0))
+        version: https://codeload.github.com/pac48/highlight.js/tar.gz/32db440bf557f022578e25447673111a09872236(eslint-plugin-n@16.6.2(eslint@8.57.0))
       marked:
         specifier: ^4.3.0
         version: 4.3.0
@@ -2358,8 +2358,8 @@ packages:
     resolution: {integrity: sha512-g0QYk1dZBxGwk+Ngc+ltRH2IBp2f7zBkBMBJZCDerh6EhlhSR6+9irMCuT/09zD6qkarHUSn529sK/yL4S27mg==}
     engines: {node: '>= 0.4'}
 
-  get-tsconfig@4.8.0:
-    resolution: {integrity: sha512-Pgba6TExTZ0FJAn1qkJAjIeKoDJ3CsI2ChuLohJnZl/tTU8MVrq3b+2t5UOPfRa4RMsorClBjJALkJUMjG1PAw==}
+  get-tsconfig@4.8.1:
+    resolution: {integrity: sha512-k9PN+cFBmaLWtVz29SkUoqU5O0slLuHJXt/2P+tMVFT+phsSGXGkp9t3rQIqdz0e+06EHNGs3oM6ZX1s2zHxRg==}
 
   get-value@2.0.6:
     resolution: {integrity: sha512-Ln0UQDlxH1BapMu3GPtf7CuYNwRZf2gwCuPqbyG6pB8WfmFpzqcy4xtAaAMUhnNqjMKTiCPZG2oMT3YSx8U2NA==}
@@ -2560,8 +2560,8 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
 
-  highlight.js@https://codeload.github.com/pac48/highlight.js/tar.gz/a08a33d59a2f291e02cd0ca658009de2e589f369:
-    resolution: {tarball: https://codeload.github.com/pac48/highlight.js/tar.gz/a08a33d59a2f291e02cd0ca658009de2e589f369}
+  highlight.js@https://codeload.github.com/pac48/highlight.js/tar.gz/32db440bf557f022578e25447673111a09872236:
+    resolution: {tarball: https://codeload.github.com/pac48/highlight.js/tar.gz/32db440bf557f022578e25447673111a09872236}
     version: 11.10.0
     engines: {node: '>=12.0.0'}
 
@@ -6836,7 +6836,7 @@ snapshots:
       builtins: 5.1.0
       eslint: 8.57.0
       eslint-plugin-es-x: 7.8.0(eslint@8.57.0)
-      get-tsconfig: 4.8.0
+      get-tsconfig: 4.8.1
       globals: 13.24.0
       ignore: 5.3.2
       is-builtin-module: 3.2.1
@@ -7307,7 +7307,7 @@ snapshots:
       es-errors: 1.3.0
       get-intrinsic: 1.2.4
 
-  get-tsconfig@4.8.0:
+  get-tsconfig@4.8.1:
     dependencies:
       resolve-pkg-maps: 1.0.0
 
@@ -7594,7 +7594,7 @@ snapshots:
 
   he@1.2.0: {}
 
-  highlight.js@https://codeload.github.com/pac48/highlight.js/tar.gz/a08a33d59a2f291e02cd0ca658009de2e589f369(eslint-plugin-n@16.6.2(eslint@8.57.0)):
+  highlight.js@https://codeload.github.com/pac48/highlight.js/tar.gz/32db440bf557f022578e25447673111a09872236(eslint-plugin-n@16.6.2(eslint@8.57.0)):
     dependencies:
       '@colors/colors': 1.6.0
       '@rollup/plugin-commonjs': 26.0.1(rollup@4.20.0)
