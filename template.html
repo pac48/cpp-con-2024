@@ -157,6 +157,26 @@
         <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
             <h1 class="title" style="margin-top: 50vb">Motivation</h1>
         </section>
+        
+        <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
+            <h2 class="title">Concept video</h2>
+            <div class="slide-content" style="text-align: center">
+                <img style="margin-top: -5vb; width: 1536px; position: absolute; transform: translate(-768px, 0);" src="dist/images/demo.gif">
+            </div>
+        </section>
+        
+        
+        <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
+            <h2 class="title">Motivation</h2>
+            <div class="slide-content">
+                <ul class="my-list" style="--spacing: 5vb;">
+                    <li>Some algorithms need to run at incredible speeds for optimal performance
+                    <li>This is especially true for common subroutines used by expensive algorithms
+                    <li>For example, robot path planning with RRT depends on nearest neighbor lookup and forward
+                        kinematics, and collision detection
+                </ul>
+            </div>
+        </section>
 
         <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
             <h2 class="title">Motivation</h2>
@@ -182,48 +202,34 @@
                     <li>Compiler takes in standard Universal Robot Description Format (URDF) files
                     <li>Generates a minimal set of operations required to compute the function
                     <li>e.g. skip unneeded computations like fixed joints, unroll loops, setup data structure to optimize
-                        SIMD exzecution
+                        SIMD execution
                 </ul>
             </div>
         </section>
 
-        <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Motivate the topic</h2>
-            <div class="slide-content">
-                <ul class="my-list" style="--spacing: 5vb;">
-                    <li>Some algorithms need to run at incredible speeds for optimal performance
-                    <li>This is especially true for common subroutines used by expensive algorithms
-                    <li>For example, robot path planning with RRT depends on nearest neighbor lookup and forward
-                        kinematics, and collision detection.
-                    <li>Reference the Motion planning in micro-seconds paper (not only can you generate fast code, but
-                        you can make it algorithmically different, e.g. doing collision check as the FK is done)
-                </ul>
-            </div>
-        </section>
 
         <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Motivate the topic</h2>
+            <h2 class="title">Motivation</h2>
             <div class="slide-content">
                 <ul class="my-list" style="--spacing: 5vb;">
                     <li> Software written by hardware manufactures has an inherit advantage because it can be written
-                        with very specific platforms in mind and take advantage of hardware specific knowledge.
+                        with very specific platforms in mind and take advantage of hardware specific knowledge
                     <li>For example, robot design with spherical wrist can decompose inverse kinematics into two stages
                         1) find the wrist angles to achieve the desired orientation and 2) find the position value
-                        needed to find reach the desired Cartesian position.
+                        needed to find reach the desired Cartesian position
                     <li>Generic IK solvers cannot take advantage of this kind of knowledge in general
                     <li>One downside of hardware specific implementations is scalability
                     <li>Hardware generally does not change very often, other than attachments, like cameras and end
-                        effectors. Take a look at URDF?
+                        effectors
                 </ul>
             </div>
         </section>
 
         <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Motivate the topic</h2>
+            <h2 class="title">Motivation</h2>
             <div class="slide-content">
                 <ul class="my-list" style="--spacing: 5vb;">
-                    <li>Compiled code can be tested for memory allocations and real-time compatibility (no locks,
-                        exceptions, thread switching?). Safety critical applications, such as surgical robots need to
+                    <li>Compiled code can be tested for memory allocations and real-time compatibility. Safety critical applications, such as surgical robots need to
                         meet these requirements
                     <li>Allows for hardware specific CPU optimizations to be enabled since the code is source built on
                         every machine
@@ -231,14 +237,6 @@
                         make a mistake building defining the robot 2) do not have to maintain code for each of your
                         robot
                 </ul>
-            </div>
-        </section>
-
-
-        <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Concept video</h2>
-            <div class="slide-content" style="text-align: center">
-                <img style="margin-top: -5vb; width: 1536px; position: absolute; transform: translate(-768px, 0);" src="dist/images/demo.gif">
             </div>
         </section>
 
@@ -367,106 +365,64 @@
           </code></pre>
         </section>
 
-        <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Memory layout and performance</h2>
-            <div class="slide-content">
-                <ul class="my-list" style="--spacing: 5vb;">
-                    <li>The general strategy is to minimize cache misses and branching
-                    <li>Take advantage of cache lines
-                </ul>
-            </div>
-        </section>
-
-
 
         <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
             <h1 class="title" style="margin-top: 50vb">The Results</h1>
         </section>
 
-        <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Memory layout and performance</h2>
-            <div class="slide-content">
-                <ul class="my-list" style="--spacing: 5vb;">
-                    <li>Show different layout and there corresponding `perf` values
-                    <li>show godbolt.org assembly output
-                </ul>
-            </div>
-        </section>
-
 
         <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Real robot application</h2>
-            <div class="slide-content">
-                <ul class="my-list" style="--spacing: 5vb;">
-                    <li>record `perf` value and compare to existing KDL
-                    <li>Compare to KDL when compiled from source with native optimizations
-                    <li>Dynamic dispatch vs. compile-time dispatch
-                    <li>repeat for both FK and IK
-                    <li>Show FK queries per second with CUDA generated code
-                </ul>
-            </div>
-        </section>
-
-
-        <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Chart</h2>
             <div class="slide-content">
                 <div>
-                    <canvas id="perf_kdl"></canvas>
+                    <canvas style="margin-top: 10vb" id="perf_kdl"></canvas>
                 </div>
             </div>
         </section>
 
         <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Chart</h2>
             <div class="slide-content">
                 <div>
-                    <canvas id="perf_ffk"></canvas>
+                    <canvas style="margin-top: 10vb" id="perf_ffk"></canvas>
                 </div>
             </div>
         </section>
 
         <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Chart</h2>
             <div class="slide-content">
                 <div>
-                    <canvas id="perf_kdl_vs_ffk"></canvas>
+                    <canvas style="margin-top: 10vb" id="perf_kdl_vs_ffk"></canvas>
                 </div>
             </div>
         </section>
 
         <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Chart</h2>
             <div class="slide-content">
                 <div>
-                    <canvas id="perf_ik_kdl"></canvas>
+                    <canvas style="margin-top: 10vb" id="perf_ik_kdl"></canvas>
                 </div>
             </div>
         </section>
 
         <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Chart</h2>
             <div class="slide-content">
                 <div>
-                    <canvas id="perf_ik_ffk"></canvas>
+                    <canvas style="margin-top: 10vb" id="perf_ik_ffk"></canvas>
                 </div>
             </div>
         </section>
 
         <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Chart</h2>
             <div class="slide-content">
                 <div>
-                    <canvas id="perf_ik_kdl_vs_ffk"></canvas>
+                    <canvas style="margin-top: 10vb" id="perf_ik_kdl_vs_ffk"></canvas>
                 </div>
             </div>
         </section>
 
         <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Chart</h2>
             <div class="slide-content">
                 <div>
-                    <canvas id="perf_cuda_ffk"></canvas>
+                    <canvas style="margin-top: 10vb" id="perf_cuda_ffk"></canvas>
                 </div>
             </div>
         </section>
@@ -489,7 +445,9 @@
                 <ul class="my-list" style="--spacing: 5vb;">
                     <li>Leverage compile time optimization when needed in common robotics subroutines
                     <li>Leverage code generation to squeeze out as much performance as possible from both the CPU
-                        optimizations and known hardware kinematic description.
+                        optimizations and known hardware kinematic description
+                    <li>The general strategy is to minimize cache misses and branching
+                    <li>Take advantage of cache lines
                 </ul>
             </div>
         </section>
@@ -500,7 +458,6 @@
         </section>
     </div>
 </div>
-
 
 
 <script src="dist/reveal.js"></script>
