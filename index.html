@@ -82,11 +82,6 @@
                     <li>Motivation
                     <li>Build Process
                     <li>Code Implementation
-                    <ul class="my-list" style="--spacing: 1vb;">
-                        <li>kinematics interface
-                        <li>memory layout and performance
-                        <li>test executable
-                    </ul>
                     <li>Results
                     <li>Summary: lessons learned
                 </ul>
@@ -185,25 +180,13 @@
                     <div style="text-align: center">
                         <img style="width: 1536px;" src="dist/images/paper.png">
                     </div>
-                    <ul class="my-list" style="--spacing: 5vb; margin-top: 5vb">
-                        <li>Performance improvements of more than 500x over the state-of-the-art
-                        <li>Approach does not require high-power hardware
-                        <li>FK implementations commonly use dynamic branching and joint-type polymorphism to compute transforms between link
-                        <li>Developed a novel tracing compiler for robot kinematic
+                    <ul class="my-list" style="--spacing: 5vb; margin-top: 2vb">
+                    <li>Performance improvements of more than 500x over the state-of-the-art
+                    <li>Compiler takes in standard Unified Robot Description Format (URDF) files and generates optimized code
+                    <li>Setup data structure to optimize SIMD execution
+                    <li>Skip unneeded computations like combining fixed joints, unrolling loops
                     </ul>
                 </div>
-            </div>
-        </section>
-
-        <section class="reveal r-stretch" data-transition="none" data-background-image="dist/images/background.png" >
-            <h2 class="title">Motivation</h2>
-            <div class="slide-content">
-                <ul class="my-list" style="--spacing: 5vb; margin-top: 5vb">
-                    <li>Compiler takes in standard Universal Robot Description Format (URDF) files
-                    <li>Generates a minimal set of operations required to compute the function
-                    <li>e.g. skip unneeded computations like fixed joints, unroll loops, setup data structure to optimize
-                        SIMD execution
-                </ul>
             </div>
         </section>
 
@@ -231,11 +214,8 @@
                 <ul class="my-list" style="--spacing: 5vb;">
                     <li>Compiled code can be tested for memory allocations and real-time compatibility. Safety critical applications, such as surgical robots need to
                         meet these requirements
-                    <li>Allows for hardware specific CPU optimizations to be enabled since the code is source built on
-                        every machine
-                    <li>Some advantages of code generation as opposed to a templated robot builder are 1) less likely to
-                        make a mistake building defining the robot 2) do not have to maintain code for each of your
-                        robot
+                    <li>Allows for hardware specific CPU optimizations to be enabled since the code is source built on every machine
+                    <li>Some advantages of code generation as opposed to a templated robot builder are 1) less likely to make a mistake building defining the robot 2) do not have to maintain code for each of your robots
                 </ul>
             </div>
         </section>
