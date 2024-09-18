@@ -13,19 +13,19 @@ importers:
         version: 4.4.4
     devDependencies:
       '@babel/core':
-        specifier: ^7.23.2
+        specifier: ^7.25.2
         version: 7.25.2
       '@babel/eslint-parser':
-        specifier: ^7.22.15
+        specifier: ^7.25.1
         version: 7.25.1(@babel/core@7.25.2)(eslint@8.57.0)
       '@babel/preset-env':
-        specifier: ^7.23.2
+        specifier: ^7.25.3
         version: 7.25.3(@babel/core@7.25.2)
       '@rollup/plugin-babel':
         specifier: ^6.0.4
         version: 6.0.4(@babel/core@7.25.2)(rollup@4.20.0)
       '@rollup/plugin-commonjs':
-        specifier: ^25.0.7
+        specifier: ^25.0.8
         version: 25.0.8(rollup@4.20.0)
       '@rollup/plugin-node-resolve':
         specifier: ^15.2.3
@@ -40,13 +40,13 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
       core-js:
-        specifier: ^3.33.1
+        specifier: ^3.38.0
         version: 3.38.0
       fitty:
-        specifier: ^2.3.7
+        specifier: ^2.4.2
         version: 2.4.2
       glob:
-        specifier: ^10.3.10
+        specifier: ^10.4.5
         version: 10.4.5
       gulp:
         specifier: ^4.0.2
@@ -74,7 +74,7 @@ importers:
         version: 5.1.0(gulp@4.0.2)
       highlight.js:
         specifier: github:pac48/highlight.js#add-more-cmake-syntax
-        version: https://codeload.github.com/pac48/highlight.js/tar.gz/a5aa1f7d30db7b41a059eb9010c84c7111176735(eslint-plugin-n@16.6.2(eslint@8.57.0))
+        version: https://codeload.github.com/pac48/highlight.js/tar.gz/8f4b1789d30e057070b450efd842e5ef63151bad(eslint-plugin-n@16.6.2(eslint@8.57.0))
       marked:
         specifier: ^4.3.0
         version: 4.3.0
@@ -82,13 +82,13 @@ importers:
         specifier: ^2.1.2
         version: 2.1.2(typescript@5.5.4)
       qunit:
-        specifier: ^2.20.0
+        specifier: ^2.21.1
         version: 2.21.1
       rollup:
-        specifier: ^4.1.5
+        specifier: ^4.20.0
         version: 4.20.0
       sass:
-        specifier: ^1.69.5
+        specifier: ^1.77.8
         version: 1.77.8
       webpack:
         specifier: ^5.93.0
@@ -698,6 +698,10 @@ packages:
 
   '@eslint-community/regexpp@4.11.0':
     resolution: {integrity: sha512-G/M/tIiMrTAxEWRfLfQJMmGNX28IxBg4PBz8XqQhqUHLFI6TL2htpIB1iQCj144V5ee/JaKyT9/WZ0MGZWfA7A==}
+    engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
+
+  '@eslint-community/regexpp@4.11.1':
+    resolution: {integrity: sha512-m4DVN9ZqskZoLU5GlWZadwDnYo3vAEydiUayB9widCl9ffWx2IvPnp6n3on5rJmziJSw9Bv+Z3ChDVdMwXCY8Q==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
 
   '@eslint/eslintrc@2.1.4':
@@ -2560,8 +2564,8 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
 
-  highlight.js@https://codeload.github.com/pac48/highlight.js/tar.gz/a5aa1f7d30db7b41a059eb9010c84c7111176735:
-    resolution: {tarball: https://codeload.github.com/pac48/highlight.js/tar.gz/a5aa1f7d30db7b41a059eb9010c84c7111176735}
+  highlight.js@https://codeload.github.com/pac48/highlight.js/tar.gz/8f4b1789d30e057070b450efd842e5ef63151bad:
+    resolution: {tarball: https://codeload.github.com/pac48/highlight.js/tar.gz/8f4b1789d30e057070b450efd842e5ef63151bad}
     version: 11.10.0
     engines: {node: '>=12.0.0'}
 
@@ -5401,6 +5405,8 @@ snapshots:
 
   '@eslint-community/regexpp@4.11.0': {}
 
+  '@eslint-community/regexpp@4.11.1': {}
+
   '@eslint/eslintrc@2.1.4':
     dependencies:
       ajv: 6.12.6
@@ -6793,7 +6799,7 @@ snapshots:
   eslint-plugin-es-x@7.8.0(eslint@8.57.0):
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.57.0)
-      '@eslint-community/regexpp': 4.11.0
+      '@eslint-community/regexpp': 4.11.1
       eslint: 8.57.0
       eslint-compat-utils: 0.5.1(eslint@8.57.0)
 
@@ -7594,7 +7600,7 @@ snapshots:
 
   he@1.2.0: {}
 
-  highlight.js@https://codeload.github.com/pac48/highlight.js/tar.gz/a5aa1f7d30db7b41a059eb9010c84c7111176735(eslint-plugin-n@16.6.2(eslint@8.57.0)):
+  highlight.js@https://codeload.github.com/pac48/highlight.js/tar.gz/8f4b1789d30e057070b450efd842e5ef63151bad(eslint-plugin-n@16.6.2(eslint@8.57.0)):
     dependencies:
       '@colors/colors': 1.6.0
       '@rollup/plugin-commonjs': 26.0.1(rollup@4.20.0)

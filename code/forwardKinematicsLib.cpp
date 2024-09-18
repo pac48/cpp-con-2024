@@ -2,12 +2,12 @@
 
 namespace fast_fk::internal {
     // sin(t) cos(t)  px py pz R11, R12, R13...
-    constexpr int data_size = 2 + 3 + 9+2; // 16
+    constexpr int data_size = 2 + 3 + 9 + 2; // 16
 
     void forward_kinematics_internal(float *input_data, std::size_t /*size*/) {
 
         // row major
-        constexpr std::array<float, 6* 9> R_all = { -1.0, -0.0, 0.0,
+        constexpr std::array<float, 6 * 9> R_all = { -1.0, -0.0, 0.0,
                                                     0.0, -1.0, 0.0,
                                                     0.0, 0.0, 1.0,
                                                     0.9999999999920636, -0.0, 0.0,
@@ -27,7 +27,7 @@ namespace fast_fk::internal {
                                                     -0.0, 0.9999993460690271, 0.001143617732524032,
         };
 
-        constexpr std::array<float, 6* 3> offset_all = { 0.0, 0.0, 0.1625702965797758,
+        constexpr std::array<float, 6 * 3> offset_all = { 0.0, 0.0, 0.1625702965797758,
                                                          0.000182214465989093, 0.0, 0.0,
                                                          -0.4249817627044961, 0.0, 0.0,
                                                          -0.3921666446509172, -0.0009975307642066673, 0.1333919956383524,
@@ -71,18 +71,18 @@ namespace fast_fk::internal {
             float &R33 = input_data[ind * data_size + 13];
 
 
-            const float &sin_t = input_data[ind * data_size + 0];
-            const float &cos_t = input_data[ind * data_size + 1];
+            const float &sin_theta = input_data[ind * data_size + 0];
+            const float &cos_theta = input_data[ind * data_size + 1];
 
             // apply revolute rotation to R_fixed and store in joint to base rotation R
-            R11 = R11_fixed * cos_t + R12_fixed * sin_t;
-            R12 = -R11_fixed * sin_t + R12_fixed * cos_t;
+            R11 = R11_fixed * cos_theta + R12_fixed * sin_theta;
+            R12 = -R11_fixed * sin_theta + R12_fixed * cos_theta;
             R13 = R13_fixed;
-            R21 = R21_fixed * cos_t + R22_fixed * sin_t;
-            R22 = -R21_fixed * sin_t + R22_fixed * cos_t;
+            R21 = R21_fixed * cos_theta + R22_fixed * sin_theta;
+            R22 = -R21_fixed * sin_theta + R22_fixed * cos_theta;
             R23 = R23_fixed;
-            R31 = R31_fixed * cos_t + R32_fixed * sin_t;
-            R32 = -R31_fixed * sin_t + R32_fixed * cos_t;
+            R31 = R31_fixed * cos_theta + R32_fixed * sin_theta;
+            R32 = -R31_fixed * sin_theta + R32_fixed * cos_theta;
             R33 = R33_fixed;
 
             // rotate offset to be in base frame
@@ -126,8 +126,8 @@ namespace fast_fk::internal {
             float &R33 = input_data[ind * data_size + 13];
 
 
-            const float &sin_t = input_data[ind * data_size + 0];
-            const float &cos_t = input_data[ind * data_size + 1];
+            const float &sin_theta = input_data[ind * data_size + 0];
+            const float &cos_theta = input_data[ind * data_size + 1];
 
             // R_old is the rotation from joint_i in base frame (column major)
             float &R11_old = input_data[(ind - 1) * data_size + 5];
@@ -152,14 +152,14 @@ namespace fast_fk::internal {
             float &R33_tmp = input_data[ind * data_size + 13];
 
             // apply revolute rotation to R11_fixed and store in R11_tmp
-            R11_tmp = R11_fixed * cos_t + R12_fixed * sin_t;
-            R12_tmp = -R11_fixed * sin_t + R12_fixed * cos_t;
+            R11_tmp = R11_fixed * cos_theta + R12_fixed * sin_theta;
+            R12_tmp = -R11_fixed * sin_theta + R12_fixed * cos_theta;
             R13_tmp = R13_fixed;
-            R21_tmp = R21_fixed * cos_t + R22_fixed * sin_t;
-            R22_tmp = -R21_fixed * sin_t + R22_fixed * cos_t;
+            R21_tmp = R21_fixed * cos_theta + R22_fixed * sin_theta;
+            R22_tmp = -R21_fixed * sin_theta + R22_fixed * cos_theta;
             R23_tmp = R23_fixed;
-            R31_tmp = R31_fixed * cos_t + R32_fixed * sin_t;
-            R32_tmp = -R31_fixed * sin_t + R32_fixed * cos_t;
+            R31_tmp = R31_fixed * cos_theta + R32_fixed * sin_theta;
+            R32_tmp = -R31_fixed * sin_theta + R32_fixed * cos_theta;
             R33_tmp = R33_fixed;
 
             // apply R11_old rotation R11_tmp, to make it in base frame
@@ -230,8 +230,8 @@ namespace fast_fk::internal {
             float &R33 = input_data[ind * data_size + 13];
 
 
-            const float &sin_t = input_data[ind * data_size + 0];
-            const float &cos_t = input_data[ind * data_size + 1];
+            const float &sin_theta = input_data[ind * data_size + 0];
+            const float &cos_theta = input_data[ind * data_size + 1];
 
             // R_old is the rotation from joint_i in base frame (column major)
             float &R11_old = input_data[(ind - 1) * data_size + 5];
@@ -256,14 +256,14 @@ namespace fast_fk::internal {
             float &R33_tmp = input_data[ind * data_size + 13];
 
             // apply revolute rotation to R11_fixed and store in R11_tmp
-            R11_tmp = R11_fixed * cos_t + R12_fixed * sin_t;
-            R12_tmp = -R11_fixed * sin_t + R12_fixed * cos_t;
+            R11_tmp = R11_fixed * cos_theta + R12_fixed * sin_theta;
+            R12_tmp = -R11_fixed * sin_theta + R12_fixed * cos_theta;
             R13_tmp = R13_fixed;
-            R21_tmp = R21_fixed * cos_t + R22_fixed * sin_t;
-            R22_tmp = -R21_fixed * sin_t + R22_fixed * cos_t;
+            R21_tmp = R21_fixed * cos_theta + R22_fixed * sin_theta;
+            R22_tmp = -R21_fixed * sin_theta + R22_fixed * cos_theta;
             R23_tmp = R23_fixed;
-            R31_tmp = R31_fixed * cos_t + R32_fixed * sin_t;
-            R32_tmp = -R31_fixed * sin_t + R32_fixed * cos_t;
+            R31_tmp = R31_fixed * cos_theta + R32_fixed * sin_theta;
+            R32_tmp = -R31_fixed * sin_theta + R32_fixed * cos_theta;
             R33_tmp = R33_fixed;
 
             // apply R11_old rotation R11_tmp, to make it in base frame
@@ -334,8 +334,8 @@ namespace fast_fk::internal {
             float &R33 = input_data[ind * data_size + 13];
 
 
-            const float &sin_t = input_data[ind * data_size + 0];
-            const float &cos_t = input_data[ind * data_size + 1];
+            const float &sin_theta = input_data[ind * data_size + 0];
+            const float &cos_theta = input_data[ind * data_size + 1];
 
             // R_old is the rotation from joint_i in base frame (column major)
             float &R11_old = input_data[(ind - 1) * data_size + 5];
@@ -360,14 +360,14 @@ namespace fast_fk::internal {
             float &R33_tmp = input_data[ind * data_size + 13];
 
             // apply revolute rotation to R11_fixed and store in R11_tmp
-            R11_tmp = R11_fixed * cos_t + R12_fixed * sin_t;
-            R12_tmp = -R11_fixed * sin_t + R12_fixed * cos_t;
+            R11_tmp = R11_fixed * cos_theta + R12_fixed * sin_theta;
+            R12_tmp = -R11_fixed * sin_theta + R12_fixed * cos_theta;
             R13_tmp = R13_fixed;
-            R21_tmp = R21_fixed * cos_t + R22_fixed * sin_t;
-            R22_tmp = -R21_fixed * sin_t + R22_fixed * cos_t;
+            R21_tmp = R21_fixed * cos_theta + R22_fixed * sin_theta;
+            R22_tmp = -R21_fixed * sin_theta + R22_fixed * cos_theta;
             R23_tmp = R23_fixed;
-            R31_tmp = R31_fixed * cos_t + R32_fixed * sin_t;
-            R32_tmp = -R31_fixed * sin_t + R32_fixed * cos_t;
+            R31_tmp = R31_fixed * cos_theta + R32_fixed * sin_theta;
+            R32_tmp = -R31_fixed * sin_theta + R32_fixed * cos_theta;
             R33_tmp = R33_fixed;
 
             // apply R11_old rotation R11_tmp, to make it in base frame
@@ -438,8 +438,8 @@ namespace fast_fk::internal {
             float &R33 = input_data[ind * data_size + 13];
 
 
-            const float &sin_t = input_data[ind * data_size + 0];
-            const float &cos_t = input_data[ind * data_size + 1];
+            const float &sin_theta = input_data[ind * data_size + 0];
+            const float &cos_theta = input_data[ind * data_size + 1];
 
             // R_old is the rotation from joint_i in base frame (column major)
             float &R11_old = input_data[(ind - 1) * data_size + 5];
@@ -464,14 +464,14 @@ namespace fast_fk::internal {
             float &R33_tmp = input_data[ind * data_size + 13];
 
             // apply revolute rotation to R11_fixed and store in R11_tmp
-            R11_tmp = R11_fixed * cos_t + R12_fixed * sin_t;
-            R12_tmp = -R11_fixed * sin_t + R12_fixed * cos_t;
+            R11_tmp = R11_fixed * cos_theta + R12_fixed * sin_theta;
+            R12_tmp = -R11_fixed * sin_theta + R12_fixed * cos_theta;
             R13_tmp = R13_fixed;
-            R21_tmp = R21_fixed * cos_t + R22_fixed * sin_t;
-            R22_tmp = -R21_fixed * sin_t + R22_fixed * cos_t;
+            R21_tmp = R21_fixed * cos_theta + R22_fixed * sin_theta;
+            R22_tmp = -R21_fixed * sin_theta + R22_fixed * cos_theta;
             R23_tmp = R23_fixed;
-            R31_tmp = R31_fixed * cos_t + R32_fixed * sin_t;
-            R32_tmp = -R31_fixed * sin_t + R32_fixed * cos_t;
+            R31_tmp = R31_fixed * cos_theta + R32_fixed * sin_theta;
+            R32_tmp = -R31_fixed * sin_theta + R32_fixed * cos_theta;
             R33_tmp = R33_fixed;
 
             // apply R11_old rotation R11_tmp, to make it in base frame
@@ -542,8 +542,8 @@ namespace fast_fk::internal {
             float &R33 = input_data[ind * data_size + 13];
 
 
-            const float &sin_t = input_data[ind * data_size + 0];
-            const float &cos_t = input_data[ind * data_size + 1];
+            const float &sin_theta = input_data[ind * data_size + 0];
+            const float &cos_theta = input_data[ind * data_size + 1];
 
             // R_old is the rotation from joint_i in base frame (column major)
             float &R11_old = input_data[(ind - 1) * data_size + 5];
@@ -568,14 +568,14 @@ namespace fast_fk::internal {
             float &R33_tmp = input_data[ind * data_size + 13];
 
             // apply revolute rotation to R11_fixed and store in R11_tmp
-            R11_tmp = R11_fixed * cos_t + R12_fixed * sin_t;
-            R12_tmp = -R11_fixed * sin_t + R12_fixed * cos_t;
+            R11_tmp = R11_fixed * cos_theta + R12_fixed * sin_theta;
+            R12_tmp = -R11_fixed * sin_theta + R12_fixed * cos_theta;
             R13_tmp = R13_fixed;
-            R21_tmp = R21_fixed * cos_t + R22_fixed * sin_t;
-            R22_tmp = -R21_fixed * sin_t + R22_fixed * cos_t;
+            R21_tmp = R21_fixed * cos_theta + R22_fixed * sin_theta;
+            R22_tmp = -R21_fixed * sin_theta + R22_fixed * cos_theta;
             R23_tmp = R23_fixed;
-            R31_tmp = R31_fixed * cos_t + R32_fixed * sin_t;
-            R32_tmp = -R31_fixed * sin_t + R32_fixed * cos_t;
+            R31_tmp = R31_fixed * cos_theta + R32_fixed * sin_theta;
+            R32_tmp = -R31_fixed * sin_theta + R32_fixed * cos_theta;
             R33_tmp = R33_fixed;
 
             // apply R11_old rotation R11_tmp, to make it in base frame
@@ -627,7 +627,6 @@ namespace fast_fk::internal {
         // construct input_data from q
         float tmp1;
         float tmp2;
-
 
         tmp1 = q[0];
         tmp2 = q[0];
