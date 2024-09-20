@@ -57,7 +57,6 @@ function(generate_fast_forward_kinematics_library URDF_FILE ROOT_LINK TIP_LINK)
     target_include_directories(fast_forward_kinematics_library PUBLIC ${CMAKE_SOURCE_DIR}/include)
     target_include_directories(fast_forward_kinematics_library PUBLIC ${LBFGSppIncludeDir})
     target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
-    target_link_libraries(fast_forward_kinematics_library PUBLIC Eigen3::Eigen)
 
 endfunction()
 
